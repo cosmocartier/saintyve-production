@@ -5,14 +5,10 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { CartSidebar } from "@/components/cart-sidebar"
 import { Navigation } from "@/components/navigation"
-import { NotificationBanner } from "@/components/notification-banner"
-import { LandingPageLoader } from "@/components/landing-page-loader"
 import { subscribeToNewsletter } from "@/app/actions/newsletter"
 import { Footer } from "@/components/footer"
 import { CategorySwitcherSection } from "@/components/category-switcher-section"
 import { CollectionShowcase } from "@/components/collection-showcase"
-import { LookbookFocusCarousel } from "@/components/lookbook-focus-carousel"
-import { OurReviews } from "@/components/reviews/our-reviews"
 
 
 interface Product {
@@ -60,13 +56,11 @@ export default function BananaSportswearStorefront() {
 
   return (
     <>
-      <LandingPageLoader />
       <div
         className={`min-h-screen bg-white text-black font-mono transition-all duration-1000 ${isPageLoaded ? "opacity-100" : "opacity-0"
           }`}
       >
         <CartSidebar />
-        <OurReviews />
 
       <div id="main-content-wrapper">
         <section className="relative w-full">
@@ -122,8 +116,6 @@ export default function BananaSportswearStorefront() {
               </p>
             </div>
           </div>
-
-          <NotificationBanner />
         </section>
 
         <div className="absolute top-0 left-0 right-0 z-50">
@@ -144,19 +136,11 @@ export default function BananaSportswearStorefront() {
           seeMoreLink="/brands/chanel"
         />
 
-        <CollectionShowcase
-          title="Jordan 1 Travis Scott Edition"
-          parentProduct="Jordan 1 Travis Scott Edition"
-          limit={4}
-        />
-
-        <LookbookFocusCarousel />
-
         {/* CategorySwitcherSection temporarily hidden from the landing page.
             To re-enable, uncomment the line below. */}
         {/* <CategorySwitcherSection /> */}
 
-        <section className="bg-white py-24 lg:py-32 px-6 lg:px-12 lg:pt-[0] lg:pt-[0] pt-[0] pt-[0]" id="newsletter-section">
+        <section className="bg-white py-24 lg:py-32 px-6 lg:px-12" id="newsletter-section">
           <div className="max-w-md mx-auto">
             {newsletterStatus === "success" ? (
               <div className="text-center min-h-[200px] flex flex-col justify-center">
