@@ -72,7 +72,7 @@ export default function BananaSportswearStorefront() {
         <section className="relative w-full">
           <div className="lg:hidden h-[80vh] w-full relative overflow-hidden">
             <img
-              src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/7820388d-bd73-4dd4-4349-c6ba093b5600/w=800"
+              src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/0c7026eb-7e14-4da7-4026-63fb2d6c9100/w=800"
               alt="Designer Fashion Hero"
               className="absolute inset-0 w-full h-full object-cover"
             />
@@ -95,7 +95,7 @@ export default function BananaSportswearStorefront() {
 
           <div className="hidden lg:block h-[80vh] w-full relative">
             <img
-              src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/23c5b170-c6b6-480c-314d-321e11172e00/zoom"
+              src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/0c7026eb-7e14-4da7-4026-63fb2d6c9100/w=800"
               alt="Luxury Designer Backpack"
               className="w-full h-full object-cover"
             />
