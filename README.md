@@ -1,4 +1,4 @@
-# FlaredZone Production
+# Saint Yve Production
 
 Next.js 15 e-commerce platform for FlaredZone, deployed on Vercel with Supabase backend.
 
