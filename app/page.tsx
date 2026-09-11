@@ -89,7 +89,7 @@ export default function BananaSportswearStorefront() {
 
           <div className="hidden lg:block h-[80vh] w-full relative">
             <img
-              src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/0c7026eb-7e14-4da7-4026-63fb2d6c9100/w=800"
+              src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/6f4be294-0f91-4813-3e88-85e0cc2d1b00/w=800"
               alt="Luxury Designer Backpack"
               className="w-full h-full object-cover"
             />
