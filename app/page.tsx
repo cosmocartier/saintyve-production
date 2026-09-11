@@ -72,7 +72,7 @@ export default function BananaSportswearStorefront() {
         <section className="relative w-full">
           <div className="lg:hidden h-[80vh] w-full relative overflow-hidden">
             <img
-              src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/1dbc616c-ccf5-4379-60a1-33c53676ae00/w=800"
+              src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/7820388d-bd73-4dd4-4349-c6ba093b5600/w=800"
               alt="Designer Fashion Hero"
               className="absolute inset-0 w-full h-full object-cover"
             />
