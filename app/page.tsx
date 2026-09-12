@@ -70,19 +70,15 @@ export default function BananaSportswearStorefront() {
               alt="Designer Fashion Hero"
               className="absolute inset-0 w-full h-full object-cover"
             />
-            <div className="absolute inset-0 z-20 flex flex-col items-center justify-end pb-[40px]">
+            <div className="absolute inset-0 z-20 flex flex-col items-start justify-end pb-10 px-4">
               <Link
                 href="/new-arrivals"
-                className="inline-block backdrop-blur-md text-[12px] font-normal uppercase transition-opacity hover:opacity-80 mb-2"
+                className="inline-block text-[13px] font-bold uppercase text-white transition-opacity hover:opacity-80"
                 style={{
                   letterSpacing: "0.12em",
-                  borderRadius: "999px",
-                  padding: "11px 34px",
-                  backgroundColor: "#111111",
-                  color: "#FFFFFF",
                 }}
               >
-                Explore Now
+                Shop Collection
               </Link>
             </div>
           </div>
@@ -93,17 +89,15 @@ export default function BananaSportswearStorefront() {
               alt="Luxury Designer Backpack"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 z-20 flex flex-col items-center justify-end pb-[40px]">
+            <div className="absolute inset-0 z-20 flex flex-col items-start justify-end pb-10 px-4 lg:px-12">
               <Link
                 href="/new-arrivals"
-                className="inline-block backdrop-blur-md text-[12px] font-normal uppercase transition-opacity hover:opacity-80 text-background bg-black mb-[15px]"
+                className="inline-block text-[13px] font-bold uppercase text-white transition-opacity hover:opacity-80"
                 style={{
                   letterSpacing: "0.12em",
-                  borderRadius: "999px",
-                  padding: "11px 34px",
                 }}
               >
-                Shop New Arrivals
+                Shop Collection
               </Link>
             </div>
           </div>
