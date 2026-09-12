@@ -18,21 +18,21 @@ export async function generateMetadata({
   const hasActiveFilters = Boolean(searchParams.brand || searchParams.subcategory || searchParams.color || searchParams.style || searchParams.sort)
   
   return {
-    title: "Clothing | Designerdrip",
+    title: "Clothing | Saint Yve",
     description:
-      "Discover premium clothing at Designerdrip — shirts, pants, tops, and more from top designer brands.",
+      "Discover premium clothing at Saint Yve — shirts, pants, tops, and more from top designer brands.",
     openGraph: {
-      title: "Clothing | Designerdrip",
+      title: "Clothing | Saint Yve",
       description:
-        "Discover premium clothing at Designerdrip — shirts, pants, tops, and more from top designer brands.",
+        "Discover premium clothing at Saint Yve — shirts, pants, tops, and more from top designer brands.",
       type: "website",
       url: "https://designerdrip.com/clothing",
     },
     twitter: {
       card: "summary_large_image",
-      title: "Clothing | Designerdrip",
+      title: "Clothing | Saint Yve",
       description:
-        "Discover premium clothing at Designerdrip — shirts, pants, tops, and more from top designer brands.",
+        "Discover premium clothing at Saint Yve — shirts, pants, tops, and more from top designer brands.",
     },
     alternates: {
       canonical: "https://designerdrip.com/clothing",

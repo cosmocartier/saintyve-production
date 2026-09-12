@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Chrome Hearts | Designerdrip",
+  title: "Chrome Hearts | Saint Yve",
   description:
     "Discover Chrome Hearts' bold luxury jewelry and accessories. From iconic sterling silver pieces to edgy leather goods, explore rebellious elegance and uncompromising craftsmanship.",
 }

@@ -3,9 +3,9 @@ import { StaticNavigation } from "@/components/static-navigation"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "Our Mission | Designerdrip",
+  title: "Our Mission | Saint Yve",
   description:
-    "Quality over hype. Fair pricing without compromise. Designerdrip exists to deliver premium designer pieces through expert sourcing and unwavering standards.",
+    "Quality over hype. Fair pricing without compromise. Saint Yve exists to deliver premium designer pieces through expert sourcing and unwavering standards.",
 }
 
 export default function MissionPage() {
@@ -20,7 +20,7 @@ export default function MissionPage() {
             Quality over everything.
           </h1>
           <p className="text-[15px] lg:text-[16px] font-mono text-gray-600 leading-relaxed max-w-2xl mx-auto">
-            Designerdrip exists to deliver premium designer pieces at the fairest possible price — through deep sourcing
+            Saint Yve exists to deliver premium designer pieces at the fairest possible price — through deep sourcing
             expertise, uncompromising quality control, and long-term trust with our community.
           </p>
         </div>
@@ -37,7 +37,7 @@ export default function MissionPage() {
               products.
             </p>
             <p className="text-[15px] font-mono text-gray-700 leading-relaxed">
-              We built Designerdrip to fix this. Through years of building relationships with trusted sources, strict
+              We built Saint Yve to fix this. Through years of building relationships with trusted sources, strict
               quality checks, and transparent operations, we deliver designer pieces that meet our standards — and
               yours.
             </p>
@@ -148,7 +148,7 @@ export default function MissionPage() {
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-[11px] font-mono uppercase tracking-[0.2em] text-black mb-8">The Promise</h2>
           <p className="text-[15px] lg:text-[16px] font-mono text-gray-700 leading-relaxed mb-6">
-            When you buy from Designerdrip, you can expect consistent quality, fair pricing, and honest communication.
+            When you buy from Saint Yve, you can expect consistent quality, fair pricing, and honest communication.
             No gimmicks. No compromises. Just premium pieces curated with care.
           </p>
           <p className="text-[15px] lg:text-[16px] font-mono text-gray-700 leading-relaxed mb-10">

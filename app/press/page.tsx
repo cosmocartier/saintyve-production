@@ -9,8 +9,8 @@ import Link from "next/link"
 import { MENTIONS, PRESS_ASSETS, BRAND_FACTS } from "@/lib/press/press-data"
 
 export const metadata: Metadata = {
-  title: "Press | Designerdrip",
-  description: "Press resources, brand facts, and official assets for media inquiries about Designerdrip.",
+  title: "Press | Saint Yve",
+  description: "Press resources, brand facts, and official assets for media inquiries about Saint Yve.",
 }
 
 export default function PressPage() {
@@ -45,14 +45,14 @@ export default function PressPage() {
         </div>
       </section>
 
-      {/* About Designerdrip (Boilerplate) */}
+      {/* About Saint Yve (Boilerplate) */}
       <section className="py-20 px-6 lg:px-12 bg-gray-50 border-t border-gray-100">
         <div className="max-w-4xl mx-auto">
           <Card className="p-8 lg:p-10 bg-white border-gray-200">
             <h2 className="text-[11px] font-mono uppercase tracking-[0.2em] text-black mb-6">About</h2>
             <div className="space-y-4">
               <p className="text-[14px] font-mono text-gray-700 leading-relaxed">
-                Designerdrip is a curated destination for high-standard pieces, focused on clean presentation, fast
+                Saint Yve is a curated destination for high-standard pieces, focused on clean presentation, fast
                 processing, and consistent quality checks.
               </p>
               <p className="text-[14px] font-mono text-gray-700 leading-relaxed">

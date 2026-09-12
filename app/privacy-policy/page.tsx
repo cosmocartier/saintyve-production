@@ -4,8 +4,8 @@ import { Footer } from "@/components/footer"
 import { PrivacyPolicyContent } from "@/components/privacy-policy-content"
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Designerdrip",
-  description: "Designerdrip Privacy Policy covering data collection, usage, security, and your rights under GDPR.",
+  title: "Privacy Policy | Saint Yve",
+  description: "Saint Yve Privacy Policy covering data collection, usage, security, and your rights under GDPR.",
   robots: {
     index: true,
     follow: true,
@@ -28,7 +28,7 @@ export default function PrivacyPolicyPage() {
           </h1>
           <p className="text-[13px] font-mono text-gray-500 mb-6">Last updated: December 2025</p>
           <p className="text-[15px] font-mono text-gray-700 leading-relaxed max-w-3xl">
-            Your privacy is important to us. This Privacy Policy explains how Designerdrip collects, uses, and protects
+            Your privacy is important to us. This Privacy Policy explains how Saint Yve collects, uses, and protects
             your personal data when you use our website and services.
           </p>
         </div>

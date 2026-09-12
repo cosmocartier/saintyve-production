@@ -2,21 +2,21 @@ export const MENTIONS = [
   {
     id: "1",
     publication: "Highsnobiety",
-    headline: "Dubai's Designerdrip is redefining designer access",
+    headline: "Dubai's Saint Yve is redefining designer access",
     date: "March 2025",
     link: null, // Placeholder
   },
   {
     id: "2",
     publication: "Hypebeast",
-    headline: "Quality over hype: The Designerdrip approach",
+    headline: "Quality over hype: The Saint Yve approach",
     date: "February 2025",
     link: null,
   },
   {
     id: "3",
     publication: "GQ Middle East",
-    headline: "How Designerdrip curates premium pieces",
+    headline: "How Saint Yve curates premium pieces",
     date: "January 2025",
     link: null,
   },
@@ -30,7 +30,7 @@ export const MENTIONS = [
   {
     id: "5",
     publication: "Vogue Arabia",
-    headline: "Designerdrip's platinum membership explained",
+    headline: "Saint Yve's platinum membership explained",
     date: "November 2024",
     link: null,
   },
@@ -44,14 +44,14 @@ export const MENTIONS = [
   {
     id: "7",
     publication: "The National",
-    headline: "Inside Designerdrip's quality control process",
+    headline: "Inside Saint Yve's quality control process",
     date: "September 2024",
     link: null,
   },
   {
     id: "8",
     publication: "Gulf Business",
-    headline: "Designerdrip expands product catalog",
+    headline: "Saint Yve expands product catalog",
     date: "August 2024",
     link: null,
   },

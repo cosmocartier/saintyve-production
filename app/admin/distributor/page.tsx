@@ -3,7 +3,7 @@ import { DistributorDashboardClient } from "@/components/admin/distributor-dashb
 import { requireDistributor } from "@/lib/admin-auth"
 
 export const metadata: Metadata = {
-  title: "DESIGNERDRIP® | Official Distribution Program - Dashboard",
+  title: "SAINT YVE® | Official Distribution Program - Dashboard",
 }
 
 export const dynamic = "force-dynamic"

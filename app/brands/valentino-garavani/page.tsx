@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Valentino Garavani | Designerdrip",
+  title: "Valentino Garavani | Saint Yve",
   description:
     "Discover the iconic Valentino Garavani collection. From the legendary Rockstud heels to avant-garde couture, explore Italian luxury and timeless elegance.",
 }

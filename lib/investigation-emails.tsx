@@ -136,7 +136,7 @@ export async function sendItemUnavailableEmail({
                   Questions? Contact us at <a href="mailto:support@designerdrip.store" style="color: #555555; text-decoration: underline;">support@designerdrip.store</a>
                 </p>
                 <p style="margin: 6px 0 0; font-size: 11px; line-height: 1.5; color: #aaaaaa;">
-                  © ${new Date().getFullYear()} DESIGNERDRIP. All rights reserved.
+                  © ${new Date().getFullYear()} SAINT YVE. All rights reserved.
                 </p>
               </td>
             </tr>
@@ -156,9 +156,9 @@ export async function sendItemUnavailableEmail({
         Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "DESIGNERDRIP <orders@designerdrip.store>",
+        from: "SAINT YVE <orders@designerdrip.store>",
         to: customerEmail,
-        subject: "There's an issue with your Designerdrip order",
+        subject: "There's an issue with your Saint Yve order",
         html: emailHtml,
       }),
     })
@@ -260,7 +260,7 @@ export async function sendAlternativeConfirmedEmail({
                   Questions? Contact us at <a href="mailto:support@designerdrip.store" style="color: #555555; text-decoration: underline;">support@designerdrip.store</a>
                 </p>
                 <p style="margin: 6px 0 0; font-size: 11px; line-height: 1.5; color: #aaaaaa;">
-                  © ${new Date().getFullYear()} DESIGNERDRIP. All rights reserved.
+                  © ${new Date().getFullYear()} SAINT YVE. All rights reserved.
                 </p>
               </td>
             </tr>
@@ -280,7 +280,7 @@ export async function sendAlternativeConfirmedEmail({
         Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "DESIGNERDRIP <orders@designerdrip.store>",
+        from: "SAINT YVE <orders@designerdrip.store>",
         to: customerEmail,
         subject: "Your replacement item has been confirmed",
         html: emailHtml,

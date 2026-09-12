@@ -195,7 +195,7 @@ export default function LoyaltySection({ profile }: LoyaltySectionProps) {
               LOYALTY STATUS
             </h1>
             <p className="text-[13px] font-medium text-[#8C8C8C] md:text-[14px]">
-              Your exclusive membership tier inside Designerdrip.
+              Your exclusive membership tier inside Saint Yve.
             </p>
           </div>
           <div className="flex justify-center py-20">
@@ -215,7 +215,7 @@ export default function LoyaltySection({ profile }: LoyaltySectionProps) {
               LOYALTY STATUS
             </h1>
             <p className="text-[13px] font-medium text-[#8C8C8C] md:text-[14px]">
-              Your exclusive membership tier inside Designerdrip.
+              Your exclusive membership tier inside Saint Yve.
             </p>
           </div>
           <div className="py-20 text-center">
@@ -235,7 +235,7 @@ export default function LoyaltySection({ profile }: LoyaltySectionProps) {
             LOYALTY STATUS
           </h1>
           <p className="text-[13px] font-medium text-[#8C8C8C] md:text-[14px]">
-            Your exclusive membership tier inside Designerdrip.
+            Your exclusive membership tier inside Saint Yve.
           </p>
         </div>
 

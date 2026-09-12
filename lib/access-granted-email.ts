@@ -20,7 +20,7 @@ export async function sendAccessGrantedEmail({
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>You have been granted access — Designerdrip</title>
+    <title>You have been granted access — Saint Yve</title>
   </head>
   <body style="margin: 0; padding: 0; background-color: #0a0a0a; font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;">
     <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="border-collapse: collapse; background-color: #0a0a0a;">
@@ -32,7 +32,7 @@ export async function sendAccessGrantedEmail({
             <tr>
               <td style="padding-bottom: 48px; text-align: center;">
                 <p style="margin: 0; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #444240;">
-                  DESIGNERDRIP
+                  SAINT YVE
                 </p>
               </td>
             </tr>
@@ -121,7 +121,7 @@ export async function sendAccessGrantedEmail({
                   <tr>
                     <td style="background-color: #ffffff;">
                       <a href="${shopUrl}" style="display: inline-block; padding: 14px 40px; font-size: 11px; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; color: #0a0a0a; text-decoration: none;">
-                        Enter Designerdrip
+                        Enter Saint Yve
                       </a>
                     </td>
                   </tr>
@@ -152,7 +152,7 @@ export async function sendAccessGrantedEmail({
             <tr>
               <td style="padding-bottom: 16px; text-align: center;">
                 <p style="margin: 0; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #2e2e2e;">
-                  DESIGNERDRIP
+                  SAINT YVE
                 </p>
               </td>
             </tr>
@@ -161,7 +161,7 @@ export async function sendAccessGrantedEmail({
             <tr>
               <td style="text-align: center;">
                 <p style="margin: 0; font-size: 11px; line-height: 1.7; color: #2e2e2e; letter-spacing: 0.04em;">
-                  © ${new Date().getFullYear()} Designerdrip · All rights reserved<br/>
+                  © ${new Date().getFullYear()} Saint Yve · All rights reserved<br/>
                   Questions? <a href="mailto:support@designerdrip.store" style="color: #444240; text-decoration: none;">support@designerdrip.store</a>
                 </p>
               </td>
@@ -183,9 +183,9 @@ export async function sendAccessGrantedEmail({
         Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "Designerdrip <welcome@designerdrip.store>",
+        from: "Saint Yve <welcome@designerdrip.store>",
         to: customerEmail,
-        subject: "You now have access – Designerdrip",
+        subject: "You now have access – Saint Yve",
         html: emailHtml,
       }),
     })

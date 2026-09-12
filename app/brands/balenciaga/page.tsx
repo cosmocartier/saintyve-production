@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Balenciaga | Designerdrip",
+  title: "Balenciaga | Saint Yve",
   description:
     "Discover the avant-garde Balenciaga collection. From boundary-pushing footwear to bold statement pieces, explore the visionary designs that redefine contemporary luxury fashion.",
 }

@@ -206,7 +206,7 @@ export function AdminTasksClient({ initialProjects, adminUsers }: AdminTasksClie
           <div>
             <h1 className="text-3xl font-medium tracking-widest uppercase mb-2">TASKS</h1>
             <p className="text-sm text-zinc-500 tracking-wide">
-              Central workspace for all Designerdrip projects and tasks.
+              Central workspace for all Saint Yve projects and tasks.
             </p>
           </div>
           <Button

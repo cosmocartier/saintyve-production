@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Rimowa | Designerdrip",
+  title: "Rimowa | Saint Yve",
   description:
     "Discover the iconic Rimowa collection. German engineering meets timeless design with legendary aluminum and polycarbonate luggage since 1898.",
 }

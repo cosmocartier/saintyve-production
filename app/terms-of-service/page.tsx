@@ -4,8 +4,8 @@ import { Footer } from "@/components/footer"
 import { TermsOfServiceContent } from "@/components/terms-of-service-content"
 
 export const metadata: Metadata = {
-  title: "Terms of Service | Designerdrip",
-  description: "Designerdrip Terms of Service covering orders, payments, shipping, returns, and platform usage.",
+  title: "Terms of Service | Saint Yve",
+  description: "Saint Yve Terms of Service covering orders, payments, shipping, returns, and platform usage.",
   robots: {
     index: true,
     follow: true,
@@ -28,7 +28,7 @@ export default function TermsOfServicePage() {
           </h1>
           <p className="text-[13px] font-mono text-gray-500 mb-6">Last updated: January 2025</p>
           <p className="text-[15px] font-mono text-gray-700 leading-relaxed max-w-3xl">
-            These Terms govern your use of Designerdrip and purchases made through our website.
+            These Terms govern your use of Saint Yve and purchases made through our website.
           </p>
         </div>
       </section>

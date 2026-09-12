@@ -206,7 +206,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
   // Extract brand name from product name (assumes format: "Brand ProductName")
   const brandName = product.name.split(" ")[0] || ""
-  const autoTitle = `${product.name} – Premium Quality & Fast Shipping | DESIGNERDRIP`
+  const autoTitle = `${product.name} – Premium Quality & Fast Shipping | SAINT YVE`
 
   // Use custom meta_title if set, otherwise use auto-generated format
   const title = product.meta_title || autoTitle

@@ -9,7 +9,7 @@ import { Footer } from "@/components/footer"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Nike Nocta | Designerdrip",
+  title: "Nike Nocta | Saint Yve",
   description:
     "Nike Nocta blends Nike performance with Drake's nocturnal aesthetic—engineered for movement, focus, and modern silhouettes.",
 }

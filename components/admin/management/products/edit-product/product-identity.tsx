@@ -151,7 +151,7 @@ export function ProductIdentity({
             value={formData.meta_title || ""}
             onChange={(e) => onInputChange("meta_title", e.target.value)}
             className={inputCls}
-            placeholder="Balenciaga Speed 2.0 Black Sole – Premium Quality Sneakers | DESIGNERDRIP"
+            placeholder="Balenciaga Speed 2.0 Black Sole – Premium Quality Sneakers | SAINT YVE"
             maxLength={70}
           />
           <div className="mt-2 flex items-center justify-between">

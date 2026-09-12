@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Alexander McQueen | Designerdrip",
+  title: "Alexander McQueen | Saint Yve",
   description:
     "Discover the avant-garde world of Alexander McQueen. From iconic skull motifs to dramatic silhouettes, explore British luxury fashion that pushes creative boundaries.",
 }

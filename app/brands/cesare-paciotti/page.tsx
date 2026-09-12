@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Cesare Paciotti | Designerdrip",
+  title: "Cesare Paciotti | Saint Yve",
   description:
     "Discover the iconic Cesare Paciotti collection. Italian luxury footwear and accessories featuring the signature dagger logo and exceptional craftsmanship.",
 }

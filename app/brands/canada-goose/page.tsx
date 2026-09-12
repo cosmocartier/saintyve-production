@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Canada Goose | Designerdrip",
+  title: "Canada Goose | Saint Yve",
   description:
     "Discover the iconic Canada Goose collection. From legendary parkas to premium outerwear, explore Canadian craftsmanship and extreme weather protection with timeless style.",
 }

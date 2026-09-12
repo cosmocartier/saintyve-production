@@ -4,8 +4,8 @@ import { Footer } from "@/components/footer"
 import { ReturnPolicyContent } from "@/components/return-policy-content"
 
 export const metadata: Metadata = {
-  title: "Return Policy | Designerdrip",
-  description: "14-day returns, structured refund process, and exchanges. Read the official Designerdrip return and refund policy.",
+  title: "Return Policy | Saint Yve",
+  description: "14-day returns, structured refund process, and exchanges. Read the official Saint Yve return and refund policy.",
   robots: {
     index: true,
     follow: true,
@@ -27,7 +27,7 @@ export default function ReturnPolicyPage() {
             Returns & Refund Policy
           </h1>
           <p className="text-[15px] font-mono text-gray-700 leading-relaxed max-w-3xl">
-            We stand behind the quality and presentation of every Designerdrip piece.
+            We stand behind the quality and presentation of every Saint Yve piece.
             If something isn't right, our return process is designed to be clear, fair, and structured.
           </p>
         </div>

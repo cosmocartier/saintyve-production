@@ -41,7 +41,7 @@ export function AccessPageClient() {
       <header className="flex items-center justify-center py-8 px-6">
         <img
           src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/9a89d7f1-98e8-4656-c873-01d0a6f90500/logo"
-          alt="DESIGNERDRIP"
+          alt="SAINT YVE"
           className="h-4 w-auto"
         />
       </header>
@@ -66,7 +66,7 @@ export function AccessPageClient() {
           className="text-[#888480] text-sm md:text-base leading-relaxed max-w-[460px] mb-10 text-pretty"
           style={{ animation: "slideUp 0.8s ease 0.2s both" }}
         >
-          Designerdrip operates as a private sourcing platform. Inventory is
+          Saint Yve operates as a private sourcing platform. Inventory is
           shared exclusively via our private line.
         </p>
 
@@ -213,11 +213,11 @@ export function AccessPageClient() {
         <div className="flex flex-col items-center gap-3">
           <img
             src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/9a89d7f1-98e8-4656-c873-01d0a6f90500/logo"
-            alt="DESIGNERDRIP"
+            alt="SAINT YVE"
             className="h-3.5 w-auto opacity-40"
           />
           <p className="text-[10px] text-[#BCBAB5] tracking-[0.2em] uppercase">
-            © 2025 Designerdrip. All rights reserved.
+            © 2025 Saint Yve. All rights reserved.
           </p>
         </div>
       </footer>

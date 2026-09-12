@@ -6,7 +6,7 @@ import { motion, useMotionValue, animate, useReducedMotion, AnimatePresence } fr
 
 // ---------------------------------------------------------------------------
 // Data
-// Replace the `image` values with real Designerdrip look photography later.
+// Replace the `image` values with real Saint Yve look photography later.
 // `label` names the style direction each look represents; it's what the
 // caption below the carousel crossfades between as the focus changes.
 // ---------------------------------------------------------------------------
@@ -22,14 +22,14 @@ const LOOKS: Look[] = [
   {
     id: 1,
     image: "https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/4c61ff24-eed7-44ce-d7c9-4b5283d6b200/w=800",
-    alt: "Designerdrip look 1",
+    alt: "Saint Yve look 1",
     label: "Streetwear",
   },
-  { id: 2, image: "/images/lookbook/look-2.png", alt: "Designerdrip look 2", label: "Off-Duty" },
-  { id: 3, image: "/images/lookbook/look-3.png", alt: "Designerdrip look 3", label: "Loungewear" },
-  { id: 4, image: "/images/lookbook/look-4.png", alt: "Designerdrip look 4", label: "Tailored" },
-  { id: 5, image: "/images/lookbook/look-5.png", alt: "Designerdrip look 5", label: "Casual Knit" },
-  { id: 6, image: "/images/lookbook/look-6.png", alt: "Designerdrip look 6", label: "Outerwear" },
+  { id: 2, image: "/images/lookbook/look-2.png", alt: "Saint Yve look 2", label: "Off-Duty" },
+  { id: 3, image: "/images/lookbook/look-3.png", alt: "Saint Yve look 3", label: "Loungewear" },
+  { id: 4, image: "/images/lookbook/look-4.png", alt: "Saint Yve look 4", label: "Tailored" },
+  { id: 5, image: "/images/lookbook/look-5.png", alt: "Saint Yve look 5", label: "Casual Knit" },
+  { id: 6, image: "/images/lookbook/look-6.png", alt: "Saint Yve look 6", label: "Outerwear" },
 ]
 
 // How many frames to render on each side of the focused center. This is the
@@ -295,7 +295,7 @@ export function LookbookFocusCarousel() {
     <section
       className="relative w-full bg-white py-20 lg:py-28 overflow-hidden"
       aria-roledescription="carousel"
-      aria-label="Designerdrip look gallery"
+      aria-label="Saint Yve look gallery"
     >
       <SectionHeading />
 

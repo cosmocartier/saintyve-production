@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Prada | Designerdrip",
+  title: "Prada | Saint Yve",
   description:
     "Discover the iconic Prada collection. From innovative fashion to timeless accessories, explore the legacy of Italian craftsmanship and avant-garde luxury.",
 }

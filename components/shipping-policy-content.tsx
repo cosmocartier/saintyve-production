@@ -151,7 +151,7 @@ export function ShippingPolicyContent() {
                 </p>
                 <ul className="list-disc list-inside space-y-2 pl-4">
                   <li>these fees are determined by local authorities</li>
-                  <li>Designerdrip has no control over these charges</li>
+                  <li>Saint Yve has no control over these charges</li>
                   <li>customers are responsible for any applicable import costs</li>
                 </ul>
               </div>

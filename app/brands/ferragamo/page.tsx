@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Ferragamo | Designerdrip",
+  title: "Ferragamo | Saint Yve",
   description:
     "Discover the iconic Ferragamo collection. From legendary Italian craftsmanship to timeless elegance, explore sophisticated luxury footwear, accessories, and ready-to-wear.",
 }

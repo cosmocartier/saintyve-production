@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Goyard | Designerdrip",
+  title: "Goyard | Saint Yve",
   description:
     "Discover the exclusive Goyard collection. From legendary trunks to iconic handbags, explore the heritage of French luxury craftsmanship and timeless elegance.",
 }

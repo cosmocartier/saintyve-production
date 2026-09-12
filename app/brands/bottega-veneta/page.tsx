@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Bottega Veneta | Designerdrip",
+  title: "Bottega Veneta | Saint Yve",
   description:
     "Discover Bottega Veneta's iconic intrecciato craftsmanship and refined luxury. From signature woven leather to contemporary ready-to-wear, explore Italian excellence and understated elegance.",
 }

@@ -234,7 +234,7 @@ Keep brief and factual.`
     // Generate Size & Fit text using AI
     const { text } = await generateText({
       model: "openai/gpt-4o-mini",
-      prompt: `You are an editorial copywriter for DesignerDrip, a premium fashion marketplace.
+      prompt: `You are an editorial copywriter for Saint Yve, a premium fashion marketplace.
 
 TASK: Generate Size & Fit copy using ONLY the provided product attributes.
 

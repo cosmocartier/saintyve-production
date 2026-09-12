@@ -9,7 +9,7 @@ import { Footer } from "@/components/footer"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Louis Vuitton | Designerdrip",
+  title: "Louis Vuitton | Saint Yve",
   description:
     "Discover Louis Vuitton's iconic luxury pieces. From legendary monogram bags to refined accessories, explore timeless elegance and unparalleled craftsmanship.",
 }

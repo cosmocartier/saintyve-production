@@ -171,7 +171,7 @@ export default function OrderConfirmationPage() {
 
   const supportWhatsAppNumber = "971528079266"
   const whatsappMessage = order
-    ? `Hello Designerdrip, I've just paid for my order ${order.id.slice(0, 8).toUpperCase()}.\nAmount: EUR ${order.total_amount.toFixed(2)}\nReference: ${order.id.slice(0, 8).toUpperCase()}\nI'll send my payment receipt now.`
+    ? `Hello Saint Yve, I've just paid for my order ${order.id.slice(0, 8).toUpperCase()}.\nAmount: EUR ${order.total_amount.toFixed(2)}\nReference: ${order.id.slice(0, 8).toUpperCase()}\nI'll send my payment receipt now.`
     : ""
 
   const handlePaymentCompleted = () => {

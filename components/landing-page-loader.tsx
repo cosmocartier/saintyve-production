@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 
 /**
- * Minimal, premium loading overlay for the Designerdrip landing page.
+ * Minimal, premium loading overlay for the Saint Yve landing page.
  *
  * The wordmark appears instantly at full scale/opacity, then immediately
  * begins a subtle scale-down + blur + fade that completes well under 600ms.
@@ -28,7 +28,7 @@ export function LandingPageLoader() {
         animate={{ opacity: 0, scale: 0.80, filter: "blur(10px)" }}
         transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
       >
-        Designerdrip
+        Saint Yve
       </motion.span>
     </div>
   )

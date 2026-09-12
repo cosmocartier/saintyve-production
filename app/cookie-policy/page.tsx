@@ -4,8 +4,8 @@ import { Footer } from "@/components/footer"
 import { CookiePolicyContent } from "@/components/cookie-policy-content"
 
 export const metadata: Metadata = {
-  title: "Cookie Policy | Designerdrip",
-  description: "How Designerdrip uses cookies and similar technologies to provide, improve, and protect our website.",
+  title: "Cookie Policy | Saint Yve",
+  description: "How Saint Yve uses cookies and similar technologies to provide, improve, and protect our website.",
   robots: {
     index: true,
     follow: true,
@@ -28,7 +28,7 @@ export default function CookiePolicyPage() {
           </h1>
           <p className="text-[13px] font-mono text-gray-500 mb-6">Last updated: January 2025</p>
           <p className="text-[15px] font-mono text-gray-700 leading-relaxed max-w-3xl">
-            This Cookie Policy explains how Designerdrip uses cookies and similar technologies to provide, improve, and
+            This Cookie Policy explains how Saint Yve uses cookies and similar technologies to provide, improve, and
             protect our website.
           </p>
         </div>

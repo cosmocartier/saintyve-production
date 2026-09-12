@@ -78,7 +78,7 @@ export function PrivacyPolicyContent() {
               <h2 className="text-[18px] font-mono font-medium text-black mb-4 tracking-tight">Who we are</h2>
               <div className="space-y-4 text-[14px] font-mono text-gray-700 leading-relaxed">
                 <div className="space-y-1">
-                  <p>Designerdrip</p>
+                  <p>Saint Yve</p>
                   <p>Dubai Silicon Oasis, UAE</p>
                   <p>
                     Website:{" "}
@@ -200,7 +200,7 @@ export function PrivacyPolicyContent() {
               <h2 className="text-[18px] font-mono font-medium text-black mb-4 tracking-tight">Third-party links</h2>
               <div className="space-y-4 text-[14px] font-mono text-gray-700 leading-relaxed">
                 <p>
-                  Our website may contain links to third-party websites. Designerdrip is not responsible for their privacy
+                  Our website may contain links to third-party websites. Saint Yve is not responsible for their privacy
                   practices. We encourage you to review their policies before providing any information.
                 </p>
               </div>

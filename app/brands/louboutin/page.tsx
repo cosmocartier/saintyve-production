@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Louboutin | Designerdrip",
+  title: "Louboutin | Saint Yve",
   description:
     "Discover the iconic Louboutin collection. From legendary red-soled shoes to luxury accessories, explore the epitome of French elegance and glamour.",
 }

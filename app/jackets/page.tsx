@@ -17,11 +17,11 @@ export async function generateMetadata({
   const hasActiveFilters = Boolean(searchParams.brand || searchParams.subcategory || searchParams.color || searchParams.style || searchParams.sort)
 
   return {
-    title: "Designer Jackets (AA+ Quality) | Designerdrip",
+    title: "Designer Jackets (AA+ Quality) | Saint Yve",
     description:
       "Shop premium designer jackets with AA+ craftsmanship — winter staples and statement outerwear from top labels. Fast worldwide shipping. New drops weekly.",
     openGraph: {
-      title: "Designer Jackets (AA+ Quality) | Designerdrip",
+      title: "Designer Jackets (AA+ Quality) | Saint Yve",
       description:
         "Shop premium designer jackets with AA+ craftsmanship — winter staples and statement outerwear from top labels. Fast worldwide shipping. New drops weekly.",
       type: "website",
@@ -29,7 +29,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: "Designer Jackets (AA+ Quality) | Designerdrip",
+      title: "Designer Jackets (AA+ Quality) | Saint Yve",
       description:
         "Shop premium designer jackets with AA+ craftsmanship — winter staples and statement outerwear from top labels. Fast worldwide shipping. New drops weekly.",
     },

@@ -26,7 +26,7 @@ export default function AboutUsPage() {
             className="text-[11px] md:text-[13px] font-normal tracking-[0.25em] uppercase text-[#0A0A0A] mb-6"
             style={{ letterSpacing: "0.25em" }}
           >
-            About Designerdrip
+            About Saint Yve
           </h1>
           <p
             className="text-[32px] md:text-[56px] lg:text-[72px] font-light leading-[1.1] text-[#0A0A0A] max-w-5xl mx-auto"
@@ -46,7 +46,7 @@ export default function AboutUsPage() {
             }`}
           >
             <p className="text-[18px] md:text-[24px] lg:text-[28px] font-light leading-relaxed text-[#0A0A0A] text-center">
-              Designerdrip is a next-generation luxury marketplace built to redefine how people shop high-end replicas.
+              Saint Yve is a next-generation luxury marketplace built to redefine how people shop high-end replicas.
               What started as a small community project has evolved into a premium, global destination for curated
               quality, fast delivery, and a customer experience that feels personal.
             </p>
@@ -104,7 +104,7 @@ export default function AboutUsPage() {
                 Fast, Reliable Fulfillment
               </h3>
               <p className="text-[14px] md:text-[16px] font-light leading-relaxed text-[#0A0A0A]/70">
-                Unlike typical replica stores, Designerdrip operates with real e-commerce infrastructure. Outside peak
+                Unlike typical replica stores, Saint Yve operates with real e-commerce infrastructure. Outside peak
                 seasons, orders move through a 1–3 day processing window. During high-volume periods, we scale through
                 batch fulfillment to keep everything flowing. From order to delivery, you always stay updated.
               </p>
@@ -123,7 +123,7 @@ export default function AboutUsPage() {
                 A Customer-First Experience
               </h3>
               <p className="text-[14px] md:text-[16px] font-light leading-relaxed text-[#0A0A0A]/70">
-                Designerdrip was built on service. We respond fast. We communicate clearly. We take responsibility. And
+                Saint Yve was built on service. We respond fast. We communicate clearly. We take responsibility. And
                 if something goes wrong, we fix it. Our membership system adds another layer of care, offering priority
                 lanes, credits, sourcing help, exclusive rewards, and a premium support experience.
               </p>
@@ -169,7 +169,7 @@ export default function AboutUsPage() {
               Powered by Community
             </h3>
             <p className="text-[18px] md:text-[22px] font-light leading-relaxed text-[#0A0A0A]">
-              Designerdrip didn't grow from ads. It grew from trust. From day-one customers sharing their experience.
+              Saint Yve didn't grow from ads. It grew from trust. From day-one customers sharing their experience.
               From people who love fashion and value a smooth process. This community shaped us — and still drives every
               decision we make.
             </p>
@@ -215,7 +215,7 @@ export default function AboutUsPage() {
               className="text-[36px] md:text-[56px] lg:text-[68px] font-light leading-[1.1] text-[#0A0A0A]"
               style={{ letterSpacing: "-0.02em" }}
             >
-              Designerdrip isn't just a shop.
+              Saint Yve isn't just a shop.
               <br />
               It's the new standard.
             </p>
@@ -245,7 +245,7 @@ export default function AboutUsPage() {
               className="text-[10px] md:text-[11px] font-normal tracking-[0.2em] uppercase text-[#0A0A0A]/50"
               style={{ letterSpacing: "0.2em" }}
             >
-              © 2025 Designerdrip. All Rights Reserved.
+              © 2025 Saint Yve. All Rights Reserved.
             </p>
           </div>
         </div>

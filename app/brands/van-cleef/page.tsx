@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Van Cleef | Designerdrip",
+  title: "Van Cleef | Saint Yve",
   description:
     "Discover Van Cleef & Arpels' legendary jewelry heritage. From the iconic Alhambra collection to exquisite timepieces, explore French haute joaillerie craftsmanship since 1906.",
 }

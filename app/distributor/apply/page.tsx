@@ -205,7 +205,7 @@ export default function ApplyPage() {
           href="/"
           className="text-[11px] font-light tracking-[0.3em] uppercase text-white"
         >
-          DESIGNERDRIP
+          SAINT YVE
         </Link>
         <Link
           href="/"
@@ -250,7 +250,7 @@ export default function ApplyPage() {
             Private Distribution Access
           </h1>
           <p className="text-[13px] md:text-[14px] font-light tracking-[0.08em] text-white/40 max-w-md text-balance">
-            Request entry to the Designerdrip network.
+            Request entry to the Saint Yve network.
           </p>
 
           {/* Barrier layer */}

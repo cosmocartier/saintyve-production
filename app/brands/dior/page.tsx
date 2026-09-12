@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Dior | Designerdrip",
+  title: "Dior | Saint Yve",
   description:
     "Discover the iconic Dior collection. From haute couture to ready-to-wear, explore the legacy of Christian Dior and timeless French luxury.",
 }

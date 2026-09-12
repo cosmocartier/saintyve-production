@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Cartier | Designerdrip",
+  title: "Cartier | Saint Yve",
   description:
     "Discover the legendary Cartier collection. From timeless jewelry to luxury watches, explore the heritage of French craftsmanship and iconic elegance.",
 }

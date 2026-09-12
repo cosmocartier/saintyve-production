@@ -4,8 +4,8 @@ import { Footer } from "@/components/footer"
 import { ShippingPolicyContent } from "@/components/shipping-policy-content"
 
 export const metadata: Metadata = {
-  title: "Shipping Policy | Designerdrip",
-  description: "Worldwide delivery, free shipping over 150€, and 14-day returns. Read the official Designerdrip shipping and logistics policy.",
+  title: "Shipping Policy | Saint Yve",
+  description: "Worldwide delivery, free shipping over 150€, and 14-day returns. Read the official Saint Yve shipping and logistics policy.",
   robots: {
     index: true,
     follow: true,
@@ -27,7 +27,7 @@ export default function ShippingPolicyPage() {
             Shipping & Delivery Policy
           </h1>
           <p className="text-[15px] font-mono text-gray-700 leading-relaxed max-w-3xl">
-            We deliver Designerdrip pieces worldwide with precision, care, and speed.
+            We deliver Saint Yve pieces worldwide with precision, care, and speed.
             Below you'll find everything related to shipping timelines, delivery coverage, returns, and logistics.
           </p>
         </div>
