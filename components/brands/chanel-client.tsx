@@ -1,75 +1,30 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import { ProductCard } from "../products/product-card"
 import type { Product } from "@/lib/types/product"
 import { createBrowserClient } from "@/lib/supabase/client"
-import Image from "next/image"
-import { BrandFilterSortControls } from "@/components/brand-filter-sort-controls"
 import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 
 interface ChanelClientProps {
   initialProducts: Product[]
   totalCount: number
   initialLimit: number
-  currentCategory: string
-  currentSort: string
-  availableCategories: string[]
 }
 
 const LOAD_MORE_DESKTOP = 20
 const LOAD_MORE_MOBILE = 20
 
-export function ChanelClient({
-  initialProducts,
-  totalCount,
-  initialLimit,
-  currentCategory,
-  currentSort,
-  availableCategories,
-}: ChanelClientProps) {
+export function ChanelClient({ initialProducts, totalCount, initialLimit }: ChanelClientProps) {
   const [products, setProducts] = useState<Product[]>(initialProducts)
   const [isLoading, setIsLoading] = useState(false)
   const [currentOffset, setCurrentOffset] = useState(initialLimit)
   const [isRestoring, setIsRestoring] = useState(true)
 
-  const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false)
-  const [sortDropdownOpen, setSortDropdownOpen] = useState(false)
-  const categoryRef = useRef<HTMLDivElement>(null)
-  const sortRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (categoryRef.current && !categoryRef.current.contains(event.target as Node)) {
-        setCategoryDropdownOpen(false)
-      }
-      if (sortRef.current && !sortRef.current.contains(event.target as Node)) {
-        setSortDropdownOpen(false)
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [])
-
   useEffect(() => {
     setProducts(initialProducts)
     setCurrentOffset(initialLimit)
   }, [initialProducts, initialLimit])
-
-  const buildFilterUrl = (type: "category" | "sort", value: string) => {
-    const params = new URLSearchParams()
-
-    if (type === "category") {
-      if (value) params.set("category", value)
-      if (currentSort !== "newest") params.set("sort", currentSort)
-    } else if (type === "sort") {
-      if (currentCategory) params.set("category", currentCategory)
-      if (value && value !== "newest") params.set("sort", value)
-    }
-
-    return `/brands/chanel${params.toString() ? `?${params.toString()}` : ""}`
-  }
 
   useEffect(() => {
     const restoreState = async () => {
@@ -103,6 +58,7 @@ export function ChanelClient({
               `)
               .eq("brand", "Chanel")
               .eq("status", "live")
+              .eq("category", "Bag")
               .order("created_at", { ascending: false })
               .range(0, targetCount - 1)
 
@@ -196,6 +152,7 @@ export function ChanelClient({
         `)
         .eq("brand", "Chanel")
         .eq("status", "live")
+        .eq("category", "Bag")
         .order("created_at", { ascending: false })
         .range(currentOffset, currentOffset + batchSize - 1)
 
@@ -241,44 +198,6 @@ export function ChanelClient({
 
   return (
     <>
-      <section className="w-full max-w-[1920px] mx-auto mb-16">
-        <div className="grid lg:grid-cols-2">
-          {/* Left Column: Text Panel */}
-          <div className="bg-[#2B2B2B] px-8 py-12 lg:px-16 lg:py-16 flex flex-col justify-center">
-            <h1 className="text-white text-4xl lg:text-5xl font-bold tracking-tight uppercase mb-6">CHANEL</h1>
-            <p className="text-white/90 text-base lg:text-lg leading-relaxed max-w-xl">
-              Founded by Gabrielle "Coco" Chanel in 1910, the house of Chanel epitomizes timeless elegance and French
-              sophistication. Renowned for iconic pieces like the Chanel No. 5 perfume, the quilted handbag with chain
-              strap, and the little black dress, Chanel continues to set the standard for luxury fashion. Discover
-              exquisite craftsmanship and enduring style that transcends trends.
-            </p>
-          </div>
-
-          {/* Right Column: Image Panel */}
-          <div className="relative aspect-[4/3] lg:aspect-auto lg:min-h-[400px] bg-gray-100">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <p className="text-gray-400 text-sm uppercase tracking-widest">Image Coming Soon</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div className="max-w-[1920px] mx-auto">
-        <BrandFilterSortControls
-          categories={availableCategories}
-          currentCategory={currentCategory}
-          categoryDropdownOpen={categoryDropdownOpen}
-          setCategoryDropdownOpen={setCategoryDropdownOpen}
-          categoryRef={categoryRef}
-          currentSort={currentSort}
-          sortDropdownOpen={sortDropdownOpen}
-          setSortDropdownOpen={setSortDropdownOpen}
-          sortRef={sortRef}
-          buildFilterUrl={buildFilterUrl}
-          totalCount={totalCount}
-        />
-      </div>
-
       <div className="bg-white py-[0]">
         <div className="w-full max-w-[1920px] mx-auto">
           {products.length === 0 ? (
@@ -287,9 +206,15 @@ export function ChanelClient({
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-0 lg:gap-x-1 gap-y-5 my-2.5">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-[1px] lg:gap-x-1 gap-y-5 my-2.5">
                 {products.map((product) => (
-                  <ProductCard key={product.id} product={product} disableMobileGallery={true} />
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    hidePrice
+                    emphasizedTitle
+                    preloadSecondImage
+                  />
                 ))}
               </div>
 
