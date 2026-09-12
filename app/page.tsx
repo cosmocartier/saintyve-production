@@ -66,7 +66,7 @@ export default function BananaSportswearStorefront() {
         <section className="relative w-full">
           <div className="lg:hidden h-[80vh] w-full relative overflow-hidden">
             <img
-              src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/0c7026eb-7e14-4da7-4026-63fb2d6c9100/w=800"
+              src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/8f948d94-5b2c-401a-ac77-67ca76042700/w=800"
               alt="Designer Fashion Hero"
               className="absolute inset-0 w-full h-full object-cover"
             />
@@ -105,15 +105,6 @@ export default function BananaSportswearStorefront() {
               >
                 Shop New Arrivals
               </Link>
-              <p
-                className="text-[11px] font-normal text-zinc-800"
-                style={{
-                  letterSpacing: "0.12em",
-                  opacity: 0.7,
-                }}
-              >
-                Rated 4,8 / 5 on Trustpilot 
-              </p>
             </div>
           </div>
         </section>
