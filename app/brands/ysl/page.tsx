@@ -7,35 +7,17 @@ import type { Metadata } from "next"
 import { Footer } from "@/components/footer"
 import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 
-const INITIAL_LOAD_LIMIT = 20
-
 export const metadata: Metadata = {
   title: "YSL | Saint Yve",
   description:
     "Discover the iconic YSL collection. Explore Yves Saint Laurent's legacy of timeless elegance, revolutionary designs, and Parisian sophistication.",
 }
 
-export default async function YSLPage({
-  searchParams,
-}: {
-  searchParams: { category?: string; sort?: string }
-}) {
+export default async function YSLPage() {
   const supabase = await createClient()
 
-  // Get available categories for YSL products
-  const { data: availableCategoriesData } = await supabase
-    .from("products")
-    .select("category")
-    .eq("brand", "YSL")
-    .eq("status", "live")
-    .not("category", "is", null)
-
-  const availableCategories = [
-    ...new Set(availableCategoriesData?.map((p: any) => p.category).filter((cat: string | null) => cat !== null) || []),
-  ].sort()
-
-  // Build the main products query
-  let query = supabase
+  // Build the main products query - Bag category only
+  const query = supabase
     .from("products")
     .select(`
       *,
@@ -54,21 +36,8 @@ export default async function YSLPage({
     `)
     .eq("brand", "YSL")
     .eq("status", "live")
-
-  if (searchParams.category) {
-    query = query.eq("category", searchParams.category)
-  }
-
-  const sortParam = searchParams.sort || "newest"
-  if (sortParam === "price-low") {
-    query = query.order("price", { ascending: true })
-  } else if (sortParam === "price-high") {
-    query = query.order("price", { ascending: false })
-  } else {
-    query = query.order("created_at", { ascending: false })
-  }
-
-  query = query.limit(INITIAL_LOAD_LIMIT)
+    .eq("category", "Bag")
+    .order("created_at", { ascending: false })
 
   const { data: productsData, error: productsError } = await query
 
@@ -79,16 +48,18 @@ export default async function YSLPage({
   // Optimize images - convert CF image IDs to URLs
   const optimizedProducts =
     productsData?.map((product: any) => {
-      const sortedImages = product.product_images_cf
-        ?.sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0))
-        .map((img: any) => ({
-          id: img.id,
-          url: buildCfUrl(img.cf_image_id, "grid"),
-          alt_text: img.alt_text,
-          display_order: img.sort_order,
-          color_name: img.color_name,
-          color_hex: img.color_hex,
-        })) || []
+      const sortedImages =
+        product.product_images_cf
+          ?.sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0))
+          .slice(0, 2)
+          .map((img: any) => ({
+            id: img.id,
+            url: buildCfUrl(img.cf_image_id, "grid"),
+            alt_text: img.alt_text,
+            display_order: img.sort_order,
+            color_name: img.color_name,
+            color_hex: img.color_hex,
+          })) || []
 
       return {
         ...product,
@@ -98,17 +69,12 @@ export default async function YSLPage({
     }) || []
 
   // Get total count
-  let countQuery = supabase
+  const { count: totalCount } = await supabase
     .from("products")
     .select("id", { count: "exact", head: true })
     .eq("brand", "YSL")
     .eq("status", "live")
-
-  if (searchParams.category) {
-    countQuery = countQuery.eq("category", searchParams.category)
-  }
-
-  const { count: totalCount } = await countQuery
+    .eq("category", "Bag")
 
   return (
     <div className="min-h-screen bg-white text-black font-mono">
@@ -116,14 +82,7 @@ export default async function YSLPage({
       <StaticNavigation />
 
       <div className="pt-20">
-        <YSLClient
-          initialProducts={optimizedProducts}
-          totalCount={totalCount || 0}
-          initialLimit={INITIAL_LOAD_LIMIT}
-          currentCategory={searchParams.category || ""}
-          currentSort={searchParams.sort || "newest"}
-          availableCategories={availableCategories}
-        />
+        <YSLClient initialProducts={optimizedProducts} />
       </div>
 
       <Footer />
