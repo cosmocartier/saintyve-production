@@ -105,15 +105,6 @@ export default function BananaSportswearStorefront() {
               >
                 Shop New Arrivals
               </Link>
-              <p
-                className="text-[11px] font-normal text-zinc-800"
-                style={{
-                  letterSpacing: "0.12em",
-                  opacity: 0.7,
-                }}
-              >
-                Rated 4,8 / 5 on Trustpilot 
-              </p>
             </div>
           </div>
         </section>
