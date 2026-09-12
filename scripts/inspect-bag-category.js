@@ -6,28 +6,38 @@ async function main() {
   })
   await client.connect()
 
-  // All brand values + live counts
-  const brands = await client.query(
-    `select brand, status, count(*) as n from products group by brand, status order by brand, status`
+  // Columns of products table
+  const cols = await client.query(
+    `select column_name, data_type
+     from information_schema.columns
+     where table_schema = 'public' and table_name = 'products'
+     order by ordinal_position`
   )
-  console.log("All brands x status:")
-  console.table(brands.rows)
+  console.log("products columns:")
+  console.log(cols.rows.map((c) => c.column_name).join(", "))
 
-  // Categories used by Hermes products (any status)
-  for (const brand of ["Hermes", "YSL", "Yves Saint Laurent"]) {
-    const res = await client.query(
-      `select c.name as category, c.slug, p.status, count(*) as n
-       from products p
-       join product_categories pc on pc.product_id = p.id
-       join categories c on c.id = pc.category_id
-       where p.brand = $1
-       group by c.name, c.slug, p.status
-       order by n desc`,
-      [brand]
-    )
-    console.log(`\nBrand ${brand} — all categories (any status):`)
-    console.table(res.rows)
-  }
+  // category-like columns
+  const catCols = cols.rows
+    .map((c) => c.column_name)
+    .filter((n) => /categor/i.test(n))
+  console.log("\ncategory-like columns:", catCols.join(", "))
+
+  // brand + category + status breakdown for the three brands
+  const rows = await client.query(
+    `select brand, category, status, count(*)::int as n
+     from products
+     where lower(brand) in ('chanel','hermes','yves saint laurent','ysl')
+     group by brand, category, status
+     order by brand, category, status`
+  )
+  console.log("\nbrand / category / status breakdown:")
+  console.table(rows.rows)
+
+  // distinct categories
+  const cats = await client.query(
+    `select distinct category from products order by category`
+  )
+  console.log("\nall categories:", cats.rows.map((c) => c.category).join(", "))
 
   await client.end()
 }
