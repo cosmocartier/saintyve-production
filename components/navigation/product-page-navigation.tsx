@@ -139,9 +139,9 @@ export function ProductPageNavigation() {
 
         <Link href="/" className="absolute left-1/2 -translate-x-1/2 z-10">
           <img
-            src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/7820388d-bd73-4dd4-4349-c6ba093b5600/w=800"
+            src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/3f1e744f-a4ff-401e-2c88-7e0fb1661200/w=800"
             alt="SAINT YVE"
-            className="h-3 w-auto cursor-pointer hover:opacity-80 transition-opacity"
+            className="h-8 w-auto cursor-pointer hover:opacity-80 transition-opacity"
           />
         </Link>
 
