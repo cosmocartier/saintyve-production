@@ -51,16 +51,18 @@ export default async function ChanelPage() {
   // Optimize images - convert CF image IDs to URLs
   const optimizedProducts =
     productsData?.map((product: any) => {
-      const sortedImages = product.product_images_cf
-        ?.sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0))
-        .map((img: any) => ({
-          id: img.id,
-          url: buildCfUrl(img.cf_image_id, "grid"),
-          alt_text: img.alt_text,
-          display_order: img.sort_order,
-          color_name: img.color_name,
-          color_hex: img.color_hex,
-        })) || []
+      const sortedImages =
+        product.product_images_cf
+          ?.sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0))
+          .slice(0, 2)
+          .map((img: any) => ({
+            id: img.id,
+            url: buildCfUrl(img.cf_image_id, "grid"),
+            alt_text: img.alt_text,
+            display_order: img.sort_order,
+            color_name: img.color_name,
+            color_hex: img.color_hex,
+          })) || []
 
       return {
         ...product,

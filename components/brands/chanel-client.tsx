@@ -12,9 +12,6 @@ interface ChanelClientProps {
   initialLimit: number
 }
 
-const LOAD_MORE_DESKTOP = 20
-const LOAD_MORE_MOBILE = 20
-
 export function ChanelClient({ initialProducts, totalCount, initialLimit }: ChanelClientProps) {
   const [products, setProducts] = useState<Product[]>(initialProducts)
   const [isLoading, setIsLoading] = useState(false)
@@ -64,16 +61,18 @@ export function ChanelClient({ initialProducts, totalCount, initialLimit }: Chan
 
             if (!error && restoredProducts && restoredProducts.length > 0) {
               const optimizedProducts = restoredProducts.map((product: any) => {
-                const sortedImages = product.product_images_cf
-                  ?.sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0))
-                  .map((img: any) => ({
-                    id: img.id,
-                    url: buildCfUrl(img.cf_image_id, "grid"),
-                    alt_text: img.alt_text,
-                    display_order: img.sort_order,
-                    color_name: img.color_name,
-                    color_hex: img.color_hex,
-                  })) || []
+                const sortedImages =
+                  product.product_images_cf
+                    ?.sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0))
+                    .slice(0, 2)
+                    .map((img: any) => ({
+                      id: img.id,
+                      url: buildCfUrl(img.cf_image_id, "grid"),
+                      alt_text: img.alt_text,
+                      display_order: img.sort_order,
+                      color_name: img.color_name,
+                      color_hex: img.color_hex,
+                    })) || []
 
                 return {
                   ...product,
@@ -130,9 +129,6 @@ export function ChanelClient({ initialProducts, totalCount, initialLimit }: Chan
     try {
       const supabase = createBrowserClient()
 
-      const isMobile = window.innerWidth < 1024
-      const batchSize = isMobile ? LOAD_MORE_MOBILE : LOAD_MORE_DESKTOP
-
       const { data: newProducts, error } = await supabase
         .from("products")
         .select(`
@@ -154,7 +150,7 @@ export function ChanelClient({ initialProducts, totalCount, initialLimit }: Chan
         .eq("status", "live")
         .eq("category", "Bag")
         .order("created_at", { ascending: false })
-        .range(currentOffset, currentOffset + batchSize - 1)
+        .range(currentOffset, totalCount - 1)
 
       if (error) {
         console.error("[v0] Error loading more Chanel products:", error)
@@ -163,16 +159,18 @@ export function ChanelClient({ initialProducts, totalCount, initialLimit }: Chan
 
       if (newProducts && newProducts.length > 0) {
         const optimizedProducts = newProducts.map((product: any) => {
-          const sortedImages = product.product_images_cf
-            ?.sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0))
-            .map((img: any) => ({
-              id: img.id,
-              url: buildCfUrl(img.cf_image_id, "grid"),
-              alt_text: img.alt_text,
-              display_order: img.sort_order,
-              color_name: img.color_name,
-              color_hex: img.color_hex,
-            })) || []
+          const sortedImages =
+            product.product_images_cf
+              ?.sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0))
+              .slice(0, 2)
+              .map((img: any) => ({
+                id: img.id,
+                url: buildCfUrl(img.cf_image_id, "grid"),
+                alt_text: img.alt_text,
+                display_order: img.sort_order,
+                color_name: img.color_name,
+                color_hex: img.color_hex,
+              })) || []
 
           return {
             ...product,

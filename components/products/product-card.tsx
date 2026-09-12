@@ -8,7 +8,6 @@ import { useCart } from "@/contexts/cart-context"
 import { useWishlist } from "@/contexts/wishlist-context"
 import { usePriceMode } from "@/contexts/price-mode-context"
 import type { Product } from "@/lib/types/product"
-import { ChevronLeft, ChevronRight } from "lucide-react"
 
 interface ProductCardProps {
   product: Product & {
@@ -63,16 +62,6 @@ export function ProductCard({
   const [isHovering, setIsHovering] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
   const [showFilled, setShowFilled] = useState(false)
-
-  useEffect(() => {
-    console.log("[v0] ProductCard Debug:", {
-      slug: product.slug,
-      product_images_length: product.product_images?.length,
-      allImages_length: allImages.length,
-      hasSecondImage,
-      allImages,
-    })
-  }, [product.slug])
 
   const hasVariants = product.product_variants && product.product_variants.length > 0
 
@@ -177,22 +166,6 @@ export function ProductCard({
         image: allImages[0],
         slug: product.slug,
       })
-    }
-  }
-
-  const goToPrevious = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    if (currentImageIndex > 0) {
-      setCurrentImageIndex((prev) => prev - 1)
-    }
-  }
-
-  const goToNext = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    if (currentImageIndex < totalImages - 1) {
-      setCurrentImageIndex((prev) => prev + 1)
     }
   }
 
@@ -391,29 +364,6 @@ export function ProductCard({
           </div>
         )}
 
-        {!disableMobileGallery && totalImages > 1 && (
-          <>
-            <button
-              onClick={goToPrevious}
-              className={`lg:hidden absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center transition-all duration-300 z-10 ${
-                currentImageIndex === 0 ? "opacity-0 pointer-events-none" : "opacity-100"
-              }`}
-              aria-label="Previous image"
-            >
-              <ChevronLeft className="w-4 h-4 text-black" />
-            </button>
-
-            <button
-              onClick={goToNext}
-              className={`lg:hidden absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center transition-all duration-300 z-10 ${
-                currentImageIndex === totalImages - 1 ? "opacity-0 pointer-events-none" : "opacity-100"
-              }`}
-              aria-label="Next image"
-            >
-              <ChevronRight className="w-4 h-4 text-black" />
-            </button>
-          </>
-        )}
       </div>
       <div className="bg-white pt-4 pb-6 px-2">
         <h3
