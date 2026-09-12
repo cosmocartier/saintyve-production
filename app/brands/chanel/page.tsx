@@ -7,8 +7,6 @@ import type { Metadata } from "next"
 import { Footer } from "@/components/footer"
 import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 
-const INITIAL_LOAD_LIMIT = 20
-
 export const metadata: Metadata = {
   title: "Chanel | Saint Yve",
   description:
@@ -40,7 +38,6 @@ export default async function ChanelPage() {
     .eq("status", "live")
     .eq("category", "Bag")
     .order("created_at", { ascending: false })
-    .limit(INITIAL_LOAD_LIMIT)
 
   const { data: productsData, error: productsError } = await query
 
@@ -85,11 +82,7 @@ export default async function ChanelPage() {
       <StaticNavigation />
 
       <div className="pt-20">
-        <ChanelClient
-          initialProducts={optimizedProducts}
-          totalCount={totalCount || 0}
-          initialLimit={INITIAL_LOAD_LIMIT}
-        />
+        <ChanelClient initialProducts={optimizedProducts} />
       </div>
 
       <Footer />
