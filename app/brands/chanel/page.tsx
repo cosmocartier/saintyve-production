@@ -15,27 +15,11 @@ export const metadata: Metadata = {
     "Discover Chanel's timeless luxury fashion and accessories. From iconic handbags to elegant ready-to-wear, explore French sophistication and unparalleled craftsmanship.",
 }
 
-export default async function ChanelPage({
-  searchParams,
-}: {
-  searchParams: { category?: string; sort?: string }
-}) {
+export default async function ChanelPage() {
   const supabase = await createClient()
 
-  // Get available categories for Chanel products
-  const { data: availableCategoriesData } = await supabase
-    .from("products")
-    .select("category")
-    .eq("brand", "Chanel")
-    .eq("status", "live")
-    .not("category", "is", null)
-
-  const availableCategories = [
-    ...new Set(availableCategoriesData?.map((p: any) => p.category).filter((cat: string | null) => cat !== null) || []),
-  ].sort()
-
-  // Build the main products query
-  let query = supabase
+  // Build the main products query - Bag category only
+  const query = supabase
     .from("products")
     .select(`
       *,
@@ -54,21 +38,9 @@ export default async function ChanelPage({
     `)
     .eq("brand", "Chanel")
     .eq("status", "live")
-
-  if (searchParams.category) {
-    query = query.eq("category", searchParams.category)
-  }
-
-  const sortParam = searchParams.sort || "newest"
-  if (sortParam === "price-low") {
-    query = query.order("price", { ascending: true })
-  } else if (sortParam === "price-high") {
-    query = query.order("price", { ascending: false })
-  } else {
-    query = query.order("created_at", { ascending: false })
-  }
-
-  query = query.limit(INITIAL_LOAD_LIMIT)
+    .eq("category", "Bag")
+    .order("created_at", { ascending: false })
+    .limit(INITIAL_LOAD_LIMIT)
 
   const { data: productsData, error: productsError } = await query
 
@@ -98,17 +70,12 @@ export default async function ChanelPage({
     }) || []
 
   // Get total count
-  let countQuery = supabase
+  const { count: totalCount } = await supabase
     .from("products")
     .select("id", { count: "exact", head: true })
     .eq("brand", "Chanel")
     .eq("status", "live")
-
-  if (searchParams.category) {
-    countQuery = countQuery.eq("category", searchParams.category)
-  }
-
-  const { count: totalCount } = await countQuery
+    .eq("category", "Bag")
 
   return (
     <div className="min-h-screen bg-white text-black font-mono">
@@ -120,9 +87,6 @@ export default async function ChanelPage({
           initialProducts={optimizedProducts}
           totalCount={totalCount || 0}
           initialLimit={INITIAL_LOAD_LIMIT}
-          currentCategory={searchParams.category || ""}
-          currentSort={searchParams.sort || "newest"}
-          availableCategories={availableCategories}
         />
       </div>
 

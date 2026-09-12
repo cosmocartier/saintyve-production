@@ -36,9 +36,19 @@ interface ProductCardProps {
   }
   disableMobileGallery?: boolean
   disableHoverEffect?: boolean
+  hidePrice?: boolean
+  emphasizedTitle?: boolean
+  preloadSecondImage?: boolean
 }
 
-export function ProductCard({ product, disableMobileGallery = false, disableHoverEffect = false }: ProductCardProps) {
+export function ProductCard({
+  product,
+  disableMobileGallery = false,
+  disableHoverEffect = false,
+  hidePrice = false,
+  emphasizedTitle = false,
+  preloadSecondImage = false,
+}: ProductCardProps) {
   const { addItem } = useCart()
   const { toggleLike, isLiked } = useWishlist()
   const { useRetailPrice } = usePriceMode()
@@ -286,7 +296,8 @@ export function ProductCard({ product, disableMobileGallery = false, disableHove
                     src={imageUrl || "/placeholder.svg"}
                     alt={`${product.name} - Image ${index + 1}`}
                     className="w-full h-full object-cover pointer-events-none"
-                    loading="lazy"
+                    loading={preloadSecondImage && index === 1 ? "eager" : "lazy"}
+                    fetchPriority={preloadSecondImage && index === 1 ? "high" : undefined}
                     decoding="async"
                     draggable="false"
                   />
@@ -314,7 +325,8 @@ export function ProductCard({ product, disableMobileGallery = false, disableHove
               src={allImages[1] || "/placeholder.svg"}
               alt={`${product.name} - Preview`}
               className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 ease-in-out pointer-events-none lg:group-hover:opacity-100"
-              loading="lazy"
+              loading={preloadSecondImage ? "eager" : "lazy"}
+              fetchPriority={preloadSecondImage ? "high" : undefined}
               decoding="async"
               draggable="false"
             />
@@ -404,14 +416,22 @@ export function ProductCard({ product, disableMobileGallery = false, disableHove
         )}
       </div>
       <div className="bg-white pt-4 pb-6 px-2">
-        <h3 className="text-[14px] font-light text-black truncate tracking-tight">
+        <h3
+          className={
+            emphasizedTitle
+              ? "text-[12px] font-bold uppercase text-black truncate tracking-tight"
+              : "text-[14px] font-light text-black truncate tracking-tight"
+          }
+        >
           {product.brand && product.model && product.color
             ? `${product.brand} ${product.model} ${product.color}`
             : product.name}
         </h3>
-        <div className="mt-1.5">
-          <p className="text-[14px] font-normal text-[#777] text-left">EUR {displayPrice.toFixed(2)}</p>
-        </div>
+        {!hidePrice && (
+          <div className="mt-1.5">
+            <p className="text-[14px] font-normal text-[#777] text-left">EUR {displayPrice.toFixed(2)}</p>
+          </div>
+        )}
       </div>
     </Link>
   )
