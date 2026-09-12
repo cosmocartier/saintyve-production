@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Chanel | Designerdrip",
+  title: "Chanel | Saint Yve",
   description:
     "Discover Chanel's timeless luxury fashion and accessories. From iconic handbags to elegant ready-to-wear, explore French sophistication and unparalleled craftsmanship.",
 }

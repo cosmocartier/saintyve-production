@@ -598,7 +598,7 @@ export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
 
                   {/* Copyright */}
                   <div className="text-white/40 text-[10px] mt-2">
-                    © 2026 Designerdrip
+                    © 2026 Saint Yve
                   </div>
                 </div>
               </div>

@@ -52,10 +52,10 @@ const ttCommonsProExpanded = localFont({
 })
 
 export const metadata: Metadata = {
-  title: "DESIGNERDRIP® | Designer Sneakers, Fashion & Accessories",
+  title: "SAINT YVE® | Designer Sneakers, Fashion & Accessories",
   description: "Shop designer sneakers, fashion, watches and accessories from a carefully selected catalog. Worldwide shipping available.",
-  generator: "Designerdrip",
-  applicationName: "Designerdrip",
+  generator: "Saint Yve",
+  applicationName: "Saint Yve",
   keywords: ["designer fashion", "luxury clothing", "premium apparel", "designer bags", "designer shoes"],
   icons: {
     icon: "/",

@@ -77,7 +77,7 @@ const AUTHENTICITY_ITEMS: AccordionItem[] = [
   {
     question: "Packaging & accessories",
     answer:
-      "Where available, items are shipped with their original box, dust bag, care booklet, and receipt. Your order is then enclosed in our own signature Designerdrip packaging to ensure it arrives in perfect condition.",
+      "Where available, items are shipped with their original box, dust bag, care booklet, and receipt. Your order is then enclosed in our own signature Saint Yve packaging to ensure it arrives in perfect condition.",
   },
 ]
 

@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { requireDistributor } from "@/lib/admin-auth"
 
 export const metadata: Metadata = {
-  title: "DESIGNERDRIP® | Official Distribution Program - Products",
+  title: "SAINT YVE® | Official Distribution Program - Products",
 }
 import { createClient } from "@/lib/supabase/server"
 import { DistributorSidebar } from "@/components/admin/distributor-sidebar"

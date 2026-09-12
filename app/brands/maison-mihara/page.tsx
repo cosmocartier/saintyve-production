@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Maison Mihara | Designerdrip",
+  title: "Maison Mihara | Saint Yve",
   description:
     "Discover the avant-garde Maison Mihara Yasuhiro collection. Explore innovative Japanese footwear design, deconstructed aesthetics, and boundary-pushing contemporary fashion.",
 }

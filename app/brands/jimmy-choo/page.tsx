@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Jimmy Choo | Designerdrip",
+  title: "Jimmy Choo | Saint Yve",
   description:
     "Discover the luxurious Jimmy Choo collection. From glamorous heels to statement accessories, explore the epitome of modern luxury and red carpet elegance.",
 }

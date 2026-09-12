@@ -9,8 +9,8 @@ import Link from "next/link"
 import { POSITIONS } from "@/lib/careers/positions"
 
 export const metadata: Metadata = {
-  title: "Careers | Designerdrip",
-  description: "Join Designerdrip — operations, support, product, growth, and vendor partnerships.",
+  title: "Careers | Saint Yve",
+  description: "Join Saint Yve — operations, support, product, growth, and vendor partnerships.",
 }
 
 export default function CareersPage() {

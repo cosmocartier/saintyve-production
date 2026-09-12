@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Gucci | Designerdrip",
+  title: "Gucci | Saint Yve",
   description:
     "Discover the iconic Gucci collection. From the double G logo to the signature web stripe, explore Italian luxury and timeless style that has defined fashion for over a century.",
 }

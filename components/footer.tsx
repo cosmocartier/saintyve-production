@@ -216,7 +216,7 @@ export function Footer() {
                 Cookie Policy
               </a>
             </div>
-            <p className="text-[11px] font-light text-white/60">© 2025 DESIGNERDRIP, INC. ALL RIGHTS RESERVED.</p>
+            <p className="text-[11px] font-light text-white/60">© 2025 SAINT YVE, INC. ALL RIGHTS RESERVED.</p>
           </div>
         </div>
       </div>

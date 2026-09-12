@@ -17,21 +17,21 @@ export async function generateMetadata({
   const hasActiveFilters = Boolean(searchParams.brand || searchParams.sort || page > 1)
 
   return {
-    title: "Best Sellers | Designerdrip",
+    title: "Best Sellers | Saint Yve",
     description:
-      "Shop the most popular items at Designerdrip — our best-selling sneakers, bags, jackets, watches, jewelry and accessories loved by our community.",
+      "Shop the most popular items at Saint Yve — our best-selling sneakers, bags, jackets, watches, jewelry and accessories loved by our community.",
     openGraph: {
-      title: "Best Sellers | Designerdrip",
+      title: "Best Sellers | Saint Yve",
       description:
-        "Shop the most popular items at Designerdrip — our best-selling sneakers, bags, jackets, watches, jewelry and accessories loved by our community.",
+        "Shop the most popular items at Saint Yve — our best-selling sneakers, bags, jackets, watches, jewelry and accessories loved by our community.",
       type: "website",
       url: "https://designerdrip.com/best-sellers",
     },
     twitter: {
       card: "summary_large_image",
-      title: "Best Sellers | Designerdrip",
+      title: "Best Sellers | Saint Yve",
       description:
-        "Shop the most popular items at Designerdrip — our best-selling sneakers, bags, jackets, watches, jewelry and accessories loved by our community.",
+        "Shop the most popular items at Saint Yve — our best-selling sneakers, bags, jackets, watches, jewelry and accessories loved by our community.",
     },
     alternates: {
       canonical: "https://designerdrip.com/best-sellers",

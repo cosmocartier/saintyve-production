@@ -14,7 +14,7 @@ export const LOYALTY_TIERS: Record<
 > = {
   bronze: {
     label: "Bronze Edition Membership Card",
-    description: "Your journey has just begun. Enjoy essential access to core Designerdrip benefits.",
+    description: "Your journey has just begun. Enjoy essential access to core Saint Yve benefits.",
     imageSrc: "/images/bronze-20edition.png",
     accentColor: "#CD7F32",
     price: "Free",
@@ -50,7 +50,7 @@ export const LOYALTY_TIERS: Record<
   },
   black: {
     label: "Black Edition Membership Card",
-    description: "The pinnacle of luxury. Ultra-exclusive access reserved for Designerdrip elite.",
+    description: "The pinnacle of luxury. Ultra-exclusive access reserved for Saint Yve elite.",
     imageSrc: "/images/black.png",
     accentColor: "#000000",
     price: "999 €",

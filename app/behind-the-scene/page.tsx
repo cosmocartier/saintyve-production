@@ -6,7 +6,7 @@ import { Play } from "lucide-react"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "Behind the Scenes | Designerdrip",
+  title: "Behind the Scenes | Saint Yve",
   description:
     "A closer look at the craft, details, and process behind our pieces. Real production footage, quality checks, and finishing details.",
 }

@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Lanvin | Designerdrip",
+  title: "Lanvin | Saint Yve",
   description:
     "Discover the Lanvin collection. From timeless elegance to modern sophistication, explore the oldest French fashion house still in operation.",
 }

@@ -185,7 +185,7 @@ export default function DistributorLoginPage() {
               href="/"
               className="font-sans text-[11px] font-medium uppercase tracking-[0.28em] text-white/90 transition-colors hover:text-white"
             >
-              DESIGNERDRIP
+              SAINT YVE
             </Link>
             <Link
               href="/"

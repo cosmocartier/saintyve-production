@@ -118,7 +118,7 @@ export function CookiePolicyContent() {
             <section id="how-we-use" className="scroll-mt-24">
               <h2 className="text-[18px] font-mono font-medium text-black mb-4 tracking-tight">How We Use Cookies</h2>
               <div className="space-y-4 text-[14px] font-mono text-gray-700 leading-relaxed">
-                <p>Designerdrip uses cookies to:</p>
+                <p>Saint Yve uses cookies to:</p>
                 <ul className="list-disc list-inside space-y-2 pl-4">
                   <li>Enable core website functionality, such as login, checkout, and account management</li>
                   <li>Maintain security and prevent fraud or unauthorized access</li>
@@ -140,7 +140,7 @@ export function CookiePolicyContent() {
               </h2>
               <div className="space-y-4 text-[14px] font-mono text-gray-700 leading-relaxed">
                 <p>
-                  Designerdrip uses different types of cookies, each serving a specific purpose. The table below
+                  Saint Yve uses different types of cookies, each serving a specific purpose. The table below
                   provides an overview:
                 </p>
                 <Card className="overflow-hidden border-gray-200">
@@ -174,7 +174,7 @@ export function CookiePolicyContent() {
               <h2 className="text-[18px] font-mono font-medium text-black mb-4 tracking-tight">Third-Party Cookies</h2>
               <div className="space-y-4 text-[14px] font-mono text-gray-700 leading-relaxed">
                 <p>
-                  Some cookies on Designerdrip are set by third-party services that we use to enhance your experience.
+                  Some cookies on Saint Yve are set by third-party services that we use to enhance your experience.
                   These may include:
                 </p>
                 <ul className="list-disc list-inside space-y-2 pl-4">
@@ -199,7 +199,7 @@ export function CookiePolicyContent() {
                   These third-party providers have their own privacy policies and cookie practices. We recommend
                   reviewing their policies to understand how they collect and use your data.
                 </p>
-                <p>Designerdrip does not control third-party cookies and is not responsible for their usage.</p>
+                <p>Saint Yve does not control third-party cookies and is not responsible for their usage.</p>
               </div>
             </section>
 
@@ -246,7 +246,7 @@ export function CookiePolicyContent() {
               <h2 className="text-[18px] font-mono font-medium text-black mb-4 tracking-tight">Consent</h2>
               <div className="space-y-4 text-[14px] font-mono text-gray-700 leading-relaxed">
                 <p>
-                  When you first visit Designerdrip, you may see a consent banner informing you about our use of
+                  When you first visit Saint Yve, you may see a consent banner informing you about our use of
                   cookies. By clicking "Accept" or continuing to use our site, you consent to our use of cookies as
                   described in this policy.
                 </p>

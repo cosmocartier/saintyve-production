@@ -65,7 +65,7 @@ export function CartSidebar() {
     const totalItems = cartSnapshot.reduce((total, item) => total + item.quantity, 0)
     const totalAmount = getSubtotal()
 
-    const lines: string[] = ["Hey DesignerDrip Team!", "", "I'd like to place the following order:", ""]
+    const lines: string[] = ["Hey Saint Yve Team!", "", "I'd like to place the following order:", ""]
 
     cartSnapshot.forEach((item) => {
       lines.push(`• ${item.quantity}x ${item.name}`)

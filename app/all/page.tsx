@@ -17,21 +17,21 @@ export async function generateMetadata({
   const hasActiveFilters = Boolean(searchParams.brand || searchParams.subcategory || searchParams.color || searchParams.style || searchParams.sort || searchParams.search)
 
   return {
-    title: "All Items | Designerdrip",
+    title: "All Items | Saint Yve",
     description:
-      "Browse all Designerdrip items — sneakers, bags, watches, jackets, jewelry and accessories. New drops weekly. Fast worldwide shipping.",
+      "Browse all Saint Yve items — sneakers, bags, watches, jackets, jewelry and accessories. New drops weekly. Fast worldwide shipping.",
     openGraph: {
-      title: "All Items | Designerdrip",
+      title: "All Items | Saint Yve",
       description:
-        "Browse all Designerdrip items — sneakers, bags, watches, jackets, jewelry and accessories. New drops weekly. Fast worldwide shipping.",
+        "Browse all Saint Yve items — sneakers, bags, watches, jackets, jewelry and accessories. New drops weekly. Fast worldwide shipping.",
       type: "website",
       url: "https://designerdrip.com/all",
     },
     twitter: {
       card: "summary_large_image",
-      title: "All Items | Designerdrip",
+      title: "All Items | Saint Yve",
       description:
-        "Browse all Designerdrip items — sneakers, bags, watches, jackets, jewelry and accessories. New drops weekly. Fast worldwide shipping.",
+        "Browse all Saint Yve items — sneakers, bags, watches, jackets, jewelry and accessories. New drops weekly. Fast worldwide shipping.",
     },
     alternates: {
       canonical: "https://designerdrip.com/all",

@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Air Jordan | Designerdrip",
+  title: "Air Jordan | Saint Yve",
   description:
     "Discover the iconic Air Jordan collection. From legendary sneakers to performance apparel, explore the legacy of Michael Jordan and cutting-edge athletic style.",
 }

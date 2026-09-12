@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Nike | Designerdrip",
+  title: "Nike | Saint Yve",
   description:
     "Discover the iconic Nike collection. From legendary sneakers to performance apparel, explore the brand that revolutionized athletic footwear and sportswear worldwide.",
 }

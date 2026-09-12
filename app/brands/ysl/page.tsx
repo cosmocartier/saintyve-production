@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "YSL | Designerdrip",
+  title: "YSL | Saint Yve",
   description:
     "Discover the iconic YSL collection. Explore Yves Saint Laurent's legacy of timeless elegance, revolutionary designs, and Parisian sophistication.",
 }

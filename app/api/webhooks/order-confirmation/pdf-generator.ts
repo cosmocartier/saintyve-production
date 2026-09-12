@@ -37,7 +37,7 @@ export async function generateInvoicePDF(order: any, orderItems: any[]): Promise
   let yPosition = height - 60
 
   // TOP HEADER - Left: Logo, Right: Company Details
-  page.drawText("DESIGNERDRIP", {
+  page.drawText("SAINT YVE", {
     x: margin,
     y: yPosition,
     size: 36,
@@ -46,7 +46,7 @@ export async function generateInvoicePDF(order: any, orderItems: any[]): Promise
   })
 
   const companyDetails = [
-    "DESIGNERDRIP",
+    "SAINT YVE",
     "Premium Resale & Authentication Studio",
     "Dubai · Germany · Worldwide Shipping",
     "support@designerdrip.store",
@@ -371,7 +371,7 @@ export async function generateInvoicePDF(order: any, orderItems: any[]): Promise
     color: rgb(0, 0, 0),
   })
 
-  const guaranteeText = "All products sold by Designerdrip undergo multi-stage authentication"
+  const guaranteeText = "All products sold by Saint Yve undergo multi-stage authentication"
   const guaranteeText2 = "and quality verification."
 
   page.drawText(guaranteeText, {
@@ -391,7 +391,7 @@ export async function generateInvoicePDF(order: any, orderItems: any[]): Promise
   })
 
   const footerLines = [
-    "Designerdrip® — Premium Resale & Authentication Studio",
+    "Saint Yve® — Premium Resale & Authentication Studio",
     "Dubai · Germany · Worldwide Shipping",
     "www.designerdrip.store",
   ]

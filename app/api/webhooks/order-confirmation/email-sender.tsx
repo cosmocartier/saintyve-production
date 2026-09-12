@@ -169,7 +169,7 @@ export async function sendOrderConfirmationEmail({
                   color: #111111;
                 "
               >
-                DESIGNERDRIP
+                SAINT YVE
               </div>
             </td>
           </tr>
@@ -836,7 +836,7 @@ export async function sendOrderConfirmationEmail({
                   color: #aaaaaa;
                 "
               >
-                © ${new Date().getFullYear()} DESIGNERDRIP.
+                © ${new Date().getFullYear()} SAINT YVE.
                 All rights reserved.
               </p>
 
@@ -859,7 +859,7 @@ export async function sendOrderConfirmationEmail({
         Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "DESIGNERDRIP <payments@designerdrip.store>",
+        from: "SAINT YVE <payments@designerdrip.store>",
         to: order.customer_email,
         subject: `Thank you for your order • #${orderIdShort}`,
         html: emailHtml,

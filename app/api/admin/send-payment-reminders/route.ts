@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
         }
 
         await resend.emails.send({
-          from: "Designerdrip <orders@designerdrip.store>",
+          from: "Saint Yve <orders@designerdrip.store>",
           to: customerEmail,
           subject: "Payment Reminder - Complete Your Order",
           html: `
@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
             <!-- Brand -->
             <tr>
               <td style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#999;padding-bottom:8px;">
-                DESIGNERDRIP
+                SAINT YVE
               </td>
             </tr>
 
@@ -93,7 +93,7 @@ export async function POST(req: NextRequest) {
             </tr>
             <tr>
               <td style="padding-top:4px;font-size:14px;line-height:1.7;color:#333;">
-                you started an order on Designerdrip but we haven't received the payment yet.
+                you started an order on Saint Yve but we haven't received the payment yet.
                 Once the payment is completed, we'll lock in your pieces and start processing your order.
               </td>
             </tr>
@@ -151,7 +151,7 @@ export async function POST(req: NextRequest) {
             <!-- Footer spacing -->
             <tr>
               <td style="padding-top:24px;font-size:11px;color:#aaa;">
-                © ${new Date().getFullYear()} Designerdrip. All rights reserved.
+                © ${new Date().getFullYear()} Saint Yve. All rights reserved.
               </td>
             </tr>
           </table>

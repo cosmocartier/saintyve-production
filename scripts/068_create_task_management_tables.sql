@@ -1,4 +1,4 @@
--- Create task management tables for Designerdrip admin dashboard
+-- Create task management tables for Saint Yve admin dashboard
 -- Migration: 068_create_task_management_tables.sql
 
 -- 1. PROJECTS TABLE

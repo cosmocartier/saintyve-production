@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Moncler | Designerdrip",
+  title: "Moncler | Saint Yve",
   description:
     "Discover the luxury Moncler collection. From iconic down jackets to sophisticated apparel, explore the pinnacle of alpine elegance and technical innovation.",
 }

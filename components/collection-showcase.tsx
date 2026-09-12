@@ -10,6 +10,7 @@ interface CollectionShowcaseProps {
   title: string
   collection?: string
   brand?: string
+  category?: string
   parentProduct?: string
   limit?: number
   seeMoreLink?: string
@@ -21,6 +22,7 @@ export function CollectionShowcase({
   title,
   collection,
   brand,
+  category,
   parentProduct,
   limit = 4,
   seeMoreLink,
@@ -30,7 +32,7 @@ export function CollectionShowcase({
   const apiUrl = parentProduct
     ? `/api/collection?parentProduct=${encodeURIComponent(parentProduct)}&limit=${limit}`
     : brand
-      ? `/api/collection?brand=${encodeURIComponent(brand)}&limit=${limit}`
+      ? `/api/collection?brand=${encodeURIComponent(brand)}${category ? `&category=${encodeURIComponent(category)}` : ""}&limit=${limit}`
       : `/api/collection?collection=${collection}&limit=${limit}`
 
   const { data, isLoading } = useSWR<{ products: Product[] }>(apiUrl, fetcher)

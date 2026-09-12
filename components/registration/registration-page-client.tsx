@@ -34,7 +34,7 @@ export function RegistrationPageClient({ token, email, isInvalid, isUsed, isExpi
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center px-4">
         <div className="text-center max-w-[360px] animate-in fade-in duration-700">
           <p className="text-[15px] text-white font-sans font-normal leading-relaxed tracking-wide mb-4">
-            Thank you for joining Designerdrip.
+            Thank you for joining Saint Yve.
           </p>
           <p className="text-[13px] text-[#666360] font-sans leading-relaxed tracking-wide">
             We are preparing your account. Access is typically granted within 24 hours — you will receive a confirmation
@@ -55,7 +55,7 @@ export function RegistrationPageClient({ token, email, isInvalid, isUsed, isExpi
             Private Access
           </p>
           <h1 className="text-[22px] font-normal tracking-[0.08em] text-white font-sans uppercase">
-            Designerdrip
+            Saint Yve
           </h1>
         </div>
 

@@ -5,9 +5,9 @@ import { ContactForm } from "@/components/contact-form"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "Contact Us | Designerdrip",
+  title: "Contact Us | Saint Yve",
   description:
-    "Need help with an order, sizing, or membership? Reach out to the Designerdrip support team and we'll respond as quickly as possible.",
+    "Need help with an order, sizing, or membership? Reach out to the Saint Yve support team and we'll respond as quickly as possible.",
 }
 
 export default function ContactUsPage() {

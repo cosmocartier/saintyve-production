@@ -18,12 +18,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!post) {
     return {
-      title: "Post Not Found | Designerdrip",
+      title: "Post Not Found | Saint Yve",
     }
   }
 
   return {
-    title: `${post.title} | Designerdrip Journal`,
+    title: `${post.title} | Saint Yve Journal`,
     description: post.excerpt,
   }
 }

@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Miu Miu | Designerdrip",
+  title: "Miu Miu | Saint Yve",
   description:
     "Discover the playful elegance of Miu Miu. From bold accessories to daring fashion, explore Prada's rebellious younger sister brand and contemporary Italian luxury.",
 }

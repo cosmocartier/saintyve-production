@@ -123,17 +123,27 @@ export default function BananaSportswearStorefront() {
         </div>
 
         <CollectionShowcase
-          title="New Arrivals"
-          collection="new-arrivals"
+          title="Chanel"
+          brand="Chanel"
+          category="Bag"
           limit={4}
-          seeMoreLink="/new-arrivals"
+          seeMoreLink="/brands/chanel"
         />
 
         <CollectionShowcase
-          title="Chanel"
-          brand="Chanel"
+          title="Hermes"
+          brand="Hermes"
+          category="Bag"
           limit={4}
-          seeMoreLink="/brands/chanel"
+          seeMoreLink="/brands/hermes"
+        />
+
+        <CollectionShowcase
+          title="Yves Saint Laurent"
+          brand="YSL"
+          category="Bag"
+          limit={4}
+          seeMoreLink="/brands/ysl"
         />
 
         {/* CategorySwitcherSection temporarily hidden from the landing page.

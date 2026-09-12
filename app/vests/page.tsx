@@ -17,11 +17,11 @@ export async function generateMetadata({
   const hasActiveFilters = Boolean(searchParams.brand || searchParams.subcategory || searchParams.color || searchParams.style || searchParams.sort)
 
   return {
-    title: "Designer Vests | Designerdrip",
+    title: "Designer Vests | Saint Yve",
     description:
       "Explore designer vests curated for modern layering — refined silhouettes, premium materials, and versatile styling.",
     openGraph: {
-      title: "Designer Vests | Designerdrip",
+      title: "Designer Vests | Saint Yve",
       description:
         "Explore designer vests curated for modern layering — refined silhouettes, premium materials, and versatile styling.",
       type: "website",
@@ -29,7 +29,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: "Designer Vests | Designerdrip",
+      title: "Designer Vests | Saint Yve",
       description:
         "Explore designer vests curated for modern layering — refined silhouettes, premium materials, and versatile styling.",
     },

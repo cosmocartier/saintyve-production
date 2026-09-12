@@ -80,7 +80,7 @@ export function TermsOfServiceContent() {
               <h2 className="text-[18px] font-mono font-medium text-black mb-4 tracking-tight">Agreement to Terms</h2>
               <div className="space-y-4 text-[14px] font-mono text-gray-700 leading-relaxed">
                 <p>
-                  By accessing or using Designerdrip ("we," "us," "our"), you agree to be bound by these Terms of
+                  By accessing or using Saint Yve ("we," "us," "our"), you agree to be bound by these Terms of
                   Service. If you do not agree, please do not use our website or services.
                 </p>
                 <p>
@@ -96,7 +96,7 @@ export function TermsOfServiceContent() {
               <div className="space-y-4 text-[14px] font-mono text-gray-700 leading-relaxed">
                 <p>
                   You must be at least 18 years old (or the age of majority in your jurisdiction) to make purchases or
-                  create an account. By using Designerdrip, you represent that you meet this requirement.
+                  create an account. By using Saint Yve, you represent that you meet this requirement.
                 </p>
                 <p>
                   If you are under 18, you may use our services only with the involvement and permission of a parent or
@@ -176,7 +176,7 @@ export function TermsOfServiceContent() {
                   monitoring the delivery.
                 </p>
                 <p>
-                  Designerdrip is not responsible for lost, stolen, or delayed shipments once the carrier confirms
+                  Saint Yve is not responsible for lost, stolen, or delayed shipments once the carrier confirms
                   delivery. For delivery issues, contact the carrier directly.
                 </p>
               </div>
@@ -214,7 +214,7 @@ export function TermsOfServiceContent() {
                   <li>Use our platform for illegal purposes or to violate any laws</li>
                   <li>Engage in fraudulent activity or provide false information</li>
                   <li>Attempt to gain unauthorized access to our systems or other users' accounts</li>
-                  <li>Resell or redistribute products purchased from Designerdrip without authorization</li>
+                  <li>Resell or redistribute products purchased from Saint Yve without authorization</li>
                   <li>Use automated tools (bots, scrapers) to access or interact with our website</li>
                 </ul>
                 <p>
@@ -231,7 +231,7 @@ export function TermsOfServiceContent() {
               </h2>
               <div className="space-y-4 text-[14px] font-mono text-gray-700 leading-relaxed">
                 <p>
-                  All content on Designerdrip, including text, images, logos, and design, is owned by Designerdrip or
+                  All content on Saint Yve, including text, images, logos, and design, is owned by Saint Yve or
                   our licensors and is protected by copyright, trademark, and other intellectual property laws.
                 </p>
                 <p>
@@ -248,15 +248,15 @@ export function TermsOfServiceContent() {
               </h2>
               <div className="space-y-4 text-[14px] font-mono text-gray-700 leading-relaxed">
                 <p>
-                  Designerdrip provides products and services "as is" without warranties of any kind, express or
+                  Saint Yve provides products and services "as is" without warranties of any kind, express or
                   implied.
                 </p>
                 <p>
-                  To the fullest extent permitted by law, Designerdrip shall not be liable for any indirect, incidental,
+                  To the fullest extent permitted by law, Saint Yve shall not be liable for any indirect, incidental,
                   special, or consequential damages arising from your use of our website or products.
                 </p>
                 <p>
-                  Our total liability for any claim related to your use of Designerdrip shall not exceed the amount you
+                  Our total liability for any claim related to your use of Saint Yve shall not exceed the amount you
                   paid for the relevant product or service.
                 </p>
               </div>
@@ -270,7 +270,7 @@ export function TermsOfServiceContent() {
               <div className="space-y-4 text-[14px] font-mono text-gray-700 leading-relaxed">
                 <p>
                   These Terms are governed by the laws of the United Arab Emirates. Any disputes arising from these
-                  Terms or your use of Designerdrip shall be resolved exclusively in the courts of Dubai, UAE.
+                  Terms or your use of Saint Yve shall be resolved exclusively in the courts of Dubai, UAE.
                 </p>
                 <p>
                   Before pursuing legal action, we encourage you to contact us at{" "}
@@ -292,7 +292,7 @@ export function TermsOfServiceContent() {
                 </p>
                 <p>
                   Significant changes will be communicated via email or a prominent notice on our website. Continued use
-                  of Designerdrip after changes constitutes acceptance of the updated Terms.
+                  of Saint Yve after changes constitutes acceptance of the updated Terms.
                 </p>
               </div>
             </section>
@@ -312,7 +312,7 @@ export function TermsOfServiceContent() {
                       support@designerdrip.store
                     </a>
                   </p>
-                  <p>Address: Designerdrip, Dubai Silicon Oasis, UAE</p>
+                  <p>Address: Saint Yve, Dubai Silicon Oasis, UAE</p>
                   <p>
                     Website:{" "}
                     <a href="https://www.designerdrip.store" className="underline hover:text-black transition-colors">

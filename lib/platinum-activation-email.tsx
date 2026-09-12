@@ -29,7 +29,7 @@ export async function sendPlatinumActivationEmail({
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Your Designerdrip Platinum Membership is now active</title>
+    <title>Your Saint Yve Platinum Membership is now active</title>
   </head>
   <body style="margin: 0; padding: 0; background-color: #f5f5f5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
     <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="border-collapse: collapse; background-color: #f5f5f5;">
@@ -41,7 +41,7 @@ export async function sendPlatinumActivationEmail({
             <tr>
               <td style="padding: 24px 24px 16px; text-align: left; border-bottom: 1px solid #f0f0f0;">
                 <div style="font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #888888; margin-bottom: 6px;">
-                  DESIGNERDRIP LOYALTY
+                  SAINT YVE LOYALTY
                 </div>
                 <h1 style="margin: 0; font-size: 24px; font-weight: 600; color: #111111;">
                   Welcome to Platinum.
@@ -56,7 +56,7 @@ export async function sendPlatinumActivationEmail({
                   Hi ${customerName},
                 </p>
                 <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #333333;">
-                  Your Designerdrip Platinum Membership is now active. From now on, your orders and requests are handled with the highest priority level in our system.
+                  Your Saint Yve Platinum Membership is now active. From now on, your orders and requests are handled with the highest priority level in our system.
                 </p>
               </td>
             </tr>
@@ -170,7 +170,7 @@ export async function sendPlatinumActivationEmail({
             <tr>
               <td style="padding: 0 24px 24px; text-align: center;">
                 <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #333333; font-weight: 500;">
-                  DESIGNERDRIP
+                  SAINT YVE
                 </p>
               </td>
             </tr>
@@ -182,7 +182,7 @@ export async function sendPlatinumActivationEmail({
                   Questions? Contact us at <a href="mailto:loyalty@designerdrip.store" style="color: #555555; text-decoration: underline;">loyalty@designerdrip.store</a>
                 </p>
                 <p style="margin: 6px 0 0; font-size: 11px; line-height: 1.5; color: #aaaaaa;">
-                  © ${new Date().getFullYear()} DESIGNERDRIP. All rights reserved.
+                  © ${new Date().getFullYear()} SAINT YVE. All rights reserved.
                 </p>
               </td>
             </tr>
@@ -204,9 +204,9 @@ export async function sendPlatinumActivationEmail({
         Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "DESIGNERDRIP <loyalty@designerdrip.store>",
+        from: "SAINT YVE <loyalty@designerdrip.store>",
         to: customerEmail,
-        subject: "Your Designerdrip Platinum Membership is now active",
+        subject: "Your Saint Yve Platinum Membership is now active",
         html: emailHtml,
       }),
     })

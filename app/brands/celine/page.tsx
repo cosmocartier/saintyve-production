@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Celine | Designerdrip",
+  title: "Celine | Saint Yve",
   description:
     "Discover the refined elegance of Celine. From minimalist handbags to sophisticated ready-to-wear, explore the Parisian house's timeless aesthetic and modern luxury.",
 }

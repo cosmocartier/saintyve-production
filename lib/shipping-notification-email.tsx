@@ -396,7 +396,7 @@ export async function sendShippingNotificationEmail({
                     color: #9b9b9b;
                   "
                 >
-                  DESIGNERDRIP • Dubai Silicon Oasis, UAE •
+                  SAINT YVE • Dubai Silicon Oasis, UAE •
                   <a
                     href="https://designerdrip.store"
                     style="color: #9b9b9b; text-decoration: underline;"
@@ -421,9 +421,9 @@ export async function sendShippingNotificationEmail({
         Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "DESIGNERDRIP <orders@designerdrip.store>",
+        from: "SAINT YVE <orders@designerdrip.store>",
         to: order.customer_email,
-        subject: `Your Designerdrip order has been shipped — Tracking inside`,
+        subject: `Your Saint Yve order has been shipped — Tracking inside`,
         html: emailHtml,
       }),
     })

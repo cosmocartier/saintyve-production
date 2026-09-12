@@ -4,8 +4,8 @@ import { Footer } from "@/components/footer"
 import { BlogContent } from "@/components/blog/blog-content"
 
 export const metadata: Metadata = {
-  title: "Journal | Designerdrip",
-  description: "Designerdrip journal: drops, craft notes, behind-the-scenes, and updates.",
+  title: "Journal | Saint Yve",
+  description: "Saint Yve journal: drops, craft notes, behind-the-scenes, and updates.",
 }
 
 export default function BlogPage() {

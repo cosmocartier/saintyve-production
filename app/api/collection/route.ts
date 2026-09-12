@@ -6,6 +6,7 @@ export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl
   const collection = searchParams.get("collection")
   const brand = searchParams.get("brand")
+  const category = searchParams.get("category")
   const parentProduct = searchParams.get("parentProduct")
   const limit = Number(searchParams.get("limit") ?? "4")
 
@@ -48,8 +49,8 @@ export async function GET(req: NextRequest) {
 
     productsData = data
   } else if (brand) {
-    // Brand mode: query products directly by brand field
-    const { data, error } = await supabase
+    // Brand mode: query products directly by brand field, optionally filtered by category
+    let query = supabase
       .from("products")
       .select(`
         *,
@@ -69,6 +70,12 @@ export async function GET(req: NextRequest) {
       `)
       .eq("brand", brand)
       .eq("status", "live")
+
+    if (category) {
+      query = query.eq("category", category)
+    }
+
+    const { data, error } = await query
       .order("created_at", { ascending: false })
       .limit(limit)
 

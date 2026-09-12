@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Rolex | Designerdrip",
+  title: "Rolex | Saint Yve",
   description:
     "Discover the pinnacle of Swiss watchmaking excellence. Rolex has defined luxury horology since 1905 with iconic timepieces that combine precision, craftsmanship, and timeless elegance.",
 }

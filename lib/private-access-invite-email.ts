@@ -17,7 +17,7 @@ export async function sendPrivateAccessInviteEmail({
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>You have been granted access to Designerdrip</title>
+  <title>You have been granted access to Saint Yve</title>
 </head>
 <body style="margin:0;padding:0;background-color:#0a0a0a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
 
@@ -37,7 +37,7 @@ export async function sendPrivateAccessInviteEmail({
           <tr>
             <td style="padding:40px 40px 0;">
               <p style="margin:0;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:#444444;font-weight:500;">
-                DESIGNERDRIP
+                SAINT YVE
               </p>
             </td>
           </tr>
@@ -62,7 +62,7 @@ export async function sendPrivateAccessInviteEmail({
           <tr>
             <td style="padding:24px 40px 0;">
               <p style="margin:0 0 16px;font-size:14px;line-height:1.75;color:#888888;font-weight:300;">
-                Your application has been reviewed and approved. You now have access to Designerdrip &mdash; our curated platform for premium and authenticated designer pieces.
+                Your application has been reviewed and approved. You now have access to Saint Yve &mdash; our curated platform for premium and authenticated designer pieces.
               </p>
               <p style="margin:0;font-size:14px;line-height:1.75;color:#888888;font-weight:300;">
                 To activate your account, complete your registration below. This link is unique to you and can only be used once.
@@ -118,10 +118,10 @@ export async function sendPrivateAccessInviteEmail({
           <tr>
             <td style="padding:32px 40px 40px;">
               <p style="margin:0 0 6px;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#2a2a2a;font-weight:500;">
-                DESIGNERDRIP
+                SAINT YVE
               </p>
               <p style="margin:0;font-size:11px;color:#2a2a2a;">
-                &copy; ${year} Designerdrip. All rights reserved.
+                &copy; ${year} Saint Yve. All rights reserved.
               </p>
             </td>
           </tr>
@@ -147,9 +147,9 @@ export async function sendPrivateAccessInviteEmail({
         Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "DESIGNERDRIP <access@designerdrip.store>",
+        from: "SAINT YVE <access@designerdrip.store>",
         to: email,
-        subject: "You have been granted access to Designerdrip",
+        subject: "You have been granted access to Saint Yve",
         html: emailHtml,
       }),
     })

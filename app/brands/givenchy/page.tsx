@@ -10,7 +10,7 @@ import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 const INITIAL_LOAD_LIMIT = 20
 
 export const metadata: Metadata = {
-  title: "Givenchy | Designerdrip",
+  title: "Givenchy | Saint Yve",
   description:
     "Discover the iconic Givenchy collection. From haute couture to ready-to-wear, explore the French fashion house known for its rebellious elegance and timeless sophistication.",
 }

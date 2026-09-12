@@ -18,21 +18,21 @@ export async function generateMetadata({
   const hasActiveFilters = Boolean(searchParams.brand || searchParams.subcategory || searchParams.color || searchParams.style || searchParams.sort)
   
   return {
-    title: "New Arrivals | Designerdrip",
+    title: "New Arrivals | Saint Yve",
     description:
-      "Discover the latest arrivals at Designerdrip — newly added sneakers, bags, jackets, watches, jewelry and accessories. Updated weekly.",
+      "Discover the latest arrivals at Saint Yve — newly added sneakers, bags, jackets, watches, jewelry and accessories. Updated weekly.",
     openGraph: {
-      title: "New Arrivals | Designerdrip",
+      title: "New Arrivals | Saint Yve",
       description:
-        "Discover the latest arrivals at Designerdrip — newly added sneakers, bags, jackets, watches, jewelry and accessories. Updated weekly.",
+        "Discover the latest arrivals at Saint Yve — newly added sneakers, bags, jackets, watches, jewelry and accessories. Updated weekly.",
       type: "website",
       url: "https://designerdrip.com/new-arrivals",
     },
     twitter: {
       card: "summary_large_image",
-      title: "New Arrivals | Designerdrip",
+      title: "New Arrivals | Saint Yve",
       description:
-        "Discover the latest arrivals at Designerdrip — newly added sneakers, bags, jackets, watches, jewelry and accessories. Updated weekly.",
+        "Discover the latest arrivals at Saint Yve — newly added sneakers, bags, jackets, watches, jewelry and accessories. Updated weekly.",
     },
     alternates: {
       canonical: "https://designerdrip.com/new-arrivals",

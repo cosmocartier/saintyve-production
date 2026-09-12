@@ -17,11 +17,11 @@ export async function generateMetadata({
   const hasActiveFilters = Boolean(searchParams.brand || searchParams.subcategory || searchParams.color || searchParams.style || searchParams.sort)
 
   return {
-    title: "Designer Shoes | Designerdrip",
+    title: "Designer Shoes | Saint Yve",
     description:
       "Shop premium designer sneakers with AA+ craftsmanship — Jordan, Nike, Balenciaga & more. Fast worldwide shipping. New drops weekly.",
     openGraph: {
-      title: "Designer Sneakers (AA+ Quality) | Designerdrip",
+      title: "Designer Sneakers (AA+ Quality) | Saint Yve",
       description:
         "Shop premium designer sneakers with AA+ craftsmanship — Jordan, Nike, Balenciaga & more. Fast worldwide shipping. New drops weekly.",
       type: "website",
@@ -29,7 +29,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: "Designer Sneakers (AA+ Quality) | Designerdrip",
+      title: "Designer Sneakers (AA+ Quality) | Saint Yve",
       description:
         "Shop premium designer sneakers with AA+ craftsmanship — Jordan, Nike, Balenciaga & more. Fast worldwide shipping. New drops weekly.",
     },

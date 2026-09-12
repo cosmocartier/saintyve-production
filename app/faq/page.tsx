@@ -6,9 +6,9 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
 export const metadata: Metadata = {
-  title: "FAQ | Designerdrip",
+  title: "FAQ | Saint Yve",
   description:
-    "Answers to the most common questions about orders, shipping, returns, payments, sizing, and membership at Designerdrip.",
+    "Answers to the most common questions about orders, shipping, returns, payments, sizing, and membership at Saint Yve.",
 }
 
 export default function FAQPage() {

@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     // Generate first paragraph only with strict constraints
     const { text } = await generateText({
       model: "openai/gpt-4o-mini",
-      prompt: `You are a luxury fashion copywriter for DesignerDrip, a premium designer marketplace.
+      prompt: `You are a luxury fashion copywriter for Saint Yve, a premium designer marketplace.
 
 TASK: Generate ONE paragraph introducing this product. This is paragraph 1 only.
 
