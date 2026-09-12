@@ -5,14 +5,10 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { CartSidebar } from "@/components/cart-sidebar"
 import { Navigation } from "@/components/navigation"
-import { NotificationBanner } from "@/components/notification-banner"
-import { LandingPageLoader } from "@/components/landing-page-loader"
 import { subscribeToNewsletter } from "@/app/actions/newsletter"
 import { Footer } from "@/components/footer"
 import { CategorySwitcherSection } from "@/components/category-switcher-section"
 import { CollectionShowcase } from "@/components/collection-showcase"
-import { LookbookFocusCarousel } from "@/components/lookbook-focus-carousel"
-import { OurReviews } from "@/components/reviews/our-reviews"
 
 
 interface Product {
@@ -60,19 +56,17 @@ export default function BananaSportswearStorefront() {
 
   return (
     <>
-      <LandingPageLoader />
       <div
         className={`min-h-screen bg-white text-black font-mono transition-all duration-1000 ${isPageLoaded ? "opacity-100" : "opacity-0"
           }`}
       >
         <CartSidebar />
-        <OurReviews />
 
       <div id="main-content-wrapper">
         <section className="relative w-full">
           <div className="lg:hidden h-[80vh] w-full relative overflow-hidden">
             <img
-              src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/7820388d-bd73-4dd4-4349-c6ba093b5600/w=800"
+              src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/0c7026eb-7e14-4da7-4026-63fb2d6c9100/w=800"
               alt="Designer Fashion Hero"
               className="absolute inset-0 w-full h-full object-cover"
             />
@@ -95,7 +89,7 @@ export default function BananaSportswearStorefront() {
 
           <div className="hidden lg:block h-[80vh] w-full relative">
             <img
-              src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/23c5b170-c6b6-480c-314d-321e11172e00/zoom"
+              src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/6f4be294-0f91-4813-3e88-85e0cc2d1b00/w=800"
               alt="Luxury Designer Backpack"
               className="w-full h-full object-cover"
             />
@@ -122,8 +116,6 @@ export default function BananaSportswearStorefront() {
               </p>
             </div>
           </div>
-
-          <NotificationBanner />
         </section>
 
         <div className="absolute top-0 left-0 right-0 z-50">
@@ -144,19 +136,11 @@ export default function BananaSportswearStorefront() {
           seeMoreLink="/brands/chanel"
         />
 
-        <CollectionShowcase
-          title="Jordan 1 Travis Scott Edition"
-          parentProduct="Jordan 1 Travis Scott Edition"
-          limit={4}
-        />
-
-        <LookbookFocusCarousel />
-
         {/* CategorySwitcherSection temporarily hidden from the landing page.
             To re-enable, uncomment the line below. */}
         {/* <CategorySwitcherSection /> */}
 
-        <section className="bg-white py-24 lg:py-32 px-6 lg:px-12 lg:pt-[0] lg:pt-[0] pt-[0] pt-[0]" id="newsletter-section">
+        <section className="bg-white py-24 lg:py-32 px-6 lg:px-12" id="newsletter-section">
           <div className="max-w-md mx-auto">
             {newsletterStatus === "success" ? (
               <div className="text-center min-h-[200px] flex flex-col justify-center">
