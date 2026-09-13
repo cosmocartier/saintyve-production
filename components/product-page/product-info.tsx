@@ -69,15 +69,12 @@ export function ProductInfo({
       <div className="max-w-md mx-auto">
         {colorVariants.length > 1 && (
           <div className="mb-12">
-            <div className="flex items-center justify-between mb-6">
-              <span className="text-sm tracking-wide font-normal">Color</span>
-              <span className="text-sm tracking-wide font-normal text-zinc-600">
-                {product.color || colorVariants.find((v) => v.isCurrentProduct)?.color || ""}
-              </span>
+            <div className="flex items-center justify-center mb-6">
+              <span className="text-sm tracking-wide font-normal">Variant</span>
             </div>
             <div className="relative -mx-6 px-6 lg:-mx-0 lg:px-0">
               <div className="overflow-x-auto scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                <div className="flex pb-1 gap-1.5">
+                <div className="flex justify-center pb-1 gap-1.5">
                   {colorVariants.map((variant) => (
                     <button
                       key={variant.id}
@@ -242,51 +239,6 @@ export function ProductInfo({
                   : "ADD TO CART"}
             </span>
           </button>
-        </div>
-
-        {/* Delivery & Packaging Info */}
-        <div className="grid grid-cols-2 gap-6 py-6 border-t border-zinc-200">
-          {/* Expected Delivery */}
-          <div className="flex flex-col gap-3">
-            <img
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/delivery-icone-lxOl3sNWnsdsN6m2lzKVKQJSGaNE25.png"
-              alt="Delivery"
-              width={48}
-              height={48}
-              className="w-4 h-4 object-contain"
-            />
-            <div>
-              <p className="text-[13px] font-medium text-[#111111] mb-1.5">Expected Delivery</p>
-              <p className="text-[11.5px] text-zinc-500 leading-relaxed">
-                Standard : 8 to 12 Working Days<br />
-                Express Delivery : 5 to 8 Working Days<br />
-                24 Hour Delivery : 1 Working day
-              </p>
-            </div>
-          </div>
-
-          {/* Our Packaging */}
-          <div className="flex flex-col gap-3">
-            <img
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/packaging-icone-pWmquX5TlCLNCdWc7PStPVbkC2X9UC.png"
-              alt="Packaging"
-              width={48}
-              height={48}
-              className="w-4 h-4 object-contain"
-            />
-            <div>
-              <p className="text-[13px] font-medium text-[#111111] mb-1.5">Our Packaging</p>
-              <a
-                href="#"
-                className="text-[11.5px] text-zinc-600 underline underline-offset-2 hover:text-black transition-colors block mb-1"
-              >
-                Discover Our Packaging Here
-              </a>
-              <p className="text-[11.5px] text-zinc-500 leading-relaxed">
-                Your Order Will be delivered with full packaging from the brand &amp; saint yve packaging.
-              </p>
-            </div>
-          </div>
         </div>
       </div>
     </div>
