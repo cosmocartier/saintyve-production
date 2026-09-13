@@ -31,7 +31,7 @@ export function Footer() {
 
   return (
     <footer className="bg-black text-white">
-      {/* Mobile */}
+      {/* Mobile */}so 
       <div className="lg:hidden flex flex-col items-center gap-16 px-6 py-20">
         <nav className="flex flex-col items-center gap-4">
           {footerNavItems.map((item) => (

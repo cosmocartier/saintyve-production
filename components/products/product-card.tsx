@@ -38,6 +38,7 @@ interface ProductCardProps {
   hidePrice?: boolean
   emphasizedTitle?: boolean
   preloadSecondImage?: boolean
+  aspectRatio?: "3/4" | "4/5"
 }
 
 export function ProductCard({
@@ -47,6 +48,7 @@ export function ProductCard({
   hidePrice = false,
   emphasizedTitle = false,
   preloadSecondImage = false,
+  aspectRatio = "3/4",
 }: ProductCardProps) {
   const { addItem } = useCart()
   const { toggleLike, isLiked } = useWishlist()
@@ -229,7 +231,9 @@ export function ProductCard({
       }}
       prefetch={false}
     >
-      <div className="relative w-full aspect-[3/4] overflow-hidden bg-gray-50">
+      <div
+        className={`relative w-full ${aspectRatio === "4/5" ? "aspect-[4/5]" : "aspect-[3/4]"} overflow-hidden bg-gray-50`}
+      >
         {/* Mobile: Static first image (all pages) */}
         <div className="lg:hidden w-full h-full">
           {disableMobileGallery || totalImages === 1 ? (
