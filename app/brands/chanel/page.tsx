@@ -48,23 +48,31 @@ export default async function ChanelPage() {
   // Optimize images - convert CF image IDs to URLs
   const optimizedProducts =
     productsData?.map((product: any) => {
-      const sortedImages =
-        product.product_images_cf
-          ?.sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0))
-          .slice(0, 2)
-          .map((img: any) => ({
-            id: img.id,
-            url: buildCfUrl(img.cf_image_id, "grid"),
-            alt_text: img.alt_text,
-            display_order: img.sort_order,
-            color_name: img.color_name,
-            color_hex: img.color_hex,
-          })) || []
+      const sortedByOrder =
+        product.product_images_cf?.slice().sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0)) || []
+
+      // First image = the Title Image (role === "primary")
+      const titleImage = sortedByOrder.find((img: any) => img.role === "primary") || sortedByOrder[0]
+
+      // Second image = the actual second image in sort order (not the first), excluding the title image
+      const secondImage = sortedByOrder.find((img: any) => img.id !== titleImage?.id) || sortedByOrder[1]
+
+      const displayImages = [titleImage, secondImage]
+        .filter(Boolean)
+        .filter((img, index, arr) => arr.findIndex((i) => i.id === img.id) === index)
+        .map((img: any) => ({
+          id: img.id,
+          url: buildCfUrl(img.cf_image_id, "grid"),
+          alt_text: img.alt_text,
+          display_order: img.sort_order,
+          color_name: img.color_name,
+          color_hex: img.color_hex,
+        }))
 
       return {
         ...product,
-        product_images: sortedImages,
-        has_multiple_images: sortedImages.length > 1,
+        product_images: displayImages,
+        has_multiple_images: displayImages.length > 1,
       }
     }) || []
 
