@@ -31,14 +31,14 @@ export function Footer() {
 
   return (
     <footer className="bg-black text-white">
-      {/* Mobile */}so 
+      {/* Mobile */}
       <div className="lg:hidden flex flex-col items-center gap-16 px-6 py-20">
-        <nav className="flex flex-col items-center gap-4">
+        <nav className="flex flex-col items-center gap-2">
           {footerNavItems.map((item) => (
             <FooterNavLink key={item.label} {...item} />
           ))}
         </nav>
-        <p className="text-xs font-bold uppercase tracking-tight text-white">
+        <p className="text-xl font-bold uppercase tracking-tight text-white">
           Saint Yve &copy; {year}
         </p>
       </div>
