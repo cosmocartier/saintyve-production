@@ -13,7 +13,7 @@ const footerNavItems: FooterNavItem[] = [
 ]
 
 function FooterNavLink({ label, href }: FooterNavItem) {
-  const className = "text-sm font-bold uppercase tracking-tight text-white hover:text-white/70 transition-colors"
+  const className = "text-xl font-bold uppercase tracking-tight text-white hover:text-white/70 transition-colors"
 
   if (href) {
     return (
@@ -33,12 +33,12 @@ export function Footer() {
     <footer className="bg-black text-white">
       {/* Mobile */}
       <div className="lg:hidden flex flex-col items-center gap-16 px-6 py-20">
-        <nav className="flex flex-col items-center gap-2">
+        <nav className="flex flex-col items-center gap-1">
           {footerNavItems.map((item) => (
             <FooterNavLink key={item.label} {...item} />
           ))}
         </nav>
-        <p className="text-xl font-bold uppercase tracking-tight text-white">
+        <p className="text-xs font-bold uppercase tracking-tight text-white">
           Saint Yve &copy; {year}
         </p>
       </div>
