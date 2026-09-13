@@ -67,7 +67,7 @@ async function getProduct(slug: string): Promise<{
   if (cfProductIds.length > 0) {
     const { data: cfImages } = await supabase
       .from("product_images_cf")
-      .select("product_id, cf_image_id, sort_order, role")
+      .select("product_id, cf_image_id, sort_order, title_image")
       .in("product_id", cfProductIds)
       .order("sort_order", { ascending: true })
 
@@ -89,8 +89,8 @@ async function getProduct(slug: string): Promise<{
         if (p.use_cloudflare_images && cfImagesMap.has(p.id)) {
           const cfImages = cfImagesMap.get(p.id)
           if (cfImages.length > 0) {
-            // Use the Title Image (role === "primary") for this product, falling back to the first sorted image
-            const titleImage = cfImages.find((img: any) => img.role === "primary") || cfImages[0]
+            // Use the Title Image (title_image === true) for this product, falling back to the first sorted image
+            const titleImage = cfImages.find((img: any) => img.title_image === true) || cfImages[0]
             primaryImageUrl = buildCfUrl(titleImage.cf_image_id, "grid")
           }
         } else {
