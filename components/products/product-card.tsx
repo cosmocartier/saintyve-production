@@ -373,7 +373,7 @@ export function ProductCard({
         <h3
           className={
             emphasizedTitle
-              ? "text-[12px] font-bold uppercase text-black truncate tracking-tight"
+              ? "text-[10px] font-bold uppercase text-black truncate tracking-tight"
               : "text-[14px] font-light text-black truncate tracking-tight"
           }
         >
