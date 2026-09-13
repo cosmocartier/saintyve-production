@@ -136,15 +136,17 @@ async function getProduct(slug: string): Promise<{
 
     if (cfImages && cfImages.length > 0) {
       useCfImages = true
-      images = cfImages.map((img, index) => ({
-        id: img.id,
-        url: buildCfUrl(img.cf_image_id, "pdp"), // Keep for backwards compatibility
-        cf_image_id: img.cf_image_id, // Include the ID for lightbox
-        alt_text: img.alt_text,
-        display_order: img.sort_order,
-        color_name: null,
-        color_hex: null,
-      }))
+      images = cfImages
+        .filter((img) => img.role !== "primary") // Exclude the Title Image from the gallery
+        .map((img, index) => ({
+          id: img.id,
+          url: buildCfUrl(img.cf_image_id, "pdp"), // Keep for backwards compatibility
+          cf_image_id: img.cf_image_id, // Include the ID for lightbox
+          alt_text: img.alt_text,
+          display_order: img.sort_order,
+          color_name: null,
+          color_hex: null,
+        }))
     }
   }
 
