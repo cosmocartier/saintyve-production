@@ -89,24 +89,39 @@ export function ProductHero({
 
       {/* Remaining images — dominant placement */}
       {allMedia.length > 1 && (
-        <div className="flex flex-col gap-px">
-          <div className="w-full aspect-[4/5] lg:aspect-[16/9] bg-[#F5F5F5] overflow-hidden">
-            {renderMedia(1, "w-full h-full object-cover")}
+        <>
+          {/* Mobile: every image full-width 1:1 square, stacked with no gaps */}
+          <div className="flex flex-col lg:hidden">
+            {allMedia.slice(1).map((_, i) => {
+              const index = i + 1
+              return (
+                <div key={index} className="w-full aspect-square bg-[#F5F5F5] overflow-hidden">
+                  {renderMedia(index, "w-full h-full object-cover")}
+                </div>
+              )
+            })}
           </div>
 
-          {restMedia.length > 0 && (
-            <div className="grid grid-cols-2 gap-px">
-              {restMedia.map((_, i) => {
-                const index = i + 2
-                return (
-                  <div key={index} className="w-full aspect-square bg-[#F5F5F5] overflow-hidden">
-                    {renderMedia(index, "w-full h-full object-cover")}
-                  </div>
-                )
-              })}
+          {/* Desktop: large second image + 2-col grid for the rest */}
+          <div className="hidden lg:flex lg:flex-col gap-px">
+            <div className="w-full aspect-[16/9] bg-[#F5F5F5] overflow-hidden">
+              {renderMedia(1, "w-full h-full object-cover")}
             </div>
-          )}
-        </div>
+
+            {restMedia.length > 0 && (
+              <div className="grid grid-cols-2 gap-px">
+                {restMedia.map((_, i) => {
+                  const index = i + 2
+                  return (
+                    <div key={index} className="w-full aspect-square bg-[#F5F5F5] overflow-hidden">
+                      {renderMedia(index, "w-full h-full object-cover")}
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+        </>
       )}
     </div>
   )
