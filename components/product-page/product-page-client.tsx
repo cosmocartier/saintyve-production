@@ -19,6 +19,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Footer } from "@/components/footer"
 import { buildImageObject } from "@/lib/cloudflare/cloudflare-images"
 import { ProductImageLightbox } from "@/components/product-page/product-image-lightbox"
+import { ProductHero } from "@/components/product-page/product-hero"
 import { ProductInfo } from "@/components/product-page/product-info"
 import { BuildQualityBadge } from "@/components/build-quality-badge"
 import { ProductRecommendations } from "@/components/product-page/product-recommendations"
@@ -64,10 +65,6 @@ export function ProductPageClient({
   const [isSubscribed, setIsSubscribed] = useState(false)
   const [isSubscribing, setIsSubscribing] = useState(false)
   const [selectedColor, setSelectedColor] = useState<string | null>(null)
-  const [isDragging, setIsDragging] = useState(false)
-  const [dragStart, setDragStart] = useState(0)
-  const [dragOffset, setDragOffset] = useState(0)
-  const imageContainerRef = useRef<HTMLDivElement>(null)
   const [isProductDetailsOpen, setIsProductDetailsOpen] = useState(false)
   const [isShippingOpen, setIsShippingOpen] = useState(false)
   const [isSizeDropdownOpen, setIsSizeDropdownOpen] = useState(false)
@@ -145,59 +142,7 @@ export function ProductPageClient({
   const displayVideos = videos.map((v) => v.video_url)
   const allMedia = [...displayVideos, ...displayImages]
 
-  const currentMedia = allMedia[currentImageIndex]
-  const isCurrentMediaVideo = currentImageIndex < displayVideos.length
-
   const cartImage = filteredImages.length > 0 ? filteredImages[0].url : product.image
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    // Only allow dragging if there are multiple images
-    if (allMedia.length <= 1) return
-    
-    setIsDragging(true)
-    setDragStart(e.targetTouches[0].clientX)
-  }
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    // Only allow dragging if there are multiple images
-    if (!isDragging || allMedia.length <= 1) return
-
-    const currentTouch = e.targetTouches[0].clientX
-    const diff = currentTouch - dragStart
-    setDragOffset(diff)
-  }
-
-  const handleTouchEnd = () => {
-    // Only allow dragging if there are multiple images
-    if (!isDragging || allMedia.length <= 1) return
-
-    const containerWidth = imageContainerRef.current?.clientWidth || 0
-    const threshold = containerWidth * 0.2 // 20% of container width
-
-    if (Math.abs(dragOffset) > threshold) {
-      if (dragOffset > 0) {
-        // Swiping right (going to previous image)
-        if (currentImageIndex > 0) {
-          setCurrentImageIndex((prev) => prev - 1)
-        } else {
-          // At first image, loop to last image
-          setCurrentImageIndex(allMedia.length - 1)
-        }
-      } else if (dragOffset < 0) {
-        // Swiping left (going to next image)
-        if (currentImageIndex < allMedia.length - 1) {
-          setCurrentImageIndex((prev) => prev + 1)
-        } else {
-          // At last image, loop to first image
-          setCurrentImageIndex(0)
-        }
-      }
-    }
-
-    setIsDragging(false)
-    setDragStart(0)
-    setDragOffset(0)
-  }
 
   useEffect(() => {
     checkUser()
@@ -367,103 +312,29 @@ export function ProductPageClient({
         onClose={() => setIsLightboxOpen(false)}
       />
 
-      <div className="flex flex-col lg:flex-row lg:pt-[50px]">
-        {/* Mobile Image Gallery */}
-        <div
-          ref={imageContainerRef}
-          className="w-full lg:hidden relative overflow-hidden touch-pan-y"
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-        >
-          <div
-            className="flex transition-transform"
-            style={{
-              transform: `translateX(calc(-${currentImageIndex * 100}% + ${isDragging ? dragOffset : 0}px))`,
-              transitionDuration: isDragging ? "0ms" : "300ms",
-              transitionTimingFunction: "ease-out",
-            }}
-          >
-            {allMedia.map((mediaUrl, index) => {
-              const isVideo = index < displayVideos.length
-              return (
-                <div key={index} className="w-full flex-shrink-0">
-                  {isVideo ? (
-                    <div className="w-full aspect-[3/4] bg-[#F5F5F5]">
-                      <video src={mediaUrl} className="w-full h-full object-cover" autoPlay muted loop playsInline />
-                    </div>
-                  ) : (
-                    <ProductImageZoom
-                      src={mediaUrl || "/placeholder.svg"}
-                      alt={
-                        displayImages[index]?.alt_text ||
-                        generateAltText({
-                          brand: brandName,
-                          productName: product.name,
-                          imageIndex: index,
-                        })
-                      }
-                      className="w-full h-auto object-cover"
-                      priority={index === 0}
-                      onClick={() => handleImageClick(index)}
-                    />
-                  )}
-                </div>
-              )
-            })}
-          </div>
+      <div className="lg:pt-[50px]">
+        <ProductHero
+          product={product}
+          brandName={brandName}
+          allMedia={allMedia}
+          videoCount={displayVideos.length}
+          imageAltTexts={displayImages.map((_, i) => filteredImages[i]?.alt_text)}
+          displayPrice={displayPrice}
+          basePrice={displayPrice}
+          discountedPrice={
+            product.discounted_price != null &&
+            product.discounted_price !== 0 &&
+            Number.isFinite(product.discounted_price)
+              ? product.discounted_price
+              : null
+          }
+          onImageClick={handleImageClick}
+          onDetailsClick={() => setIsProductDetailsOpen(true)}
+        />
 
-          {allMedia.length > 1 && (
-            <div className="absolute bottom-0 left-0 right-0 h-px bg-black/10">
-              <div
-                className="h-full bg-[#111111] transition-all duration-300 ease-out"
-                style={{
-                  width: `${100 / allMedia.length}%`,
-                  marginLeft: `${(currentImageIndex / (allMedia.length - 1)) * (100 - 100 / allMedia.length)}%`,
-                }}
-              />
-            </div>
-          )}
-        </div>
-
-        {/* Desktop Image Gallery - Left 50% */}
-        <div className="hidden lg:block lg:w-[50%]">
-          <div className="grid grid-cols-1 gap-px">
-            {allMedia.map((mediaUrl, index) => {
-              const isVideo = index < displayVideos.length
-              return (
-                <div key={index} className="w-full">
-                  {isVideo ? (
-                    <div className="w-full aspect-[3/4] bg-[#F5F5F5]">
-                      <video src={mediaUrl} className="w-full h-full object-cover" autoPlay muted loop playsInline />
-                    </div>
-                  ) : (
-                    <ProductImageZoom
-                      src={mediaUrl || "/placeholder.svg"}
-                      alt={
-                        displayImages[index]?.alt_text ||
-                        generateAltText({
-                          brand: brandName,
-                          productName: product.name,
-                          imageIndex: index,
-                        })
-                      }
-                      className="w-full h-auto object-cover"
-                      priority={index === 0}
-                      onClick={() => handleImageClick(index)}
-                    />
-                  )}
-                </div>
-              )
-            })}
-          </div>
-        </div>
-
-        {/* Product Info - Right 40% */}
         <ProductInfo
           product={product}
           brandName={brandName}
-          factoryMedia={factoryMedia}
           colorVariants={colorVariants}
           availableColors={availableColors}
           selectedColor={selectedColor}
@@ -479,7 +350,6 @@ export function ProductPageClient({
           handleAddToCart={handleAddToCart}
           canAddToCart={canAddToCart}
           isAddingToCart={isAddingToCart}
-          setIsProductDetailsOpen={setIsProductDetailsOpen}
           setIsShippingOpen={setIsShippingOpen}
         />
       </div>

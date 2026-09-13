@@ -1,17 +1,13 @@
 "use client"
 
 import type React from "react"
-import type { Product, ProductVariant, FactoryMediaItem } from "@/lib/types/product"
+import type { Product, ProductVariant } from "@/lib/types/product"
 import { useRouter } from "next/navigation"
 import { generateAltText } from "@/lib/generate-alt-text"
-import { usePriceMode } from "@/contexts/price-mode-context"
-import { FactoryMediaCTA } from "@/components/product-page/factory-media-cta"
-import { ProductInfoTabs } from "@/components/product-page/product-info-tabs"
 
 interface ProductInfoProps {
   product: Product
   brandName?: string
-  factoryMedia?: FactoryMediaItem[]
   colorVariants: Array<{
     id: string
     name: string
@@ -43,14 +39,12 @@ interface ProductInfoProps {
   handleAddToCart: () => void
   canAddToCart: boolean
   isAddingToCart: boolean
-  setIsProductDetailsOpen: (open: boolean) => void
   setIsShippingOpen: (open: boolean) => void
 }
 
 export function ProductInfo({
   product,
   brandName,
-  factoryMedia = [],
   colorVariants,
   availableColors,
   selectedColor,
@@ -66,47 +60,13 @@ export function ProductInfo({
   handleAddToCart,
   canAddToCart,
   isAddingToCart,
-  setIsProductDetailsOpen,
   setIsShippingOpen,
 }: ProductInfoProps) {
   const router = useRouter()
-  const { useRetailPrice } = usePriceMode()
-
-  // Get the correct base price based on the price-mode toggle
-  const basePrice = useRetailPrice ? (product.retail_price || product.price) : product.price
-
-  // Discount logic: discounted_price must be a positive number to be considered active
-  const discountedPrice =
-    product.discounted_price != null &&
-    product.discounted_price !== 0 &&
-    Number.isFinite(product.discounted_price)
-      ? product.discounted_price
-      : null
-
-  // The primary displayed price
-  const displayPrice = discountedPrice ?? basePrice
 
   return (
-    <div className="w-full lg:w-[50%] px-6 py-12 lg:px-16 lg:py-20 lg:sticky lg:top-[73px] lg:self-start">
-      <div className="max-w-md mx-auto lg:mx-0">
-        <div className="mb-12">
-          {product.sku && <p className="text-xs tracking-[0.2em] text-zinc-500 mb-6 uppercase">{product.sku}</p>}
-          <h1 className="text-2xl lg:text-[28px] leading-tight tracking-tight mb-8 font-light">{product.name}</h1>
-
-          {/* Pricing block — structured for future extensions (savings, countdowns, etc.) */}
-          <div className="flex items-baseline gap-3">
-            <p className="text-lg tracking-wide font-normal">
-              EUR {displayPrice.toFixed(2)}
-            </p>
-            {discountedPrice != null && (
-              <p className="text-sm tracking-wide text-zinc-500 line-through font-normal">
-                EUR {basePrice.toFixed(2)}
-              </p>
-            )}
-          </div>
-          <p className="text-xs text-zinc-500 mt-1 tracking-wide">(VAT included)</p>
-        </div>
-
+    <div className="w-full px-6 py-12 lg:px-16 lg:py-16">
+      <div className="max-w-md mx-auto">
         {colorVariants.length > 1 && (
           <div className="mb-12">
             <div className="flex items-center justify-between mb-6">
@@ -268,11 +228,6 @@ export function ProductInfo({
           </div>
         )}
 
-        {/* Request additional media link / factory media viewer — quiet secondary action above Add to Cart */}
-        <div className="mb-3">
-          <FactoryMediaCTA productTitle={product.name} factoryMedia={factoryMedia} />
-        </div>
-
         <div id="product-add-to-cart" className="mb-12">
           <button
             onClick={handleAddToCart}
@@ -333,8 +288,6 @@ export function ProductInfo({
             </div>
           </div>
         </div>
-
-        <ProductInfoTabs description={product.description} />
       </div>
     </div>
   )
