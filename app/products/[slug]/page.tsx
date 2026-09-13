@@ -137,7 +137,7 @@ async function getProduct(slug: string): Promise<{
     if (cfImages && cfImages.length > 0) {
       useCfImages = true
       images = cfImages
-        .filter((img) => img.role !== "primary") // Exclude the Title Image from the gallery
+        .filter((img) => !img.title_image) // Exclude the Title Image from the gallery
         .map((img, index) => ({
           id: img.id,
           url: buildCfUrl(img.cf_image_id, "pdp"), // Keep for backwards compatibility
