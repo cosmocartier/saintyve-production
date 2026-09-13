@@ -312,18 +312,18 @@ export function ProductCard({
           aria-label={liked ? "Remove from wishlist" : "Add to wishlist"}
         >
           <div className="relative w-4 h-4">
-            {/* Empty heart */}
+            {/* Empty star */}
             <img
-              src="/images/heart-empty.png"
+              src="/images/star.png"
               alt="Wishlist"
               className={`absolute inset-0 w-full h-full object-contain transition-all duration-150 ease-out ${
                 liked || showFilled ? "opacity-0 scale-95" : "opacity-100 scale-100"
               } ${isAnimating && !liked ? "heart-tap" : ""}`}
               draggable="false"
             />
-            {/* Filled heart */}
+            {/* Filled star */}
             <img
-              src="/images/heart-filled.png"
+              src="/images/star.png"
               alt="Liked"
               className={`absolute inset-0 w-full h-full object-contain transition-all ${
                 liked || showFilled
