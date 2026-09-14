@@ -69,9 +69,18 @@ export function ProductHero({
 
       {/* Title / Details / Price */}
       <div className="max-w-xl mx-auto px-6 py-10 lg:py-14 text-center">
-        {brandName && <p className="text-[11px] tracking-[0.25em] uppercase text-zinc-500 mb-3">{brandName}</p>}
+        {brandName && (
+          <p className="text-[11px] tracking-[0.25em] uppercase text-black mb-3">{brandName}</p>
+        )}
 
-        <h1 className="text-2xl lg:text-3xl font-bold tracking-tight uppercase mb-10 text-balance">{modelName}</h1>
+        <h1 className="text-3xl lg:text-4xl font-extrabold tracking-tight uppercase text-black text-balance">
+          {modelName}
+        </h1>
+
+        {colorName && (
+          <p className="text-sm text-zinc-500 tracking-wide mt-2 mb-10">{colorName}</p>
+        )}
+        {!colorName && <div className="mb-10" />}
 
         <button
           onClick={onDetailsClick}
