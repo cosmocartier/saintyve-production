@@ -68,7 +68,7 @@ export function ProductHero({
       {/* Title / Details / Price */}
       <div className="max-w-xl mx-auto px-6 py-10 lg:py-14 text-center">
         {brandName && (
-          <p className="text-[11px] tracking-[0.25em] uppercase text-black mb-3">{brandName}</p>
+          <p className="text-[11px] font-medium tracking-[0.25em] uppercase text-black mb-3">{brandName}</p>
         )}
 
         <h1 className="text-4xl lg:text-4xl font-medium tracking-[0.1em] uppercase text-black text-balance">
