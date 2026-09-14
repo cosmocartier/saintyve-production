@@ -70,6 +70,7 @@ export function ProductPageClient({
   const [isSizeDropdownOpen, setIsSizeDropdownOpen] = useState(false)
   const [isLightboxOpen, setIsLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
+  const [useImperialUnits, setUseImperialUnits] = useState(false)
   const { useRetailPrice } = usePriceMode()
 
   // Get the correct price based on the toggle state
@@ -267,6 +268,17 @@ export function ProductPageClient({
   }
 
   const brandName = product.name?.split(" ")[0] || null
+  const modelName = product.model?.trim() || product.name
+  const displayDetailColorName = selectedColor || availableColors[0]?.name || product.color?.trim() || null
+
+  const cmToIn = (cm: number) => (cm / 2.54).toFixed(1)
+  const hasDimensions =
+    product.dimension_width_cm != null && product.dimension_height_cm != null && product.dimension_depth_cm != null
+  const dimensionsValue = hasDimensions
+    ? useImperialUnits
+      ? `${cmToIn(product.dimension_width_cm!)} x ${cmToIn(product.dimension_height_cm!)} x ${cmToIn(product.dimension_depth_cm!)} in`
+      : `${product.dimension_width_cm} x ${product.dimension_height_cm} x ${product.dimension_depth_cm} cm`
+    : ""
 
   const toggleSizeDropdown = () => {
     setIsSizeDropdownOpen(!isSizeDropdownOpen)
@@ -358,69 +370,80 @@ export function ProductPageClient({
       </div>
 
       <Sheet open={isProductDetailsOpen} onOpenChange={setIsProductDetailsOpen}>
-        <SheetContent side="right" className="w-full sm:max-w-[500px] lg:max-w-[600px] overflow-y-auto p-0">
-          <SheetHeader className="px-6 pt-6 pb-4 border-b border-black/10">
-            <SheetTitle className="text-left text-base font-normal tracking-wide">Product details</SheetTitle>
+        <SheetContent
+          side="bottom"
+          className="h-auto max-h-[92vh] w-full rounded-t-2xl border-0 p-0 overflow-y-auto [&>button]:hidden"
+        >
+          <SheetHeader className="sr-only">
+            <SheetTitle>Product details</SheetTitle>
           </SheetHeader>
 
-          <div className="px-6 py-6 space-y-8">
-            {/* Product Description Section */}
-            {product.description && (
-              <div className="space-y-3">
-                <h3 className="text-sm font-medium tracking-wide">Description</h3>
-                <div
-                  className="text-sm text-zinc-700 leading-relaxed"
-                  dangerouslySetInnerHTML={{ __html: product.description }}
+          {/* Drag handle */}
+          <div className="flex justify-center pt-3 pb-1">
+            <div className="w-9 h-1 rounded-full bg-zinc-300" />
+          </div>
+
+          <div className="px-6 pb-10 pt-4">
+            {/* Brand / Model / Price */}
+            <div className="text-center mb-8">
+              {brandName && (
+                <p className="text-[11px] tracking-[0.25em] uppercase text-black mb-3">{brandName}</p>
+              )}
+              <h2 className="text-2xl font-medium tracking-[0.06em] uppercase text-black text-balance mb-4">
+                {modelName}
+              </h2>
+              <p className="text-base tracking-wide font-normal">EUR {displayPrice.toFixed(2)}</p>
+            </div>
+
+            {/* Chat + wishlist icons */}
+            <div className="flex items-center justify-center gap-1.5 mb-10">
+              <a
+                href="https://wa.me/yourwhatsappnumber"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-[52px] h-[52px] flex-shrink-0 flex items-center justify-center border border-zinc-200 transition-all active:scale-[0.98]"
+                aria-label="Chat with us"
+              >
+                <img src="/images/chat-icon.png" alt="Chat" className="w-4 h-4 object-contain" draggable="false" />
+              </a>
+
+              {(
+                <button
+                  onClick={handleToggleWishlist}
+                  className="w-[52px] h-[52px] flex-shrink-0 flex items-center justify-center border border-zinc-200 transition-all active:scale-[0.98]"
+                  aria-label={isLiked(product.id) ? "Remove from wishlist" : "Add to wishlist"}
+                >
+                  <img src="/images/star.png" alt="" className="w-5 h-5 object-contain" draggable="false" />
+                </button>
+              )}
+            </div>
+
+            {/* Details table */}
+            <div className="space-y-5">
+              {product.material && (
+                <DetailRow label="Material" value={product.material} />
+              )}
+              {displayDetailColorName && <DetailRow label="Colours" value={displayDetailColorName} />}
+              {hasDimensions && (
+                <DetailRow
+                  label="Dimensions"
+                  value={
+                    <span>
+                      {dimensionsValue}{" "}
+                      <button
+                        type="button"
+                        onClick={() => setUseImperialUnits((prev) => !prev)}
+                        className="underline hover:no-underline"
+                      >
+                        {useImperialUnits ? "cm" : "in"}
+                      </button>
+                    </span>
+                  }
                 />
-              </div>
-            )}
-
-            {/* Hairline divider */}
-            {product.description && product.product_details && <div className="border-t border-black/10" />}
-
-            {/* Product Details Section */}
-            {product.product_details && (
-              <div className="space-y-3">
-                <h3 className="text-sm font-medium tracking-wide">Product details</h3>
-                <div
-                  className="text-sm text-zinc-700 leading-relaxed"
-                  dangerouslySetInnerHTML={{ __html: product.product_details }}
-                />
-              </div>
-            )}
-
-            {/* Hairline divider */}
-            {product.product_details && product.size_and_fit && <div className="border-t border-black/10" />}
-
-            {/* Size & Fit Section */}
-            {product.size_and_fit && (
-              <div className="space-y-3">
-                <h3 className="text-sm font-medium tracking-wide">Size & Fit</h3>
-                <div className="text-sm text-zinc-700 leading-relaxed space-y-3">
-                  <div dangerouslySetInnerHTML={{ __html: product.size_and_fit }} />
-                  {(product.category === "Sneaker" || product.category === "Jacket" || product.category === "Vest") && (
-                    <p className="text-sm text-zinc-600">
-                      For more detailed sizing information, please refer to our{" "}
-                      <Link href="/size-guide" className="text-zinc-700 hover:underline transition-all">
-                        Size Guide
-                      </Link>
-                      .
-                    </p>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Hairline divider */}
-            {product.size_and_fit && <div className="border-t border-black/10" />}
-
-            {/* Materials & Care Section (hardcoded placeholder for now) */}
-            <div className="space-y-3">
-              <h3 className="text-sm font-medium tracking-wide">Materials and care</h3>
-              <div className="text-sm text-zinc-700 leading-relaxed space-y-2">
-                <p>Handle with care. Avoid exposure to direct sunlight and heat.</p>
-                <p>Clean with a soft, dry cloth. Do not use chemicals or abrasive materials.</p>
-              </div>
+              )}
+              {product.retail_price != null && (
+                <DetailRow label="Retail Price" value={`EUR ${product.retail_price.toFixed(2)}`} />
+              )}
             </div>
           </div>
         </SheetContent>
@@ -471,6 +494,15 @@ export function ProductPageClient({
       <BuildQualityBadge replicationAccuracy={product.replication_accuracy} isProductPage={true} />
 
       <Footer />
+    </div>
+  )
+}
+
+function DetailRow({ label, value }: { label: string; value: React.ReactNode }) {
+  return (
+    <div className="grid grid-cols-[100px_1fr] gap-x-4 items-baseline">
+      <span className="text-[11px] tracking-[0.15em] uppercase text-zinc-500">{label}</span>
+      <span className="text-base text-black tracking-wide">{value}</span>
     </div>
   )
 }
