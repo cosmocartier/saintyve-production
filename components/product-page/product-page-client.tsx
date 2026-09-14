@@ -21,7 +21,6 @@ import { buildImageObject } from "@/lib/cloudflare/cloudflare-images"
 import { ProductImageLightbox } from "@/components/product-page/product-image-lightbox"
 import { ProductHero } from "@/components/product-page/product-hero"
 import { ProductInfo } from "@/components/product-page/product-info"
-import { FloatingAddToCartBar } from "@/components/product-page/floating-add-to-cart-bar"
 import { BuildQualityBadge } from "@/components/build-quality-badge"
 import { ProductRecommendations } from "@/components/product-page/product-recommendations"
 import { usePriceMode } from "@/contexts/price-mode-context"
@@ -352,17 +351,10 @@ export function ProductPageClient({
           canAddToCart={canAddToCart}
           isAddingToCart={isAddingToCart}
           setIsShippingOpen={setIsShippingOpen}
+          isInWishlist={isLiked(product.id)}
+          onToggleWishlist={handleToggleWishlist}
         />
       </div>
-
-      <FloatingAddToCartBar
-        onAddToCart={handleAddToCart}
-        isAddToCartDisabled={!canAddToCart}
-        isAddingToCart={isAddingToCart}
-        addToCartLabel={!selectedVariant && hasMultipleSizes ? "SELECT SIZE FIRST" : "ADD TO CART"}
-        isInWishlist={isLiked(product.id)}
-        onToggleWishlist={handleToggleWishlist}
-      />
 
       <Sheet open={isProductDetailsOpen} onOpenChange={setIsProductDetailsOpen}>
         <SheetContent side="right" className="w-full sm:max-w-[500px] lg:max-w-[600px] overflow-y-auto p-0">

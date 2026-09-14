@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+import { useState } from "react"
 import type { Product, ProductVariant } from "@/lib/types/product"
 import { useRouter } from "next/navigation"
 import { generateAltText } from "@/lib/generate-alt-text"
@@ -40,6 +41,8 @@ interface ProductInfoProps {
   canAddToCart: boolean
   isAddingToCart: boolean
   setIsShippingOpen: (open: boolean) => void
+  isInWishlist?: boolean
+  onToggleWishlist?: () => void
 }
 
 export function ProductInfo({
@@ -61,8 +64,22 @@ export function ProductInfo({
   canAddToCart,
   isAddingToCart,
   setIsShippingOpen,
+  isInWishlist = false,
+  onToggleWishlist,
 }: ProductInfoProps) {
   const router = useRouter()
+  const [isWishlistAnimating, setIsWishlistAnimating] = useState(false)
+
+  const handleToggleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    if (isWishlistAnimating || !onToggleWishlist) return
+
+    setIsWishlistAnimating(true)
+    onToggleWishlist()
+    setTimeout(() => setIsWishlistAnimating(false), 200)
+  }
 
   return (
     <div className="w-full px-6 py-12 lg:px-16 lg:py-16">
@@ -225,11 +242,11 @@ export function ProductInfo({
           </div>
         )}
 
-        <div id="product-add-to-cart" className="mb-12">
+        <div id="product-add-to-cart" className="mb-12 flex items-stretch gap-1.5">
           <button
             onClick={handleAddToCart}
             disabled={!canAddToCart || isAddingToCart}
-            className="w-full h-[52px] flex items-center justify-between px-6 rounded-none bg-[#111111] text-white cursor-pointer hover:bg-black/80 transition-colors active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 h-[52px] flex items-center justify-between px-6 rounded-none bg-[#111111] text-white cursor-pointer hover:bg-black/80 transition-colors active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <span className="text-[11px] font-medium tracking-[0.18em] uppercase">
               {isAddingToCart
@@ -239,6 +256,33 @@ export function ProductInfo({
                   : "ADD TO CART"}
             </span>
           </button>
+
+          <a
+            href="https://wa.me/yourwhatsappnumber"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-[52px] h-[52px] flex-shrink-0 flex items-center justify-center border border-black transition-all active:scale-[0.98]"
+            aria-label="Chat with us"
+          >
+            <img src="/images/chat-icon.png" alt="Chat" className="w-4 h-4 object-contain" draggable="false" />
+          </a>
+
+          {onToggleWishlist && (
+            <button
+              onClick={handleToggleWishlist}
+              className="w-[52px] h-[52px] flex-shrink-0 flex items-center justify-center border border-black transition-all active:scale-[0.98]"
+              aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
+            >
+              <img
+                src="/images/star.png"
+                alt=""
+                className={`w-4 h-4 object-contain transition-transform duration-150 ease-out ${
+                  isWishlistAnimating ? "scale-90" : "scale-100"
+                }`}
+                draggable="false"
+              />
+            </button>
+          )}
         </div>
       </div>
     </div>
