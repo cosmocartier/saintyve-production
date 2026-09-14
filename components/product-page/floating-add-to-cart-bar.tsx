@@ -1,167 +1,114 @@
 "use client"
 
 import { useEffect, useState, useRef } from "react"
-import Image from "next/image"
 
 interface FloatingAddToCartBarProps {
-  price: number
-  currency?: string
   isInWishlist?: boolean
   onToggleWishlist?: () => void
   isAddToCartDisabled?: boolean
+  isAddingToCart?: boolean
   onAddToCart: () => void
+  addToCartLabel?: string
 }
 
 export function FloatingAddToCartBar({
-  price,
-  currency = "EUR",
   isInWishlist = false,
   onToggleWishlist,
   isAddToCartDisabled = false,
+  isAddingToCart = false,
   onAddToCart,
+  addToCartLabel = "ADD TO CART",
 }: FloatingAddToCartBarProps) {
   const [isVisible, setIsVisible] = useState(false)
-  const [hasScrolled, setHasScrolled] = useState(false)
-  const [showFilled, setShowFilled] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
   const observerRef = useRef<IntersectionObserver | null>(null)
 
   useEffect(() => {
-    const SCROLL_THRESHOLD = 24
-
-    // Handle scroll to detect if user has scrolled past threshold
-    const handleScroll = () => {
-      const scrolled = window.scrollY > SCROLL_THRESHOLD
-      setHasScrolled(scrolled)
-    }
-
-    // Create intersection observer for the product add-to-cart section
+    // The floating bar's timing is driven entirely by the visibility of the
+    // in-page add-to-cart button: as soon as it scrolls out of view, the
+    // floating bar slides in to take its place. As soon as it scrolls back
+    // into view (e.g. user scrolls back up), the floating bar slides out.
     const productAddToCartSection = document.querySelector("#product-add-to-cart")
-    const youMayAlsoLikeSection = document.querySelector("#you-may-also-like")
 
     if (productAddToCartSection) {
       observerRef.current = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
-            // If the product ATC section is visible, hide the floating bar
-            // Otherwise, show it if user has scrolled
-            if (entry.isIntersecting && entry.intersectionRatio >= 0.15) {
-              setIsVisible(false)
-            } else if (hasScrolled) {
-              setIsVisible(true)
-            }
+            setIsVisible(!entry.isIntersecting)
           })
         },
         {
-          threshold: [0, 0.15, 0.5, 1.0],
-          rootMargin: "0px",
+          threshold: 0,
+          rootMargin: "-96px 0px 0px 0px",
         },
       )
 
       observerRef.current.observe(productAddToCartSection)
     }
 
-    // Add scroll listener
-    window.addEventListener("scroll", handleScroll, { passive: true })
-    handleScroll() // Check initial state
-
     return () => {
-      window.removeEventListener("scroll", handleScroll)
       if (observerRef.current) {
         observerRef.current.disconnect()
       }
     }
-  }, [hasScrolled])
+  }, [])
 
-  const handleToggleWishlist = async (e: React.MouseEvent) => {
+  const handleToggleWishlist = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
 
     if (isAnimating || !onToggleWishlist) return
 
     setIsAnimating(true)
-
     onToggleWishlist()
-
-    if (!isInWishlist) {
-      // Liking animation
-      setShowFilled(true)
-      setTimeout(() => {
-        setIsAnimating(false)
-      }, 200)
-    } else {
-      // Unliking animation
-      setTimeout(() => {
-        setShowFilled(false)
-        setIsAnimating(false)
-      }, 150)
-    }
+    setTimeout(() => setIsAnimating(false), 200)
   }
 
   return (
     <div
-      className={`md:hidden fixed bottom-0 left-0 right-0 z-50 transition-all duration-200 ease-out ${
-        isVisible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"
+      className={`md:hidden fixed bottom-0 left-0 right-0 z-50 transition-transform duration-300 ease-out ${
+        isVisible ? "translate-y-0" : "translate-y-full"
       }`}
       style={{
         pointerEvents: isVisible ? "auto" : "none",
       }}
     >
-      <div className="bg-white shadow-[0_-4px_12px_rgba(0,0,0,0.08)] border-t border-black/10 px-4 py-5 flex items-center gap-4">
+      <div className="flex items-stretch gap-1.5 bg-white px-1.5 pb-1.5 pt-1">
         {/* Add to Cart Button */}
         <button
           onClick={onAddToCart}
           disabled={isAddToCartDisabled}
-          className="flex-1 h-[60px] bg-[#2c2c2c] text-white flex items-center justify-between px-6 uppercase text-sm font-normal tracking-[0.15em] transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]"
-          style={{ minHeight: "48px" }}
+          className="flex-1 h-[60px] bg-[#111111] text-white flex items-center px-6 uppercase text-sm font-normal tracking-[0.15em] transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]"
         >
-          <div className="flex items-center gap-3">
-            <Image
-              src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/9a2f7cad-25c0-41eb-b3d8-c63ac6393300/iconmobile"
-              alt="Shopping Bag"
-              width={16}
-              height={16}
-              className="brightness-0 invert"
-            />
-            <span>ADD</span>
-          </div>
-          <span className="text-sm font-light tracking-wide">
-            {price.toFixed(2)} {currency}
-          </span>
+          {isAddingToCart ? "ADDING..." : addToCartLabel}
         </button>
+
+        {/* Chat Button */}
+        <a
+          href="https://wa.me/yourwhatsappnumber"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-[60px] h-[60px] flex-shrink-0 flex items-center justify-center border border-black transition-all active:scale-[0.98]"
+          aria-label="Chat with us"
+        >
+          <img src="/images/chat-icon.png" alt="Chat" className="w-5 h-5 object-contain" draggable="false" />
+        </a>
 
         {/* Wishlist Button */}
         {onToggleWishlist && (
           <button
             onClick={handleToggleWishlist}
-            className="w-[60px] h-[60px] flex items-center justify-center border border-black transition-all active:scale-[0.98]"
-            style={{ minHeight: "48px", minWidth: "48px" }}
+            className="w-[60px] h-[60px] flex-shrink-0 flex items-center justify-center border border-black transition-all active:scale-[0.98]"
             aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
           >
-            <div className="relative w-5 h-5">
-              {/* Empty heart */}
-              <img
-                src="/images/heart-empty.png"
-                alt="Wishlist"
-                className={`absolute inset-0 w-full h-full object-contain transition-all duration-150 ease-out ${
-                  isInWishlist || showFilled ? "opacity-0 scale-95" : "opacity-100 scale-100"
-                } ${isAnimating && !isInWishlist ? "heart-tap" : ""}`}
-                draggable="false"
-              />
-              {/* Filled heart */}
-              <img
-                src="/images/heart-filled.png"
-                alt="Liked"
-                className={`absolute inset-0 w-full h-full object-contain transition-all ${
-                  isInWishlist || showFilled
-                    ? isAnimating && !isInWishlist
-                      ? "opacity-100 heart-fill-pop"
-                      : "opacity-100 scale-100"
-                    : "opacity-0 scale-90"
-                }`}
-                draggable="false"
-              />
-            </div>
+            <img
+              src="/images/star.png"
+              alt=""
+              className={`w-5 h-5 object-contain transition-transform duration-150 ease-out ${
+                isAnimating ? "scale-90" : "scale-100"
+              }`}
+              draggable="false"
+            />
           </button>
         )}
       </div>
