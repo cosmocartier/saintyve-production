@@ -2,6 +2,8 @@ export interface Product {
   id: string
   slug: string
   name: string
+  model?: string | null
+  color?: string | null
   description: string | null
   price: number
   /** Manufacturer suggested retail price shown crossed-out for price-mode toggle */
