@@ -4,6 +4,10 @@ export interface Product {
   name: string
   model?: string | null
   color?: string | null
+  material?: string | null
+  dimension_width_cm?: number | null
+  dimension_height_cm?: number | null
+  dimension_depth_cm?: number | null
   description: string | null
   price: number
   /** Manufacturer suggested retail price shown crossed-out for price-mode toggle */
