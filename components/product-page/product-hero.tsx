@@ -71,7 +71,7 @@ export function ProductHero({
           <p className="text-[11px] tracking-[0.25em] uppercase text-black mb-3">{brandName}</p>
         )}
 
-        <h1 className="text-3xl lg:text-4xl font-extrabold tracking-tight uppercase text-black text-balance">
+        <h1 className="text-3xl lg:text-4xl font-bold tracking-[0.2em] uppercase text-black text-balance">
           {modelName}
         </h1>
 
