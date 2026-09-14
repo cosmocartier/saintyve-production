@@ -7,6 +7,7 @@ import { generateAltText } from "@/lib/generate-alt-text"
 interface ProductHeroProps {
   product: Product
   brandName: string | null
+  colorName?: string | null
   allMedia: string[]
   videoCount: number
   imageAltTexts: Array<string | null | undefined>
@@ -20,6 +21,7 @@ interface ProductHeroProps {
 export function ProductHero({
   product,
   brandName,
+  colorName,
   allMedia,
   videoCount,
   imageAltTexts,
@@ -29,6 +31,10 @@ export function ProductHero({
   onImageClick,
   onDetailsClick,
 }: ProductHeroProps) {
+  const modelName =
+    colorName && product.name.toLowerCase().endsWith(colorName.toLowerCase())
+      ? product.name.slice(0, product.name.length - colorName.length).trim()
+      : product.name
   const renderMedia = (index: number, className: string, priority = false) => {
     const mediaUrl = allMedia[index]
     const isVideo = index < videoCount
@@ -65,15 +71,14 @@ export function ProductHero({
       <div className="max-w-xl mx-auto px-6 py-10 lg:py-14 text-center">
         {brandName && <p className="text-[11px] tracking-[0.25em] uppercase text-zinc-500 mb-3">{brandName}</p>}
 
-        <h1 className="text-xl lg:text-2xl font-medium tracking-tight uppercase mb-8 text-balance">
-          {product.name}
-        </h1>
+        <h1 className="text-2xl lg:text-3xl font-bold tracking-tight uppercase mb-10 text-balance">{modelName}</h1>
 
         <button
           onClick={onDetailsClick}
-          className="w-full flex items-center justify-center gap-2 text-[11px] tracking-[0.2em] uppercase text-zinc-600 border-t border-b border-zinc-200 py-3.5 mb-8 hover:text-black transition-colors"
+          className="inline-flex flex-col items-center gap-2 mx-auto mb-10 text-[11px] tracking-[0.2em] uppercase text-black hover:opacity-70 transition-opacity"
         >
-          Details &amp; Care
+          <span>Details &amp; Care</span>
+          <span className="w-full h-px bg-black" />
         </button>
 
         <div className="flex items-baseline justify-center gap-3">

@@ -316,6 +316,7 @@ export function ProductPageClient({
         <ProductHero
           product={product}
           brandName={brandName}
+          colorName={selectedColor || availableColors[0]?.name || null}
           allMedia={allMedia}
           videoCount={displayVideos.length}
           imageAltTexts={displayImages.map((_, i) => filteredImages[i]?.alt_text)}
