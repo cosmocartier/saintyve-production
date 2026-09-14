@@ -31,10 +31,8 @@ export function ProductHero({
   onImageClick,
   onDetailsClick,
 }: ProductHeroProps) {
-  const modelName =
-    colorName && product.name.toLowerCase().endsWith(colorName.toLowerCase())
-      ? product.name.slice(0, product.name.length - colorName.length).trim()
-      : product.name
+  const modelName = product.model?.trim() || product.name
+  const displayColorName = colorName || product.color?.trim() || null
   const renderMedia = (index: number, className: string, priority = false) => {
     const mediaUrl = allMedia[index]
     const isVideo = index < videoCount
@@ -77,10 +75,10 @@ export function ProductHero({
           {modelName}
         </h1>
 
-        {colorName && (
-          <p className="text-sm text-zinc-500 tracking-wide mt-2 mb-10">{colorName}</p>
+        {displayColorName && (
+          <p className="text-sm text-zinc-500 tracking-wide mt-2 mb-10 text-center">{displayColorName}</p>
         )}
-        {!colorName && <div className="mb-10" />}
+        {!displayColorName && <div className="mb-10" />}
 
         <button
           onClick={onDetailsClick}
