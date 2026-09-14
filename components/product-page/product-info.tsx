@@ -261,7 +261,7 @@ export function ProductInfo({
             href="https://wa.me/yourwhatsappnumber"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-[52px] h-[52px] flex-shrink-0 flex items-center justify-center border border-black transition-all active:scale-[0.98]"
+            className="w-[52px] h-[52px] flex-shrink-0 flex items-center justify-center border border-zinc-200 transition-all active:scale-[0.98]"
             aria-label="Chat with us"
           >
             <img src="/images/chat-icon.png" alt="Chat" className="w-4 h-4 object-contain" draggable="false" />
@@ -270,7 +270,7 @@ export function ProductInfo({
           {onToggleWishlist && (
             <button
               onClick={handleToggleWishlist}
-              className="w-[52px] h-[52px] flex-shrink-0 flex items-center justify-center border border-black transition-all active:scale-[0.98]"
+              className="w-[52px] h-[52px] flex-shrink-0 flex items-center justify-center border border-zinc-200 transition-all active:scale-[0.98]"
               aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
             >
               <img
