@@ -276,7 +276,7 @@ export function ProductInfo({
               <img
                 src="/images/star.png"
                 alt=""
-                className={`w-4 h-4 object-contain transition-transform duration-150 ease-out ${
+                className={`w-5 h-5 object-contain transition-transform duration-150 ease-out ${
                   isWishlistAnimating ? "scale-90" : "scale-100"
                 }`}
                 draggable="false"
