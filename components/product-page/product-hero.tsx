@@ -84,7 +84,7 @@ export function ProductHero({
           onClick={onDetailsClick}
           className="inline-flex flex-col items-center gap-2 mx-auto mb-10 text-[11px] tracking-[0.2em] uppercase text-black hover:opacity-70 transition-opacity"
         >
-          <span>Details &amp; Care</span>
+          <span>See Details</span>
           <span className="w-full h-px bg-black" />
         </button>
 
