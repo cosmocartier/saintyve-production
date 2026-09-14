@@ -248,7 +248,7 @@ export function ProductInfo({
             disabled={!canAddToCart || isAddingToCart}
             className="flex-1 h-[52px] flex items-center justify-between px-6 rounded-none bg-[#111111] text-white cursor-pointer hover:bg-black/80 transition-colors active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <span className="text-[11px] font-medium tracking-[0.18em] uppercase">
+            <span className="text-[11px] font-bold tracking-[0.18em] uppercase">
               {isAddingToCart
                 ? "ADDING..."
                 : !selectedVariant && hasMultipleSizes
@@ -276,7 +276,7 @@ export function ProductInfo({
               <img
                 src="/images/star.png"
                 alt=""
-                className={`w-4 h-4 object-contain transition-transform duration-150 ease-out ${
+                className={`w-5 h-5 object-contain transition-transform duration-150 ease-out ${
                   isWishlistAnimating ? "scale-90" : "scale-100"
                 }`}
                 draggable="false"
