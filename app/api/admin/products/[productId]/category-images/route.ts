@@ -56,7 +56,7 @@ export async function POST(request: NextRequest, { params }: { params: { product
         .insert({
           product_id: params.productId,
           cf_image_id: cfImageId,
-          role: "gallery",
+          role: "category",
           category_image: true,
           sort_order: nextSortOrder++,
           alt_text: altText,
