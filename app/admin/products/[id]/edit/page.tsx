@@ -44,6 +44,14 @@ export default async function EditProductPage({ params }: { params: { id: string
     .from("product_images_cf")
     .select("*")
     .eq("product_id", params.id)
+    .eq("category_image", false)
+    .order("sort_order", { ascending: true })
+
+  const { data: categoryImages } = await supabase
+    .from("product_images_cf")
+    .select("*")
+    .eq("product_id", params.id)
+    .eq("category_image", true)
     .order("sort_order", { ascending: true })
 
   const { data: factoryMedia } = await supabase
@@ -81,6 +89,7 @@ export default async function EditProductPage({ params }: { params: { id: string
         <EditProductForm
           product={{ ...product, product_images: sortedImages }}
           cfImages={cfImages || []}
+          categoryImages={categoryImages || []}
           factoryMedia={factoryMedia || []}
         />
       </div>

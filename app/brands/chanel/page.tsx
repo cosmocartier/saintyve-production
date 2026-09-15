@@ -31,7 +31,8 @@ export default async function ChanelPage() {
         cf_image_id,
         alt_text,
         sort_order,
-        role
+        role,
+        category_image
       )
     `)
     .eq("brand", "Chanel")
@@ -48,26 +49,49 @@ export default async function ChanelPage() {
   // Optimize images - convert CF image IDs to URLs
   const optimizedProducts =
     productsData?.map((product: any) => {
-      const sortedByOrder =
-        product.product_images_cf?.slice().sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0)) || []
+      const allImages = product.product_images_cf || []
 
-      // First image = the Title Image (role === "primary")
-      const titleImage = sortedByOrder.find((img: any) => img.role === "primary") || sortedByOrder[0]
+      // Category/Brand-page-specific images, curated separately from the
+      // default product-page images. When present, these take priority.
+      const categoryImages = allImages
+        .filter((img: any) => img.category_image === true)
+        .slice()
+        .sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0))
 
-      // Second image = the actual second image in sort order (not the first), excluding the title image
-      const secondImage = sortedByOrder.find((img: any) => img.id !== titleImage?.id) || sortedByOrder[1]
+      let displayImages: any[]
 
-      const displayImages = [titleImage, secondImage]
-        .filter(Boolean)
-        .filter((img, index, arr) => arr.findIndex((i) => i.id === img.id) === index)
-        .map((img: any) => ({
+      if (categoryImages.length > 0) {
+        displayImages = categoryImages.map((img: any) => ({
           id: img.id,
           url: buildCfUrl(img.cf_image_id, "grid"),
           alt_text: img.alt_text,
           display_order: img.sort_order,
-          color_name: img.color_name,
-          color_hex: img.color_hex,
         }))
+      } else {
+        // Fallback: default product-page images (title + second image)
+        const sortedByOrder = allImages
+          .filter((img: any) => !img.category_image)
+          .slice()
+          .sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0))
+
+        // First image = the Title Image (role === "primary")
+        const titleImage = sortedByOrder.find((img: any) => img.role === "primary") || sortedByOrder[0]
+
+        // Second image = the actual second image in sort order (not the first), excluding the title image
+        const secondImage = sortedByOrder.find((img: any) => img.id !== titleImage?.id) || sortedByOrder[1]
+
+        displayImages = [titleImage, secondImage]
+          .filter(Boolean)
+          .filter((img, index, arr) => arr.findIndex((i) => i.id === img.id) === index)
+          .map((img: any) => ({
+            id: img.id,
+            url: buildCfUrl(img.cf_image_id, "grid"),
+            alt_text: img.alt_text,
+            display_order: img.sort_order,
+            color_name: img.color_name,
+            color_hex: img.color_hex,
+          }))
+      }
 
       return {
         ...product,
