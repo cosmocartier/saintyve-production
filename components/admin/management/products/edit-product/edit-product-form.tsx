@@ -18,6 +18,7 @@ import { toast } from "sonner"
 // Import generateSizeFit action
 import { generateSizeFit } from "@/app/actions/generate-size-fit"
 import { CloudflareImagesSection } from "@/components/admin/management/products/edit-product/product-images"
+import { CategoryImagesSection } from "@/components/admin/management/products/edit-product/category-images"
 import { ProductIdentity } from "@/components/admin/management/products/edit-product/product-identity"
 import { ProductAttributes } from "@/components/admin/management/products/edit-product/product-attributes"
 import { ProductDescription } from "@/components/admin/management/products/edit-product/product-description"
@@ -155,12 +156,22 @@ interface EditProductFormProps {
     alt_text: string | null
     created_at: string
   }>
+  categoryImages?: Array<{
+    id: string
+    product_id: string
+    cf_image_id: string
+    category_image: boolean
+    sort_order: number
+    alt_text: string | null
+    created_at: string
+  }>
   factoryMedia?: FactoryMediaItem[]
 }
 
 export default function EditProductForm({
   product: initialProduct,
   cfImages = [],
+  categoryImages = [],
   factoryMedia = [],
 }: EditProductFormProps) {
   const router = useRouter()
@@ -1888,6 +1899,16 @@ export default function EditProductForm({
             initialImages={cfImages}
             onUpdate={() => {
               // Refresh page or refetch data
+              router.refresh()
+            }}
+          />
+        </div>
+
+        <div className="rounded-2xl border border-white/8 bg-[#131313] p-6">
+          <CategoryImagesSection
+            productId={product.id}
+            initialImages={categoryImages}
+            onUpdate={() => {
               router.refresh()
             }}
           />
