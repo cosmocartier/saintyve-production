@@ -248,7 +248,7 @@ export function ProductInfo({
             disabled={!canAddToCart || isAddingToCart}
             className="flex-1 h-[52px] flex items-center justify-between px-6 rounded-none bg-[#111111] text-white cursor-pointer hover:bg-black/80 transition-colors active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <span className="text-[11px] font-bold tracking-[0.18em] uppercase">
+            <span className="text-[11px] font-medium tracking-[0.18em] uppercase">
               {isAddingToCart
                 ? "ADDING..."
                 : !selectedVariant && hasMultipleSizes
