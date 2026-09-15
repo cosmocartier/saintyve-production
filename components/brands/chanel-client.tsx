@@ -61,7 +61,7 @@ export function ChanelClient({ initialProducts }: ChanelClientProps) {
                   hidePrice
                   emphasizedTitle
                   preloadSecondImage
-                  aspectRatio="1/1"
+                  aspectRatio="4/5"
                   hideColorInTitle
                 />
               ))}
