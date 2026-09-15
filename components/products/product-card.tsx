@@ -38,7 +38,8 @@ interface ProductCardProps {
   hidePrice?: boolean
   emphasizedTitle?: boolean
   preloadSecondImage?: boolean
-  aspectRatio?: "3/4" | "4/5"
+  aspectRatio?: "1/1" | "3/4" | "4/5"
+  hideColorInTitle?: boolean
 }
 
 export function ProductCard({
@@ -49,6 +50,7 @@ export function ProductCard({
   emphasizedTitle = false,
   preloadSecondImage = false,
   aspectRatio = "3/4",
+  hideColorInTitle = false,
 }: ProductCardProps) {
   const { addItem } = useCart()
   const { toggleLike, isLiked } = useWishlist()
@@ -232,7 +234,9 @@ export function ProductCard({
       prefetch={false}
     >
       <div
-        className={`relative w-full ${aspectRatio === "4/5" ? "aspect-[4/5]" : "aspect-[3/4]"} overflow-hidden bg-gray-50`}
+        className={`relative w-full ${
+          aspectRatio === "1/1" ? "aspect-square" : aspectRatio === "4/5" ? "aspect-[4/5]" : "aspect-[3/4]"
+        } overflow-hidden bg-gray-50`}
       >
         {/* Mobile: Static first image (all pages) */}
         <div className="lg:hidden w-full h-full">
@@ -377,8 +381,10 @@ export function ProductCard({
               : "text-[14px] font-light text-black truncate tracking-tight"
           }
         >
-          {product.brand && product.model && product.color
-            ? `${product.brand} ${product.model} ${product.color}`
+          {product.brand && product.model
+            ? hideColorInTitle || !product.color
+              ? `${product.brand} ${product.model}`
+              : `${product.brand} ${product.model} ${product.color}`
             : product.name}
         </h3>
         {!hidePrice && (
