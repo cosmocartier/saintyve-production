@@ -17,19 +17,12 @@ export function ProductImageZoom({ src, alt, className, priority, onClick }: Pro
 
   return (
     <div className={cn("relative overflow-hidden bg-[#F5F5F5] cursor-pointer", className)} onClick={onClick}>
-      {/* Loading placeholder */}
-      {isLoading && (
-        <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
-          <div className="w-8 h-8 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
-        </div>
-      )}
-
-      {/* Main image - no zoom, just static display */}
+      {/* Main image - invisible preloader, seamless fade-in, no zoom */}
       <img
         src={src || "/placeholder.svg"}
         alt={alt}
         className={cn(
-          "w-full h-auto object-cover transition-opacity duration-300",
+          "w-full h-auto object-cover transition-opacity duration-500 ease-out",
           isLoading ? "opacity-0" : "opacity-100",
           hasError && "hidden",
         )}
@@ -43,7 +36,7 @@ export function ProductImageZoom({ src, alt, className, priority, onClick }: Pro
 
       {/* Error fallback */}
       {hasError && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 text-gray-400 text-sm">
+        <div className="absolute inset-0 flex items-center justify-center bg-[#F5F5F5] text-zinc-400 text-xs tracking-wide uppercase">
           Image unavailable
         </div>
       )}
