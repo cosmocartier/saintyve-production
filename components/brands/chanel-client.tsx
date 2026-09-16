@@ -51,9 +51,21 @@ export function ChanelClient({ initialProducts }: ChanelClientProps) {
   // "Maxi Flap Bags" — models that contain "Flap Bag"
   const flapBags = products.filter((product) => /flap bag/i.test(product.model || ""))
 
+  // "Tote Bags" — models that contain the standalone token "Tote"
+  const totes = products.filter((product) => /\btote\b/i.test(product.model || ""))
+
+  // "Shopper Bags" — models that contain the standalone token "Shopper"
+  const shoppers = products.filter((product) => /\bshopper\b/i.test(product.model || ""))
+
+  // "Vanity Cases" — models that contain the standalone token "Vanity"
+  const vanities = products.filter((product) => /\bvanity\b/i.test(product.model || ""))
+
   const sections = [
     { title: "Chanel 25", items: chanel25 },
     { title: "Maxi Flap Bags", items: flapBags },
+    { title: "Tote", items: totes },
+    { title: "Shopper", items: shoppers },
+    { title: "Vanity", items: vanities },
   ].filter((section) => section.items.length > 0)
 
   return (
