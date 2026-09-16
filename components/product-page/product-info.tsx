@@ -242,11 +242,11 @@ export function ProductInfo({
           </div>
         )}
 
-        <div id="product-add-to-cart" className="mb-12 flex items-stretch gap-1.5">
+        <div id="product-add-to-cart" className="mb-6 flex items-stretch gap-1.5">
           <button
             onClick={handleAddToCart}
             disabled={!canAddToCart || isAddingToCart}
-            className="flex-1 h-[52px] flex items-center justify-between px-6 rounded-none bg-[#111111] text-white cursor-pointer hover:bg-black/80 transition-colors active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 h-[52px] flex items-center justify-center px-6 rounded-none bg-[#111111] text-white cursor-pointer hover:bg-black/80 transition-colors active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <span className="text-[11px] font-medium tracking-[0.18em] uppercase">
               {isAddingToCart
