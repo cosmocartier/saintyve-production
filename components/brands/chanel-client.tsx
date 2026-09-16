@@ -44,28 +44,59 @@ export function ChanelClient({ initialProducts }: ChanelClientProps) {
     }
   }, [])
 
+  // "Chanel 25" — models that contain the standalone token "25"
+  // (matches "25 Mini", "25 Small Handbag", "25 Large Handbag" but not "22 Mini Handbag")
+  const chanel25 = products.filter((product) => /\b25\b/.test(product.model || ""))
+
+  // "Maxi Flap Bags" — models that contain "Flap Bag"
+  const flapBags = products.filter((product) => /flap bag/i.test(product.model || ""))
+
+  // "Tote Bags" — models that contain the standalone token "Tote"
+  const totes = products.filter((product) => /\btote\b/i.test(product.model || ""))
+
+  // "Shopper Bags" — models that contain the standalone token "Shopper"
+  const shoppers = products.filter((product) => /\bshopper\b/i.test(product.model || ""))
+
+  // "Vanity Cases" — models that contain the standalone token "Vanity"
+  const vanities = products.filter((product) => /\bvanity\b/i.test(product.model || ""))
+
+  const sections = [
+    { title: "Chanel 25", items: chanel25 },
+    { title: "Maxi Flap Bags", items: flapBags },
+    { title: "Tote", items: totes },
+    { title: "Shopper", items: shoppers },
+    { title: "Vanity", items: vanities },
+  ].filter((section) => section.items.length > 0)
+
   return (
     <>
       <div className="bg-white py-[0]">
         <div className="w-full max-w-[1920px] mx-auto">
-          {products.length === 0 ? (
+          {sections.length === 0 ? (
             <div className="text-center py-16 px-8">
               <p className="text-gray-400 text-sm tracking-widest uppercase">NO PRODUCTS FOUND</p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-[1px] lg:gap-x-1 gap-y-5 my-2.5">
-              {products.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  hidePrice
-                  emphasizedTitle
-                  preloadSecondImage
-                  aspectRatio="4/5"
-                  hideColorInTitle
-                />
-              ))}
-            </div>
+            sections.map((section) => (
+              <section key={section.title} className="mb-12 lg:mb-16">
+                <h2 className="text-center text-sm lg:text-base tracking-[0.25em] uppercase text-black py-8 lg:py-10">
+                  {section.title}
+                </h2>
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-[1px] lg:gap-x-1 gap-y-5 my-2.5">
+                  {section.items.map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      hidePrice
+                      emphasizedTitle
+                      preloadSecondImage
+                      aspectRatio="4/5"
+                      hideColorInTitle
+                    />
+                  ))}
+                </div>
+              </section>
+            ))
           )}
         </div>
       </div>
