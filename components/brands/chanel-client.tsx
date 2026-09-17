@@ -83,16 +83,17 @@ export function ChanelClient({ initialProducts }: ChanelClientProps) {
                   {section.title}
                 </h2>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-[1px] lg:gap-x-1 gap-y-5 my-2.5">
-                  {section.items.map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      hidePrice
-                      emphasizedTitle
-                      preloadSecondImage
-                      aspectRatio="4/5"
-                      hideColorInTitle
-                    />
+                  {section.items.map((product, index) => (
+                    <div key={product.id} className={index === 0 ? "col-span-2 lg:col-span-1" : ""}>
+                      <ProductCard
+                        product={product}
+                        hidePrice
+                        emphasizedTitle
+                        preloadSecondImage
+                        aspectRatio="4/5"
+                        hideColorInTitle
+                      />
+                    </div>
                   ))}
                 </div>
               </section>
