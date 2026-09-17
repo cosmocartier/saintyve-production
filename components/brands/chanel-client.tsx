@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Link from "next/link"
 import { ProductCard } from "../products/product-card"
 import type { Product } from "@/lib/types/product"
 
@@ -61,11 +62,11 @@ export function ChanelClient({ initialProducts }: ChanelClientProps) {
   const vanities = products.filter((product) => /\bvanity\b/i.test(product.model || ""))
 
   const sections = [
-    { title: "Chanel 25", items: chanel25 },
-    { title: "Maxi Flap Bags", items: flapBags },
-    { title: "Tote", items: totes },
-    { title: "Shopper", items: shoppers },
-    { title: "Vanity", items: vanities },
+    { title: "Chanel 25", items: chanel25, href: "/brands/chanel/25" },
+    { title: "Maxi Flap Bags", items: flapBags, href: "/brands/chanel/flap-bags" },
+    { title: "Tote", items: totes, href: "/brands/chanel/tote" },
+    { title: "Shopper", items: shoppers, href: "/brands/chanel/shopper" },
+    { title: "Vanity", items: vanities, href: "/brands/chanel/vanity" },
   ].filter((section) => section.items.length > 0)
 
   return (
@@ -79,12 +80,20 @@ export function ChanelClient({ initialProducts }: ChanelClientProps) {
           ) : (
             sections.map((section) => (
               <section key={section.title} className="mb-12 lg:mb-16">
-                <h2 className="text-center text-sm lg:text-base tracking-[0.25em] uppercase text-black py-8 lg:py-10">
-                  {section.title}
+                <h2 className="text-center py-8 lg:py-10">
+                  <Link
+                    href={section.href}
+                    className="text-sm lg:text-base font-semibold tracking-[0.25em] uppercase text-black transition-opacity hover:opacity-60"
+                  >
+                    {section.title}
+                  </Link>
                 </h2>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-[1px] lg:gap-x-1 gap-y-5 my-2.5">
                   {section.items.map((product, index) => (
-                    <div key={product.id} className={index === 0 ? "col-span-2 lg:col-span-1" : ""}>
+                    <div
+                      key={product.id}
+                      className={`${index === 0 ? "col-span-2 lg:col-span-1" : ""} ${index >= 5 ? "hidden lg:block" : ""}`}
+                    >
                       <ProductCard
                         product={product}
                         hidePrice
