@@ -8,7 +8,6 @@ import { Navigation } from "@/components/navigation"
 import { subscribeToNewsletter } from "@/app/actions/newsletter"
 import { Footer } from "@/components/footer"
 import { CategorySwitcherSection } from "@/components/category-switcher-section"
-import { CollectionShowcase } from "@/components/collection-showcase"
 
 
 interface Product {
@@ -107,29 +106,51 @@ export default function BananaSportswearStorefront() {
           <Navigation />
         </div>
 
-        <CollectionShowcase
-          title="Chanel"
-          brand="Chanel"
-          category="Bag"
-          limit={4}
-          seeMoreLink="/brands/chanel"
-        />
+        <section className="w-full">
+          <div className="flex flex-col lg:flex-row w-full">
+            <Link
+              href="/brands/chanel"
+              className="relative w-full lg:w-1/2 aspect-square block overflow-hidden group"
+            >
+              <img
+                src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/32f7853d-c8af-451b-5941-00a7cba17900/w=800"
+                alt="Chanel Collection"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 z-10 flex flex-col items-start justify-end pb-10 px-4 lg:px-12">
+                <span
+                  className="inline-block text-[13px] font-bold uppercase text-white transition-opacity group-hover:opacity-80"
+                  style={{
+                    letterSpacing: "0.12em",
+                  }}
+                >
+                  Shop Collection
+                </span>
+              </div>
+            </Link>
 
-        <CollectionShowcase
-          title="Hermes"
-          brand="Hermes"
-          category="Bag"
-          limit={4}
-          seeMoreLink="/brands/hermes"
-        />
-
-        <CollectionShowcase
-          title="Yves Saint Laurent"
-          brand="YSL"
-          category="Bag"
-          limit={4}
-          seeMoreLink="/brands/ysl"
-        />
+            <Link
+              href="/brands/hermes"
+              className="relative w-full lg:w-1/2 aspect-square block overflow-hidden group"
+            >
+              <img
+                src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/bde95369-55ba-44e1-0390-df3e83768800/w=800"
+                alt="Hermes Collection"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 z-10 flex flex-col items-start justify-end pb-10 px-4 lg:px-12">
+                <span
+                  className="inline-block text-[13px] font-bold uppercase text-white transition-opacity group-hover:opacity-80"
+                  style={{
+                    letterSpacing: "0.12em",
+                  }}
+                >
+                  Shop Collection
+                </span>
+              </div>
+            </Link>
+          </div>
+        </section>
 
         {/* CategorySwitcherSection temporarily hidden from the landing page.
             To re-enable, uncomment the line below. */}
