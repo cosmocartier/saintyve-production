@@ -117,7 +117,14 @@ export default function BananaSportswearStorefront() {
                 alt="Chanel Collection"
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 z-10 flex flex-col items-start justify-end pb-10 px-4 lg:px-12">
+              <div
+                className="absolute inset-0 z-10 pointer-events-none"
+                style={{
+                  background:
+                    "radial-gradient(125% 125% at 0% 100%, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.55) 22%, rgba(0,0,0,0.22) 42%, transparent 62%)",
+                }}
+              />
+              <div className="absolute inset-0 z-20 flex flex-col items-start justify-end pb-10 px-4 lg:px-12">
                 <span
                   className="inline-block text-[13px] font-bold uppercase text-white transition-opacity group-hover:opacity-80"
                   style={{
@@ -138,7 +145,14 @@ export default function BananaSportswearStorefront() {
                 alt="Hermes Collection"
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 z-10 flex flex-col items-start justify-end pb-10 px-4 lg:px-12">
+              <div
+                className="absolute inset-0 z-10 pointer-events-none"
+                style={{
+                  background:
+                    "radial-gradient(125% 125% at 0% 100%, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.55) 22%, rgba(0,0,0,0.22) 42%, transparent 62%)",
+                }}
+              />
+              <div className="absolute inset-0 z-20 flex flex-col items-start justify-end pb-10 px-4 lg:px-12">
                 <span
                   className="inline-block text-[13px] font-bold uppercase text-white transition-opacity group-hover:opacity-80"
                   style={{
