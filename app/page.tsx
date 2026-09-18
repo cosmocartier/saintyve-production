@@ -124,7 +124,7 @@ export default function BananaSportswearStorefront() {
                     letterSpacing: "0.12em",
                   }}
                 >
-                  Shop Collection
+                  Chanel
                 </span>
               </div>
             </Link>
@@ -145,7 +145,7 @@ export default function BananaSportswearStorefront() {
                     letterSpacing: "0.12em",
                   }}
                 >
-                  Shop Collection
+                  Hermes
                 </span>
               </div>
             </Link>
