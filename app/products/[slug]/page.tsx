@@ -69,7 +69,7 @@ async function getProduct(slug: string): Promise<{
       .from("product_images_cf")
       .select("product_id, cf_image_id, sort_order, title_image")
       .in("product_id", cfProductIds)
-      .neq("role", "category")
+      .not("role", "in", "(category,onwear)")
       .order("sort_order", { ascending: true })
 
     if (cfImages) {
@@ -133,7 +133,7 @@ async function getProduct(slug: string): Promise<{
       .from("product_images_cf")
       .select("*")
       .eq("product_id", product.id)
-      .neq("role", "category")
+      .not("role", "in", "(category,onwear)")
       .order("sort_order", { ascending: true })
 
     if (cfImages && cfImages.length > 0) {

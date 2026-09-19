@@ -22,7 +22,7 @@ import { ProductImageLightbox } from "@/components/product-page/product-image-li
 import { ProductHero } from "@/components/product-page/product-hero"
 import { ProductInfo } from "@/components/product-page/product-info"
 import { BuildQualityBadge } from "@/components/build-quality-badge"
-import { ProductRecommendations } from "@/components/product-page/product-recommendations"
+import { OnWearGallery } from "@/components/product-page/on-wear-gallery"
 import { usePriceMode } from "@/contexts/price-mode-context"
 import { useWishlist } from "@/contexts/wishlist-context"
 
@@ -487,8 +487,8 @@ export function ProductPageClient({
         </SheetContent>
       </Sheet>
 
-      {/* Product Recommendations */}
-      <ProductRecommendations currentProductId={product.id} brand={(product as any).brand || null} />
+      {/* On-Wear editorial mosaic */}
+      <OnWearGallery productId={product.id} />
 
       {/* Build Quality Badge */}
       <BuildQualityBadge replicationAccuracy={product.replication_accuracy} isProductPage={true} />

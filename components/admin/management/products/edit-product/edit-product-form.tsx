@@ -19,6 +19,7 @@ import { toast } from "sonner"
 import { generateSizeFit } from "@/app/actions/generate-size-fit"
 import { CloudflareImagesSection } from "@/components/admin/management/products/edit-product/product-images"
 import { CategoryImagesSection } from "@/components/admin/management/products/edit-product/category-images"
+import { OnWearImagesSection } from "@/components/admin/management/products/edit-product/on-wear-images"
 import { ProductIdentity } from "@/components/admin/management/products/edit-product/product-identity"
 import { ProductAttributes } from "@/components/admin/management/products/edit-product/product-attributes"
 import { ProductDescription } from "@/components/admin/management/products/edit-product/product-description"
@@ -165,6 +166,15 @@ interface EditProductFormProps {
     alt_text: string | null
     created_at: string
   }>
+  onWearImages?: Array<{
+    id: string
+    product_id: string
+    cf_image_id: string
+    on_wear: boolean
+    sort_order: number
+    alt_text: string | null
+    created_at: string
+  }>
   factoryMedia?: FactoryMediaItem[]
 }
 
@@ -172,6 +182,7 @@ export default function EditProductForm({
   product: initialProduct,
   cfImages = [],
   categoryImages = [],
+  onWearImages = [],
   factoryMedia = [],
 }: EditProductFormProps) {
   const router = useRouter()
@@ -1908,6 +1919,16 @@ export default function EditProductForm({
           <CategoryImagesSection
             productId={product.id}
             initialImages={categoryImages}
+            onUpdate={() => {
+              router.refresh()
+            }}
+          />
+        </div>
+
+        <div className="rounded-2xl border border-white/8 bg-[#131313] p-6">
+          <OnWearImagesSection
+            productId={product.id}
+            initialImages={onWearImages}
             onUpdate={() => {
               router.refresh()
             }}
