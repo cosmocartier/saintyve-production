@@ -72,7 +72,7 @@ export default function BananaSportswearStorefront() {
             <div className="absolute inset-0 z-20 flex flex-col items-start justify-end pb-10 px-4">
               <Link
                 href="/new-arrivals"
-                className="inline-block text-[13px] font-bold uppercase text-white transition-opacity hover:opacity-80"
+                className="inline-block text-[13px] font-bold uppercase text-black transition-opacity hover:opacity-80"
                 style={{
                   letterSpacing: "0.12em",
                 }}
