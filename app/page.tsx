@@ -1,30 +1,13 @@
 "use client"
 
-import type React from "react"
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { CartSidebar } from "@/components/cart-sidebar"
 import { Navigation } from "@/components/navigation"
-import { subscribeToNewsletter } from "@/app/actions/newsletter"
-import { Footer } from "@/components/footer"
-import { CategorySwitcherSection } from "@/components/category-switcher-section"
-
-
-interface Product {
-  id: string
-  name: string
-  price: string
-  category: string
-  image?: string
-  video?: string
-}
+import { StackedBrandPages } from "@/components/landing/stacked-brand-pages"
 
 export default function BananaSportswearStorefront() {
   const [isPageLoaded, setIsPageLoaded] = useState(false)
-
-  const [newsletterEmail, setNewsletterEmail] = useState("")
-  const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
-  const [newsletterError, setNewsletterError] = useState("")
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -32,26 +15,6 @@ export default function BananaSportswearStorefront() {
     }, 100)
     return () => clearTimeout(timer)
   }, [])
-
-  const handleNewsletterSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setNewsletterStatus("loading")
-    setNewsletterError("")
-
-    const result = await subscribeToNewsletter(newsletterEmail)
-
-    if (result.success) {
-      setNewsletterStatus("success")
-      setNewsletterEmail("")
-    } else {
-      setNewsletterStatus("error")
-      setNewsletterError(result.error || "Failed to subscribe")
-      setTimeout(() => {
-        setNewsletterStatus("idle")
-        setNewsletterError("")
-      }, 3000)
-    }
-  }
 
   return (
     <>
@@ -106,129 +69,7 @@ export default function BananaSportswearStorefront() {
           <Navigation />
         </div>
 
-        <section className="w-full">
-          <div className="flex flex-col lg:flex-row w-full">
-            <Link
-              href="/brands/chanel"
-              className="relative w-full lg:w-1/2 aspect-square block overflow-hidden group"
-            >
-              <img
-                src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/32f7853d-c8af-451b-5941-00a7cba17900/w=800"
-                alt="Chanel Collection"
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <div
-                className="absolute inset-0 z-10 pointer-events-none"
-                style={{
-                  background:
-                    "radial-gradient(125% 125% at 0% 100%, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.55) 22%, rgba(0,0,0,0.22) 42%, transparent 62%)",
-                }}
-              />
-              <div className="absolute inset-0 z-20 flex flex-col items-start justify-end pb-10 px-4 lg:px-12">
-                <span
-                  className="inline-block text-[13px] font-bold uppercase text-white transition-opacity group-hover:opacity-80"
-                  style={{
-                    letterSpacing: "0.12em",
-                  }}
-                >
-                  Chanel
-                </span>
-              </div>
-            </Link>
-
-            <Link
-              href="/brands/hermes"
-              className="relative w-full lg:w-1/2 aspect-square block overflow-hidden group"
-            >
-              <img
-                src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/bde95369-55ba-44e1-0390-df3e83768800/w=800"
-                alt="Hermes Collection"
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <div
-                className="absolute inset-0 z-10 pointer-events-none"
-                style={{
-                  background:
-                    "radial-gradient(125% 125% at 0% 100%, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.55) 22%, rgba(0,0,0,0.22) 42%, transparent 62%)",
-                }}
-              />
-              <div className="absolute inset-0 z-20 flex flex-col items-start justify-end pb-10 px-4 lg:px-12">
-                <span
-                  className="inline-block text-[13px] font-bold uppercase text-white transition-opacity group-hover:opacity-80"
-                  style={{
-                    letterSpacing: "0.12em",
-                  }}
-                >
-                  Hermes
-                </span>
-              </div>
-            </Link>
-          </div>
-        </section>
-
-        {/* CategorySwitcherSection temporarily hidden from the landing page.
-            To re-enable, uncomment the line below. */}
-        {/* <CategorySwitcherSection /> */}
-
-        <section className="bg-white py-24 lg:py-32 px-6 lg:px-12" id="newsletter-section">
-          <div className="max-w-md mx-auto">
-            {newsletterStatus === "success" ? (
-              <div className="text-center min-h-[200px] flex flex-col justify-center">
-                <p className="text-[11px] font-mono uppercase tracking-[0.2em] text-black mb-3">Thank you</p>
-                <p className="text-[13px] font-mono text-gray-600 leading-relaxed">
-                  You're now subscribed to our editorial updates.
-                </p>
-              </div>
-            ) : (
-              <>
-                {/* Headline */}
-                <h2 className="text-[11px] font-mono uppercase tracking-[0.2em] text-black mb-4 text-center">
-                  Stay Connected
-                </h2>
-
-                {/* Subline */}
-                <p className="text-[13px] font-mono text-gray-600 leading-relaxed mb-10 text-center">
-                  Early access to new arrivals, curated selections, and editorial updates — delivered occasionally,
-                  never noisy.
-                </p>
-
-                {/* Form */}
-                <form onSubmit={handleNewsletterSubmit} className="space-y-3 mb-6">
-                  <input
-                    type="email"
-                    placeholder="Your email address"
-                    value={newsletterEmail}
-                    onChange={(e) => setNewsletterEmail(e.target.value)}
-                    required
-                    disabled={newsletterStatus === "loading"}
-                    className="w-full px-4 py-3 text-[13px] font-mono border border-gray-300 focus:outline-none focus:border-black transition-colors disabled:opacity-50 placeholder:text-gray-400"
-                  />
-                  <button
-                    type="submit"
-                    disabled={newsletterStatus === "loading"}
-                    className="w-full bg-black text-white px-4 py-3 text-[11px] font-mono uppercase tracking-[0.15em] hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {newsletterStatus === "loading" ? "Subscribing..." : "Subscribe"}
-                  </button>
-                  {newsletterError && (
-                    <p className="text-[11px] font-mono text-red-600 text-center">{newsletterError}</p>
-                  )}
-                </form>
-
-                {/* Privacy note */}
-                <p className="text-[11px] font-mono text-gray-500 text-center leading-relaxed">
-                  We respect your inbox. Unsubscribe anytime.{" "}
-                  <Link href="/privacy-policy" className="underline hover:text-black transition-colors">
-                    Privacy policy
-                  </Link>
-                  .
-                </p>
-              </>
-            )}
-          </div>
-        </section>
-
-        <Footer />
+        <StackedBrandPages />
       </div>
       </div>
     </>
