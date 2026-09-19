@@ -45,6 +45,7 @@ export default async function EditProductPage({ params }: { params: { id: string
     .select("*")
     .eq("product_id", params.id)
     .eq("category_image", false)
+    .eq("on_wear", false)
     .order("sort_order", { ascending: true })
 
   const { data: categoryImages } = await supabase
@@ -52,6 +53,13 @@ export default async function EditProductPage({ params }: { params: { id: string
     .select("*")
     .eq("product_id", params.id)
     .eq("category_image", true)
+    .order("sort_order", { ascending: true })
+
+  const { data: onWearImages } = await supabase
+    .from("product_images_cf")
+    .select("*")
+    .eq("product_id", params.id)
+    .eq("on_wear", true)
     .order("sort_order", { ascending: true })
 
   const { data: factoryMedia } = await supabase
@@ -90,6 +98,7 @@ export default async function EditProductPage({ params }: { params: { id: string
           product={{ ...product, product_images: sortedImages }}
           cfImages={cfImages || []}
           categoryImages={categoryImages || []}
+          onWearImages={onWearImages || []}
           factoryMedia={factoryMedia || []}
         />
       </div>
