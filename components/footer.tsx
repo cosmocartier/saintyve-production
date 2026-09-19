@@ -45,7 +45,7 @@ export function Footer() {
 
       {/* Desktop */}
       <div className="hidden lg:flex items-center justify-between px-12 py-10">
-        <p className="text-xs font-bold uppercase tracking-tight text-white">
+        <p className="text-xs font-medium uppercase tracking-tight text-white">
           Saint Yve &copy; {year}
         </p>
         <nav className="flex items-center gap-10">
