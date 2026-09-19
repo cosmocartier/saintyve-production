@@ -38,7 +38,7 @@ export function Footer() {
             <FooterNavLink key={item.label} {...item} />
           ))}
         </nav>
-        <p className="text-xs font-bold uppercase tracking-tight text-white">
+        <p className="text-xs font-medium uppercase tracking-tight text-white">
           Saint Yve &copy; {year}
         </p>
       </div>
