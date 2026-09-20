@@ -6,6 +6,7 @@ import gsap from "gsap"
 interface FullPageSliderProps {
   children: ReactNode
   onIndexChange?: (index: number) => void
+  className?: string
 }
 
 /**
@@ -16,7 +17,7 @@ interface FullPageSliderProps {
  * trackpad/touch momentum), so a single small scroll always resolves to a
  * complete, locked page change.
  */
-export function FullPageSlider({ children, onIndexChange }: FullPageSliderProps) {
+export function FullPageSlider({ children, onIndexChange, className = "" }: FullPageSliderProps) {
   const trackRef = useRef<HTMLDivElement>(null)
   const indexRef = useRef(0)
   const animatingRef = useRef(false)
@@ -108,7 +109,11 @@ export function FullPageSlider({ children, onIndexChange }: FullPageSliderProps)
   }, [slideCount, onIndexChange])
 
   return (
-    <div className="fixed inset-0 h-[100dvh] w-full overflow-hidden" role="region" aria-label="Landing showcase">
+    <div
+      className={`fixed inset-0 h-[100dvh] w-full overflow-hidden ${className}`}
+      role="region"
+      aria-label="Landing showcase"
+    >
       <div ref={trackRef} className="h-full w-full will-change-transform">
         {Children.map(children, (child, i) => (
           <div key={i} className="h-[100dvh] w-full">
