@@ -9,6 +9,18 @@ interface ChanelClientProps {
   initialProducts: Product[]
 }
 
+// Unique subcategory header images for the mobile image-led layout.
+// Add or update a URL here to override the auto-picked product image for
+// that section. Leave a section out (or set it to undefined) to fall back
+// to the first product's image, or to the text-only header if none exists.
+const SECTION_IMAGES: Record<string, string | undefined> = {
+  "Chanel 25": "https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/67909a05-5cfa-48fc-0ddb-78fbdafb0300/w=800",
+  "Maxi Flap Bags": undefined,
+  Tote: undefined,
+  Shopper: undefined,
+  Vanity: undefined,
+}
+
 export function ChanelClient({ initialProducts }: ChanelClientProps) {
   const [products, setProducts] = useState<Product[]>(initialProducts)
 
@@ -71,7 +83,7 @@ export function ChanelClient({ initialProducts }: ChanelClientProps) {
     .filter((section) => section.items.length > 0)
     .map((section) => ({
       ...section,
-      image: section.items[0]?.product_images?.[0]?.url as string | undefined,
+      image: SECTION_IMAGES[section.title] ?? (section.items[0]?.product_images?.[0]?.url as string | undefined),
     }))
 
   return (
