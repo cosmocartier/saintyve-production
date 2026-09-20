@@ -60,11 +60,14 @@ function BrandColumn({ panel, revealed }: { panel: BrandPanelData; revealed: boo
           className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
       </div>
-      <div className="mt-6 flex flex-col items-center gap-1 text-center">
-        <span className="text-sm font-bold uppercase text-foreground" style={{ letterSpacing: "0.12em" }}>
+      <div className="mt-6 flex flex-col items-center gap-0.5 text-center">
+        <span className="text-sm font-bold uppercase leading-tight text-foreground" style={{ letterSpacing: "0.12em" }}>
           {panel.label}
         </span>
-        <span className="text-sm font-normal uppercase text-muted-foreground" style={{ letterSpacing: "0.12em" }}>
+        <span
+          className="text-sm font-normal uppercase leading-tight text-muted-foreground"
+          style={{ letterSpacing: "0.12em" }}
+        >
           Shop
         </span>
       </div>
@@ -122,7 +125,7 @@ function BrandSlide({
   activeIndex: number
 }) {
   return (
-    <div className="relative flex h-[100dvh] w-full items-center justify-center bg-background px-6">
+    <div className="relative flex h-[100dvh] w-full items-center justify-center bg-background px-6 pt-24 lg:pt-0">
       <BrandColumn panel={panel} revealed={activeIndex === slideIndex} />
     </div>
   )
@@ -180,8 +183,17 @@ export function StackedBrandPages() {
         <FooterSlide key="footer" activeIndex={activeIndex} slideIndex={3} />,
       ]
 
+  // The site header lives outside this component at a fixed z-50. The slider
+  // normally stays beneath it, but once the footer becomes the active slide
+  // it is raised above the header so the footer fully covers the nav.
+  const isFooterActive = activeIndex === slides.length - 1
+
   return (
-    <FullPageSlider key={isDesktop ? "desktop" : "mobile"} onIndexChange={setActiveIndex}>
+    <FullPageSlider
+      key={isDesktop ? "desktop" : "mobile"}
+      onIndexChange={setActiveIndex}
+      className={isFooterActive ? "z-[60]" : "z-40"}
+    >
       {slides}
     </FullPageSlider>
   )
