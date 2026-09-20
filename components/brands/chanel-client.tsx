@@ -67,7 +67,12 @@ export function ChanelClient({ initialProducts }: ChanelClientProps) {
     { title: "Tote", items: totes, href: "/brands/chanel/tote" },
     { title: "Shopper", items: shoppers, href: "/brands/chanel/shopper" },
     { title: "Vanity", items: vanities, href: "/brands/chanel/vanity" },
-  ].filter((section) => section.items.length > 0)
+  ]
+    .filter((section) => section.items.length > 0)
+    .map((section) => ({
+      ...section,
+      image: section.items[0]?.product_images?.[0]?.url as string | undefined,
+    }))
 
   return (
     <>
@@ -80,10 +85,43 @@ export function ChanelClient({ initialProducts }: ChanelClientProps) {
           ) : (
             sections.map((section) => (
               <section key={section.title} className="mb-12 lg:mb-16">
-                <h2 className="text-center py-8 lg:py-10">
+                {/* Mobile: image-led subcategory header. Falls back to the text-only
+                    header (no image block, no extra whitespace) when a section has
+                    no product image yet. */}
+                <div className="lg:hidden">
+                  {section.image ? (
+                    <Link href={section.href} className="group flex flex-col items-center pt-6 pb-4 px-4">
+                      <div className="relative w-full aspect-[3/4] overflow-hidden bg-muted">
+                        <img
+                          src={section.image || "/placeholder.svg"}
+                          alt={section.title}
+                          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-active:scale-105"
+                        />
+                      </div>
+                      <div className="mt-3 flex flex-col items-center gap-0.5 text-center">
+                        <span className="text-sm font-semibold uppercase tracking-[0.2em] text-black">
+                          {section.title}
+                        </span>
+                        <span className="text-sm font-medium uppercase tracking-[0.2em] text-gray-500">Explore</span>
+                      </div>
+                    </Link>
+                  ) : (
+                    <h2 className="text-center py-8">
+                      <Link
+                        href={section.href}
+                        className="text-sm font-semibold tracking-[0.25em] uppercase text-black transition-opacity hover:opacity-60"
+                      >
+                        {section.title}
+                      </Link>
+                    </h2>
+                  )}
+                </div>
+
+                {/* Desktop: unchanged text-only header */}
+                <h2 className="hidden lg:block text-center py-8 lg:py-10">
                   <Link
                     href={section.href}
-                    className="text-sm lg:text-base font-semibold tracking-[0.25em] uppercase text-black transition-opacity hover:opacity-60"
+                    className="text-base font-semibold tracking-[0.25em] uppercase text-black transition-opacity hover:opacity-60"
                   >
                     {section.title}
                   </Link>
