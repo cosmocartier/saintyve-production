@@ -125,7 +125,7 @@ function BrandSlide({
   activeIndex: number
 }) {
   return (
-    <div className="relative flex h-[100dvh] w-full items-center justify-center bg-background px-6 pt-24 lg:pt-0">
+    <div className="relative flex h-[100dvh] w-full items-center justify-center bg-background px-6 pt-18 lg:pt-0">
       <BrandColumn panel={panel} revealed={activeIndex === slideIndex} />
     </div>
   )
