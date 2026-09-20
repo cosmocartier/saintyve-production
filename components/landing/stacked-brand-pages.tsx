@@ -49,11 +49,11 @@ function BrandColumn({ panel, revealed }: { panel: BrandPanelData; revealed: boo
   return (
     <Link
       href={panel.href}
-      className={`group flex w-full max-w-[420px] flex-col items-center transition-all duration-700 ease-out ${
+      className={`group flex w-full max-w-[300px] flex-col items-center transition-all duration-700 ease-out lg:max-w-[480px] ${
         revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
       }`}
     >
-      <div className="relative w-full aspect-[3/4] overflow-hidden bg-muted">
+      <div className="relative w-full aspect-[4/5] overflow-hidden bg-muted">
         <img
           src={panel.image || "/placeholder.svg"}
           alt={panel.alt}
