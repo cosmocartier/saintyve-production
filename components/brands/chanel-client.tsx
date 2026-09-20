@@ -107,7 +107,7 @@ export function ChanelClient({ initialProducts }: ChanelClientProps) {
                         <img
                           src={section.image || "/placeholder.svg"}
                           alt={section.title}
-                          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-active:scale-105"
+                          className="absolute inset-0 h-full w-full object-cover"
                         />
                       </div>
                       <div className="mt-3 flex flex-col items-center gap-0.5 text-center">
