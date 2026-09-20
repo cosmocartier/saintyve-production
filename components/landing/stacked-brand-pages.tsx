@@ -22,7 +22,7 @@ const brandPanels: BrandPanelData[] = [
   {
     href: "/brands/hermes",
     label: "Hermes",
-    image: "https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/bde95369-55ba-44e1-0390-df3e83768800/w=800",
+    image: "https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/1d646663-a50a-4994-37b8-300aaf32d900/w=800",
     alt: "Hermes Collection",
   },
 ]
