@@ -15,7 +15,7 @@ interface ChanelClientProps {
 // to the first product's image, or to the text-only header if none exists.
 const SECTION_IMAGES: Record<string, string | undefined> = {
   "Chanel 25": "https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/67909a05-5cfa-48fc-0ddb-78fbdafb0300/w=800",
-  "Maxi Flap Bags": undefined,
+  "Maxi Flap Bags": "https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/5866ee5a-d99b-4c12-e35e-c2a96e008e00/w=800",
   Tote: undefined,
   Shopper: undefined,
   Vanity: undefined,
