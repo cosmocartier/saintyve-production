@@ -65,7 +65,7 @@ function BrandColumn({ panel, revealed }: { panel: BrandPanelData; revealed: boo
           {panel.label}
         </span>
         <span
-          className="text-sm font-normal uppercase leading-tight text-muted-foreground"
+          className="text-sm font-medium uppercase leading-tight text-muted-foreground"
           style={{ letterSpacing: "0.12em" }}
         >
           Shop
