@@ -710,7 +710,7 @@ export default function CheckoutPage() {
                         value={formData.fullName}
                         onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                         className={inputClass}
-                        placeholder="John Doe"
+                        placeholder="Chloe Bennett"
                       />
                       {errors.fullName && <p className="text-red-600 text-xs mt-1.5">{errors.fullName}</p>}
                     </div>
@@ -722,7 +722,7 @@ export default function CheckoutPage() {
                         value={formData.address}
                         onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                         className={inputClass}
-                        placeholder="123 Main Street"
+                        placeholder="5th Avenue 740"
                       />
                       {errors.address && <p className="text-red-600 text-xs mt-1.5">{errors.address}</p>}
                     </div>
@@ -746,7 +746,7 @@ export default function CheckoutPage() {
                           value={formData.postalCode}
                           onChange={(e) => setFormData({ ...formData, postalCode: e.target.value })}
                           className={inputClass}
-                          placeholder="10001"
+                          placeholder="10019"
                         />
                         {errors.postalCode && <p className="text-red-600 text-xs mt-1.5">{errors.postalCode}</p>}
                       </div>
