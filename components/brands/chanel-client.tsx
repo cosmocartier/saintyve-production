@@ -14,7 +14,7 @@ interface ChanelClientProps {
 // (or set it to undefined) to render no image at all for that section —
 // there is no fallback to a product's own image.
 const SECTION_IMAGES: Record<string, string | undefined> = {
-  "Maxi Flap Bags": "https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/f20751cb-3527-4f08-e2e5-8825baff8f00/w=800",
+  "Maxi Flap Bags": "https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/281c2c95-0bb0-4f1f-adc8-7466035a5300/w=800",
   Tote: undefined,
   Shopper: undefined,
   Vanity: undefined,
