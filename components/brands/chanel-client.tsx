@@ -103,7 +103,7 @@ export function ChanelClient({ initialProducts }: ChanelClientProps) {
                     continues with zero extra whitespace. */}
                 <div className="lg:hidden">
                   {section.image ? (
-                    <Link href={section.href} className="group flex w-full flex-col items-center px-4 pt-6 pb-6">
+                    <Link href={section.href} className="group flex w-full flex-col items-center px-4 pt-6 pb-16">
                       <div className="relative w-full max-w-[300px] aspect-[3/4] overflow-hidden bg-muted">
                         <img
                           src={section.image || "/placeholder.svg"}
