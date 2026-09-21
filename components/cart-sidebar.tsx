@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef } from "react"
+import { useRouter } from "next/navigation"
 import { useCart } from "@/contexts/cart-context"
 import { trackCheckoutAttempt } from "@/lib/checkout-attempts"
 import gsap from "gsap"
@@ -10,6 +11,7 @@ const WHATSAPP_PHONE_NUMBER = "971528079266"
 
 export function CartSidebar() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, getSubtotal } = useCart()
+  const router = useRouter()
   const sidebarRef = useRef<HTMLDivElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
 
@@ -62,50 +64,19 @@ export function CartSidebar() {
 
     // Snapshot the cart as it is right now, before anything else can change it.
     const cartSnapshot = items
-    const totalItems = cartSnapshot.reduce((total, item) => total + item.quantity, 0)
-    const totalAmount = getSubtotal()
 
-    const lines: string[] = ["Hey Saint Yve Team!", "", "I'd like to place the following order:", ""]
-
-    cartSnapshot.forEach((item) => {
-      lines.push(`• ${item.quantity}x ${item.name}`)
-      if (item.color) {
-        lines.push(`Color: ${item.color}`)
-      }
-      if (item.variant) {
-        lines.push(`Size: ${item.variant}`)
-      }
-      lines.push(item.quantity > 1 ? `Price: ${item.price} each` : `Price: ${item.price}`)
-      if (item.slug) {
-        lines.push(`Product URL: ${origin}/products/${item.slug}`)
-      }
-      lines.push("")
-    })
-
-    lines.push("---")
-    lines.push("")
-    lines.push("ORDER SUMMARY")
-    lines.push("")
-    lines.push(`Total Items: ${totalItems}`)
-    lines.push(`Total: EUR ${totalAmount.toFixed(2)}`)
-    lines.push("")
-    lines.push("---")
-    lines.push("")
-    lines.push("Please let me know the next steps regarding payment and shipping.")
-    lines.push("")
-    lines.push("Thank you!")
-
-    const message = lines.join("\n")
-    const whatsappUrl = `https://wa.me/${WHATSAPP_PHONE_NUMBER}?text=${encodeURIComponent(message)}`
+    const whatsappUrl = `https://wa.me/${WHATSAPP_PHONE_NUMBER}`
 
     // Record the checkout attempt. This is intentionally fire-and-forget: tracking must never
-    // delay or block the WhatsApp redirect, and any failure here is only logged, not surfaced
-    // to the customer — the WhatsApp checkout must always proceed.
+    // delay or block navigation, and any failure here is only logged, not surfaced to the
+    // customer — proceeding to checkout must always work.
     trackCheckoutAttempt({ items: cartSnapshot, origin, whatsappUrl }).catch((err) => {
       console.error("[v0] trackCheckoutAttempt failed:", err)
     })
 
-    window.open(whatsappUrl, "_blank", "noopener,noreferrer")
+    // Close the drawer before navigating so it doesn't stay stuck open on the checkout page.
+    closeCart()
+    router.push("/checkout")
   }
 
   return (
