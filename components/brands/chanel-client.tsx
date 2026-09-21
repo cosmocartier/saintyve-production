@@ -14,7 +14,6 @@ interface ChanelClientProps {
 // that section. Leave a section out (or set it to undefined) to fall back
 // to the first product's image, or to the text-only header if none exists.
 const SECTION_IMAGES: Record<string, string | undefined> = {
-  "Chanel 25": "https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/67909a05-5cfa-48fc-0ddb-78fbdafb0300/w=800",
   "Maxi Flap Bags": "https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/5866ee5a-d99b-4c12-e35e-c2a96e008e00/w=800",
   Tote: undefined,
   Shopper: undefined,
@@ -97,36 +96,23 @@ export function ChanelClient({ initialProducts }: ChanelClientProps) {
           ) : (
             sections.map((section) => (
               <section key={section.title} className="mb-12 lg:mb-16">
-                {/* Mobile: image-led subcategory header. Falls back to the text-only
-                    header (no image block, no extra whitespace) when a section has
-                    no product image yet. */}
+                {/* Mobile: subcategory names are never shown. When a section has an
+                    image, present it exactly like the landing page hero (centered
+                    300px column, 3:4 frame), with no label underneath. When a
+                    section has no image at all, render nothing so the grid
+                    continues with zero extra whitespace. */}
                 <div className="lg:hidden">
                   {section.image ? (
-                    <Link href={section.href} className="group flex flex-col items-center pt-6 pb-4 px-4">
-                      <div className="relative w-full aspect-[3/4] overflow-hidden bg-muted">
+                    <Link href={section.href} className="group flex w-full flex-col items-center px-4 pt-6 pb-6">
+                      <div className="relative w-full max-w-[300px] aspect-[3/4] overflow-hidden bg-muted">
                         <img
                           src={section.image || "/placeholder.svg"}
                           alt={section.title}
                           className="absolute inset-0 h-full w-full object-cover"
                         />
                       </div>
-                      <div className="mt-3 flex flex-col items-center gap-0.5 text-center">
-                        <span className="text-sm font-semibold uppercase tracking-[0.2em] text-black">
-                          {section.title}
-                        </span>
-                        <span className="text-sm font-medium uppercase tracking-[0.2em] text-gray-500">Explore</span>
-                      </div>
                     </Link>
-                  ) : (
-                    <h2 className="text-center py-8">
-                      <Link
-                        href={section.href}
-                        className="text-sm font-semibold tracking-[0.25em] uppercase text-black transition-opacity hover:opacity-60"
-                      >
-                        {section.title}
-                      </Link>
-                    </h2>
-                  )}
+                  ) : null}
                 </div>
 
                 {/* Desktop: unchanged text-only header */}
