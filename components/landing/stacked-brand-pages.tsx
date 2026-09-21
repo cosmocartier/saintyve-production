@@ -43,16 +43,9 @@ function useIsDesktop() {
   return isDesktop
 }
 
-type RevealClass = (index: number) => string
-
-function BrandColumn({ panel, revealed }: { panel: BrandPanelData; revealed: boolean }) {
+function BrandColumn({ panel }: { panel: BrandPanelData }) {
   return (
-    <Link
-      href={panel.href}
-      className={`group flex w-full max-w-[300px] flex-col items-center transition-all duration-700 ease-out lg:max-w-[480px] ${
-        revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-      }`}
-    >
+    <Link href={panel.href} className="group flex w-full max-w-[300px] flex-col items-center lg:max-w-[480px]">
       <div className="relative w-full aspect-[4/5] overflow-hidden bg-muted">
         <img
           src={panel.image || "/placeholder.svg"}
@@ -75,7 +68,7 @@ function BrandColumn({ panel, revealed }: { panel: BrandPanelData; revealed: boo
   )
 }
 
-function HeroSlide({ revealClass }: { revealClass: RevealClass }) {
+function HeroSlide() {
   return (
     <section className="relative h-[100dvh] w-full">
       <div className="lg:hidden h-[100dvh] w-full relative overflow-hidden">
@@ -87,7 +80,7 @@ function HeroSlide({ revealClass }: { revealClass: RevealClass }) {
         <div className="absolute inset-0 z-20 flex flex-col items-start justify-end pb-10 px-4">
           <Link
             href="/new-arrivals"
-            className={`inline-block text-[13px] font-bold uppercase text-black transition-opacity hover:opacity-80 ${revealClass(0)}`}
+            className="inline-block text-[13px] font-bold uppercase text-black transition-opacity hover:opacity-80"
             style={{ letterSpacing: "0.12em" }}
           >
             Shop Collection
@@ -104,7 +97,7 @@ function HeroSlide({ revealClass }: { revealClass: RevealClass }) {
         <div className="absolute inset-0 z-20 flex flex-col items-start justify-end pb-10 px-4 lg:px-12">
           <Link
             href="/new-arrivals"
-            className={`inline-block text-[13px] font-bold uppercase text-white transition-opacity hover:opacity-80 ${revealClass(0)}`}
+            className="inline-block text-[13px] font-bold uppercase text-white transition-opacity hover:opacity-80"
             style={{ letterSpacing: "0.12em" }}
           >
             Shop Collection
@@ -115,37 +108,27 @@ function HeroSlide({ revealClass }: { revealClass: RevealClass }) {
   )
 }
 
-function BrandSlide({
-  panel,
-  slideIndex,
-  activeIndex,
-}: {
-  panel: BrandPanelData
-  slideIndex: number
-  activeIndex: number
-}) {
+function BrandSlide({ panel }: { panel: BrandPanelData }) {
   return (
     <div className="relative flex h-[100dvh] w-full items-center justify-center bg-background px-6 pt-18 lg:pt-0">
-      <BrandColumn panel={panel} revealed={activeIndex === slideIndex} />
+      <BrandColumn panel={panel} />
     </div>
   )
 }
 
-function DesktopBrandsSlide({ activeIndex, slideIndex }: { activeIndex: number; slideIndex: number }) {
+function DesktopBrandsSlide() {
   return (
     <div className="relative flex h-[100dvh] w-full items-center justify-center gap-24 bg-background px-16">
-      <BrandColumn panel={brandPanels[0]} revealed={activeIndex === slideIndex} />
-      <BrandColumn panel={brandPanels[1]} revealed={activeIndex === slideIndex} />
+      <BrandColumn panel={brandPanels[0]} />
+      <BrandColumn panel={brandPanels[1]} />
     </div>
   )
 }
 
-function FooterSlide({ activeIndex, slideIndex }: { activeIndex: number; slideIndex: number }) {
+function FooterSlide() {
   return (
     <div className="flex h-[100dvh] w-full flex-col justify-center bg-black">
-      <div className={`transition-opacity duration-700 ${activeIndex === slideIndex ? "opacity-100" : "opacity-0"}`}>
-        <Footer />
-      </div>
+      <Footer />
     </div>
   )
 }
@@ -161,26 +144,17 @@ export function StackedBrandPages() {
   const isDesktop = useIsDesktop()
   const [activeIndex, setActiveIndex] = useState(0)
 
-  const revealClass: RevealClass = (index) =>
-    `transition-all duration-700 ease-out ${
-      activeIndex === index ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-    }`
-
   if (isDesktop === null) {
     return <div className="fixed inset-0 h-[100dvh] w-full bg-background" />
   }
 
   const slides: ReactNode[] = isDesktop
-    ? [
-        <HeroSlide key="hero" revealClass={revealClass} />,
-        <DesktopBrandsSlide key="brands" activeIndex={activeIndex} slideIndex={1} />,
-        <FooterSlide key="footer" activeIndex={activeIndex} slideIndex={2} />,
-      ]
+    ? [<HeroSlide key="hero" />, <DesktopBrandsSlide key="brands" />, <FooterSlide key="footer" />]
     : [
-        <HeroSlide key="hero" revealClass={revealClass} />,
-        <BrandSlide key="chanel" panel={brandPanels[0]} slideIndex={1} activeIndex={activeIndex} />,
-        <BrandSlide key="hermes" panel={brandPanels[1]} slideIndex={2} activeIndex={activeIndex} />,
-        <FooterSlide key="footer" activeIndex={activeIndex} slideIndex={3} />,
+        <HeroSlide key="hero" />,
+        <BrandSlide key="chanel" panel={brandPanels[0]} />,
+        <BrandSlide key="hermes" panel={brandPanels[1]} />,
+        <FooterSlide key="footer" />,
       ]
 
   // The site header lives outside this component at a fixed z-50. The slider

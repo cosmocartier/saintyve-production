@@ -44,12 +44,12 @@ export function FullPageSlider({ children, onIndexChange, className = "" }: Full
       onIndexChange?.(clamped)
       gsap.to(track, {
         y: -clamped * getSlideHeight(),
-        duration: 1,
-        ease: "power3.inOut",
+        duration: 0.65,
+        ease: "power2.inOut",
         onComplete: () => {
           window.setTimeout(() => {
             animatingRef.current = false
-          }, 300)
+          }, 150)
         },
       })
     }
