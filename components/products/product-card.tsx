@@ -32,6 +32,7 @@ interface ProductCardProps {
     brand?: string
     model?: string
     color?: string
+    colorVariantCount?: number
   }
   disableMobileGallery?: boolean
   disableHoverEffect?: boolean
@@ -363,7 +364,7 @@ export function ProductCard({
         )}
 
         {!disableMobileGallery && totalImages > 1 && (
-          <div className="lg:hidden absolute bottom-0 left-0 right-0 h-0.5 bg-transparent">
+          <div className="lg:hidden absolute bottom-0 left-0 right-0 h-px bg-transparent">
             <div
               className="h-full bg-black transition-all duration-300 ease-out"
               style={{
@@ -396,11 +397,11 @@ export function ProductCard({
         )}
         {showVariantDetails && (
           <>
-            <p className="mt-1.5 text-[11px] font-light uppercase tracking-wide text-[#999]">
-              {Math.max(product.product_variants?.length ?? 0, 1)}{" "}
-              {Math.max(product.product_variants?.length ?? 0, 1) === 1 ? "Color" : "Colors"}
+            <p className="mt-1.5 text-[10px] font-bold uppercase tracking-tight text-[#666]">
+              {Math.max(product.colorVariantCount ?? 1, 1)}{" "}
+              {Math.max(product.colorVariantCount ?? 1, 1) === 1 ? "Color" : "Colors"}
             </p>
-            <p className="mt-4 inline-block border-b border-black pb-0.5 text-[11px] font-light uppercase tracking-wide text-black">
+            <p className="mt-4 inline-block border-b border-black pb-0.5 text-[9px] font-medium uppercase tracking-widest text-black">
               See Details
             </p>
           </>
