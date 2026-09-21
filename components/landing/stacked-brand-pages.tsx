@@ -71,20 +71,24 @@ function BrandColumn({ panel }: { panel: BrandPanelData }) {
 function HeroSlide() {
   return (
     <section className="relative h-[100dvh] w-full">
-      <div className="lg:hidden h-[100dvh] w-full relative overflow-hidden">
-        <img
-          src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/39a98d13-b0b2-42bf-47fe-1327b1fd4000/w=800"
-          alt="Designer Fashion Hero"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 z-20 flex flex-col items-start justify-end pb-10 px-4">
-          <Link
-            href="/new-arrivals"
-            className="inline-block text-[13px] font-bold uppercase text-black transition-opacity hover:opacity-80"
-            style={{ letterSpacing: "0.12em" }}
-          >
-            Shop Collection
-          </Link>
+      <div className="lg:hidden flex h-[100dvh] w-full flex-col items-center justify-center bg-background px-6">
+        <div className="flex w-full max-w-[300px] flex-col items-center">
+          <div className="relative w-full aspect-[3/4] overflow-hidden bg-muted">
+            <img
+              src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/39a98d13-b0b2-42bf-47fe-1327b1fd4000/w=800"
+              alt="Designer Fashion Hero"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          </div>
+          <div className="mt-6 flex flex-col items-center gap-0.5 text-center">
+            <Link
+              href="/new-arrivals"
+              className="text-[13px] font-bold uppercase text-foreground transition-opacity hover:opacity-80"
+              style={{ letterSpacing: "0.12em" }}
+            >
+              Shop Collection
+            </Link>
+          </div>
         </div>
       </div>
 
