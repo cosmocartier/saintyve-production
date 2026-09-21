@@ -40,6 +40,7 @@ interface ProductCardProps {
   preloadSecondImage?: boolean
   aspectRatio?: "1/1" | "3/4" | "4/5"
   hideColorInTitle?: boolean
+  showVariantDetails?: boolean
 }
 
 export function ProductCard({
@@ -51,6 +52,7 @@ export function ProductCard({
   preloadSecondImage = false,
   aspectRatio = "3/4",
   hideColorInTitle = false,
+  showVariantDetails = false,
 }: ProductCardProps) {
   const { addItem } = useCart()
   const { toggleLike, isLiked } = useWishlist()
@@ -391,6 +393,17 @@ export function ProductCard({
           <div className="mt-1.5">
             <p className="text-[14px] font-normal text-[#777] text-left">EUR {displayPrice.toFixed(2)}</p>
           </div>
+        )}
+        {showVariantDetails && (
+          <>
+            <p className="mt-1.5 text-[11px] font-light uppercase tracking-wide text-[#999]">
+              {Math.max(product.product_variants?.length ?? 0, 1)}{" "}
+              {Math.max(product.product_variants?.length ?? 0, 1) === 1 ? "Color" : "Colors"}
+            </p>
+            <p className="mt-4 inline-block border-b border-black pb-0.5 text-[11px] font-light uppercase tracking-wide text-black">
+              See Details
+            </p>
+          </>
         )}
       </div>
     </Link>

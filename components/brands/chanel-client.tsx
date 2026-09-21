@@ -151,6 +151,7 @@ export function ChanelClient({ initialProducts }: ChanelClientProps) {
                         preloadSecondImage
                         aspectRatio="4/5"
                         hideColorInTitle
+                        showVariantDetails
                       />
                     </div>
                   ))}
