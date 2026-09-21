@@ -58,7 +58,7 @@ function BrandColumn({ panel }: { panel: BrandPanelData }) {
           {panel.label}
         </span>
         <span
-          className="text-sm font-medium uppercase leading-tight text-muted-foreground"
+          className="text-sm font-medium uppercase leading-tight text-black"
           style={{ letterSpacing: "0.12em" }}
         >
           Shop
