@@ -10,9 +10,9 @@ interface ChanelClientProps {
 }
 
 // Unique subcategory header images for the mobile image-led layout.
-// Add or update a URL here to override the auto-picked product image for
-// that section. Leave a section out (or set it to undefined) to fall back
-// to the first product's image, or to the text-only header if none exists.
+// Add a URL here to show an image for that section. Leave a section out
+// (or set it to undefined) to render no image at all for that section —
+// there is no fallback to a product's own image.
 const SECTION_IMAGES: Record<string, string | undefined> = {
   "Maxi Flap Bags": "https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/5866ee5a-d99b-4c12-e35e-c2a96e008e00/w=800",
   Tote: undefined,
