@@ -2,6 +2,108 @@
 
 import { createClient } from "@/lib/supabase/server"
 import { put } from "@vercel/blob"
+import { getMollieClient, getSiteBaseUrl } from "@/lib/mollie/client"
+
+/**
+ * Creates (or reuses) a Mollie payment for an order and returns the
+ * checkout URL the customer should be redirected to.
+ */
+export async function createMolliePayment(orderId: string) {
+  try {
+    const supabase = await createClient()
+
+    const { data: order, error: orderError } = await supabase
+      .from("orders")
+      .select("id, status, payment_method, total_amount, mollie_payment_id, customer_email")
+      .eq("id", orderId)
+      .single()
+
+    if (orderError || !order) {
+      return { success: false, error: "Order not found" }
+    }
+
+    if (order.payment_method !== "mollie") {
+      return { success: false, error: "Invalid payment method for this flow" }
+    }
+
+    if (order.status !== "pending") {
+      return { success: false, error: "Order is not awaiting payment" }
+    }
+
+    const mollie = getMollieClient()
+    const baseUrl = getSiteBaseUrl()
+
+    // Reuse an existing payment if it's still open/pending
+    if (order.mollie_payment_id) {
+      try {
+        const existingPayment = await mollie.payments.get(order.mollie_payment_id)
+
+        // The customer landed back here before the webhook processed the
+        // completed payment (race condition) — settle the order now instead
+        // of creating a second payment for the same order.
+        if (existingPayment.status === "paid") {
+          await supabase
+            .from("orders")
+            .update({
+              status: "completed",
+              payment_status: "paid",
+              paid_at: new Date().toISOString(),
+              updated_at: new Date().toISOString(),
+            })
+            .eq("id", orderId)
+
+          return { success: false, alreadyPaid: true, error: "Order already paid" }
+        }
+
+        const checkoutUrl = existingPayment._links?.checkout?.href
+
+        if (checkoutUrl && ["open", "pending"].includes(existingPayment.status)) {
+          return { success: true, checkoutUrl }
+        }
+      } catch (error) {
+        console.error("[v0] Failed to retrieve existing Mollie payment:", error)
+      }
+    }
+
+    const payment = await mollie.payments.create({
+      amount: {
+        currency: "EUR",
+        value: Number(order.total_amount).toFixed(2),
+      },
+      description: `Saint Yve order #${order.id.slice(0, 8).toUpperCase()}`,
+      redirectUrl: `${baseUrl}/order-confirmation/${order.id}`,
+      webhookUrl: `${baseUrl}/api/webhooks/mollie`,
+      metadata: {
+        orderId: order.id,
+      },
+    })
+
+    const checkoutUrl = payment._links?.checkout?.href
+
+    if (!checkoutUrl) {
+      console.error("[v0] Mollie payment created without checkout link:", payment.id)
+      return { success: false, error: "Failed to start payment" }
+    }
+
+    const { error: updateError } = await supabase
+      .from("orders")
+      .update({
+        mollie_payment_id: payment.id,
+        payment_status: payment.status,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", orderId)
+
+    if (updateError) {
+      console.error("[v0] Failed to save Mollie payment id:", updateError)
+    }
+
+    return { success: true, checkoutUrl }
+  } catch (error) {
+    console.error("[v0] Error creating Mollie payment:", error)
+    return { success: false, error: "Failed to start payment" }
+  }
+}
 
 export async function uploadPaymentProof(formData: FormData) {
   const file = formData.get("file") as File

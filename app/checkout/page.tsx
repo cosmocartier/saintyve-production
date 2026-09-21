@@ -9,7 +9,7 @@ import { createBrowserClient } from "@/lib/supabase/client"
 import { COUNTRIES } from "@/lib/constants/countries"
 import { toast } from "@/components/ui/use-toast"
 
-type PaymentMethod = "bank_transfer" | "credit_card" | "paypal"
+type PaymentMethod = "bank_transfer" | "credit_card" | "paypal" | "mollie"
 type CheckoutStep = 1 | 2 | 3
 
 interface Coupon {
@@ -833,7 +833,32 @@ export default function CheckoutPage() {
                   </p>
 
                   <div className="space-y-4 mb-6">
-                    <label className="flex items-center justify-between cursor-pointer p-[18px] border transition-all bg-white border border-[#111111]">
+                    <label
+                      className={`flex items-center justify-between cursor-pointer p-[18px] border transition-all bg-white ${
+                        paymentMethod === "mollie" ? "border-[#111111]" : "border-[#E5E5E5]"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="radio"
+                          name="payment"
+                          value="mollie"
+                          checked={paymentMethod === "mollie"}
+                          onChange={(e) => setPaymentMethod(e.target.value as PaymentMethod)}
+                          className="text-black focus:ring-black h-4 w-4"
+                        />
+                        <span className="text-[15px] font-medium text-[#111111] font-sans">
+                          Card / iDEAL / Bancontact
+                        </span>
+                      </div>
+                      <CreditCard className="w-5 h-5 text-[#111111]" />
+                    </label>
+
+                    <label
+                      className={`flex items-center justify-between cursor-pointer p-[18px] border transition-all bg-white ${
+                        paymentMethod === "bank_transfer" ? "border-[#111111]" : "border-[#E5E5E5]"
+                      }`}
+                    >
                       <div className="flex items-center gap-3">
                         <input
                           type="radio"
