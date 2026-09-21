@@ -82,7 +82,7 @@ export function ChanelClient({ initialProducts }: ChanelClientProps) {
     .filter((section) => section.items.length > 0)
     .map((section) => ({
       ...section,
-      image: SECTION_IMAGES[section.title] ?? (section.items[0]?.product_images?.[0]?.url as string | undefined),
+      image: SECTION_IMAGES[section.title],
     }))
 
   return (
