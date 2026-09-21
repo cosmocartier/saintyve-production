@@ -73,7 +73,7 @@ function HeroSlide() {
     <section className="relative h-[100dvh] w-full">
       <div className="lg:hidden h-[100dvh] w-full relative overflow-hidden">
         <img
-          src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/8e39a967-2a01-47dd-d44c-0e3758b09a00/w=800"
+          src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/39a98d13-b0b2-42bf-47fe-1327b1fd4000/w=800"
           alt="Designer Fashion Hero"
           className="absolute inset-0 w-full h-full object-cover"
         />
