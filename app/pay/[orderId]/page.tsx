@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { isPaidOrBeyond } from "@/lib/orders/status"
+import { createMolliePayment } from "./actions"
 import PayClient from "./PayClient"
 
 const BANK_DETAILS = {
@@ -109,6 +110,47 @@ export default async function PayPage({ params }: { params: { orderId: string } 
 
   if (isPaidOrBeyond(order.status)) {
     redirect(`/order-confirmation/${orderId}`)
+  }
+
+  // Mollie is a redirect-based online payment: send the customer straight to the
+  // hosted checkout instead of rendering the manual bank/PayPal instructions page.
+  if (order.payment_method === "mollie" && order.status === "pending") {
+    const molliePayment = await createMolliePayment(orderId)
+
+    if (molliePayment.success && molliePayment.checkoutUrl) {
+      redirect(molliePayment.checkoutUrl)
+    }
+
+    if ((molliePayment as { alreadyPaid?: boolean }).alreadyPaid) {
+      redirect(`/order-confirmation/${orderId}`)
+    }
+
+    return (
+      <div className="min-h-screen bg-zinc-50 flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-white border border-zinc-200 rounded-lg p-8 text-center">
+          <h1 className="text-xl font-medium text-black mb-2">Unable to start payment</h1>
+          <p className="text-sm text-zinc-600 mb-6">
+            {molliePayment.error || "Something went wrong while starting your payment. Please try again."}
+          </p>
+          <div className="flex flex-col gap-3">
+            <a
+              href={`/pay/${orderId}`}
+              className="inline-block px-6 py-2.5 bg-black text-white rounded-lg text-sm font-medium hover:bg-zinc-800 transition-colors"
+            >
+              Try again
+            </a>
+            <a
+              href={`https://wa.me/${WHATSAPP_NUMBER}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-6 py-2.5 border border-zinc-300 text-black rounded-lg text-sm font-medium hover:bg-zinc-50 transition-colors"
+            >
+              Contact support
+            </a>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   // Fetch order items
