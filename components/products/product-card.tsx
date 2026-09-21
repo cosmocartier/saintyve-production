@@ -397,11 +397,11 @@ export function ProductCard({
         )}
         {showVariantDetails && (
           <>
-            <p className="mt-1.5 text-[10px] font-bold uppercase tracking-tight text-[#666]">
+            <p className="mt-1.5 text-[10px] font-medium uppercase tracking-tight text-[#666]">
               {Math.max(product.colorVariantCount ?? 1, 1)}{" "}
               {Math.max(product.colorVariantCount ?? 1, 1) === 1 ? "Color" : "Colors"}
             </p>
-            <p className="mt-4 inline-block border-b border-black pb-0.5 text-[9px] font-medium uppercase tracking-widest text-black">
+            <p className="mt-4 inline-block border-b border-black pb-0.5 text-[10px] font-medium uppercase tracking-widest text-black">
               See Details
             </p>
           </>
