@@ -128,7 +128,7 @@ export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
                     <Link
                       href={entry.href}
                       onClick={closeMenu}
-                      className="font-sans text-[2.5rem] leading-none text-black active:opacity-50 transition-opacity duration-150"
+                      className="text-bold text-[2.5rem] leading-none text-black active:opacity-50 transition-opacity duration-150"
                     >
                       {entry.brand}
                     </Link>
