@@ -56,7 +56,7 @@ export function AccessPageClient() {
         </p>
 
         <h1
-          className="font-serif text-5xl md:text-6xl lg:text-7xl font-normal text-[#111111] leading-tight tracking-tight text-balance mb-6"
+          className="font-sans text-5xl md:text-6xl lg:text-7xl font-normal text-[#111111] leading-tight tracking-tight text-balance mb-6"
           style={{ animation: "slideUp 0.8s ease 0.1s both" }}
         >
           Curated Luxury Access
@@ -112,7 +112,7 @@ export function AccessPageClient() {
       <RevealSection className="w-full max-w-3xl mx-auto px-6 mb-24 md:mb-32">
         <div className="text-center mb-14">
           <p className="text-[10px] uppercase tracking-[0.3em] text-[#999690] mb-4">Process</p>
-          <h2 className="font-serif text-3xl md:text-4xl font-normal text-[#111111] tracking-tight">
+          <h2 className="font-sans text-3xl md:text-4xl font-normal text-[#111111] tracking-tight">
             How It Works
           </h2>
         </div>
@@ -197,7 +197,7 @@ export function AccessPageClient() {
 
       {/* ── Final CTA Section ── */}
       <RevealSection className="w-full text-center px-6 pb-24 md:pb-32">
-        <h2 className="font-serif text-3xl md:text-4xl font-normal text-[#111111] tracking-tight mb-8 text-balance">
+        <h2 className="font-sans text-3xl md:text-4xl font-normal text-[#111111] tracking-tight mb-8 text-balance">
           Access the Current Selection
         </h2>
         <Button
