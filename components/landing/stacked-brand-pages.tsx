@@ -92,20 +92,24 @@ function HeroSlide() {
         </div>
       </div>
 
-      <div className="hidden lg:block h-[100dvh] w-full relative">
-        <img
-          src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/6f4be294-0f91-4813-3e88-85e0cc2d1b00/w=800"
-          alt="Luxury Designer Backpack"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 z-20 flex flex-col items-start justify-end pb-10 px-4 lg:px-12">
-          <Link
-            href="/new-arrivals"
-            className="inline-block text-[13px] font-bold uppercase text-white transition-opacity hover:opacity-80"
-            style={{ letterSpacing: "0.12em" }}
-          >
-            Shop Collection
-          </Link>
+      <div className="hidden lg:flex h-[100dvh] w-full flex-col items-center justify-center bg-background px-6">
+        <div className="flex w-full max-w-[900px] flex-col items-center">
+          <div className="relative w-full aspect-[16/9] overflow-hidden bg-muted">
+            <img
+              src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/39a98d13-b0b2-42bf-47fe-1327b1fd4000/w=1600"
+              alt="Designer Fashion Hero"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          </div>
+          <div className="mt-6 flex flex-col items-center gap-0.5 text-center">
+            <Link
+              href="/new-arrivals"
+              className="text-[13px] font-bold uppercase text-foreground transition-opacity hover:opacity-80"
+              style={{ letterSpacing: "0.12em" }}
+            >
+              Shop Collection
+            </Link>
+          </div>
         </div>
       </div>
     </section>
