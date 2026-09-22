@@ -7,7 +7,7 @@ interface FooterNavItem {
 }
 
 const footerNavItems: FooterNavItem[] = [
-  { label: "Stores" },
+  { label: "Stores", href: "/stores" },
   { label: "Contact" },
   { label: "Legal" },
 ]
