@@ -53,7 +53,7 @@ export function AccessModal({ open, onOpenChange }: AccessModalProps) {
           <p className="text-[10px] uppercase tracking-[0.25em] text-[#999690] mb-3 font-sans">
             Private Platform
           </p>
-          <DialogTitle className="text-[#111111] font-serif text-2xl font-normal leading-snug tracking-tight">
+          <DialogTitle className="text-[#111111] font-sans text-2xl font-normal leading-snug tracking-tight">
             Request Private Access
           </DialogTitle>
         </DialogHeader>
