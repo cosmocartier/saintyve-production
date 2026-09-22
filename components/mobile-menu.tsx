@@ -101,19 +101,22 @@ export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
           <div
             ref={overlayRef}
             onClick={closeMenu}
-            className="fixed inset-0 z-[9999] bg-black/70 opacity-0 pointer-events-none md:hidden"
+            className="fixed inset-0 z-[9999] bg-black/20 opacity-0 pointer-events-none md:hidden"
           />
 
           <div
             ref={sidebarRef}
-            className="md:hidden fixed top-0 left-0 h-[100svh] w-full bg-black z-[10000] flex flex-col pointer-events-none"
+            className="md:hidden fixed top-0 left-0 h-[100svh] w-full bg-white z-[10000] flex flex-col pointer-events-none"
             style={{ transform: "translateX(-100%)", willChange: "transform" }}
           >
             {/* Top bar */}
-            <div className="flex items-center justify-between px-6 pt-6 pb-4">
-              <span className="text-white/40 text-[10px] font-medium tracking-[0.3em] uppercase">Index</span>
+            <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-black/10">
+              <span className="font-sans text-black/40 text-[10px] font-medium tracking-[0.3em] uppercase">Index</span>
               <button onClick={closeMenu} aria-label="Close menu" className="cursor-pointer active:opacity-50 transition-opacity duration-150">
-                <Image src="/close-icon.png" alt="" width={14} height={14} />
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <line x1="1" y1="1" x2="13" y2="13" stroke="black" strokeWidth="1.25" />
+                  <line x1="13" y1="1" x2="1" y2="13" stroke="black" strokeWidth="1.25" />
+                </svg>
               </button>
             </div>
 
@@ -125,7 +128,7 @@ export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
                     <Link
                       href={entry.href}
                       onClick={closeMenu}
-                      className="font-serif text-[2.5rem] leading-none text-white active:opacity-60 transition-opacity duration-150"
+                      className="font-serif text-[2.5rem] leading-none text-black active:opacity-50 transition-opacity duration-150"
                     >
                       {entry.brand}
                     </Link>
@@ -137,7 +140,7 @@ export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
                             key={item.label}
                             href={item.href}
                             onClick={closeMenu}
-                            className="text-white/35 text-[11px] tracking-normal active:opacity-60 transition-opacity duration-150"
+                            className="font-sans text-black/40 text-[11px] tracking-normal active:opacity-50 transition-opacity duration-150"
                           >
                             {"N\u00B0 " + item.label}
                           </Link>
@@ -146,7 +149,7 @@ export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
                             key={item.label}
                             href={item.href}
                             onClick={closeMenu}
-                            className="text-white/55 text-xs font-medium tracking-[0.18em] uppercase active:text-white/80 active:opacity-80 transition-opacity duration-150"
+                            className="font-sans text-black/70 text-xs font-medium tracking-[0.18em] uppercase active:text-black active:opacity-70 transition-opacity duration-150"
                           >
                             {item.label}
                           </Link>
@@ -159,19 +162,19 @@ export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
             </nav>
 
             {/* Utility footer */}
-            <div className="px-6 pb-8 pt-4">
+            <div className="px-6 pb-8 pt-4 border-t border-black/10">
               <div className="flex flex-col gap-2.5 mb-6">
                 <Link
                   href="/privacy-policy"
                   onClick={closeMenu}
-                  className="text-white/35 text-[11px] tracking-wide active:opacity-60 transition-opacity duration-150"
+                  className="font-sans text-black/40 text-[11px] tracking-wide active:opacity-50 transition-opacity duration-150"
                 >
                   Privacy Policy
                 </Link>
                 <Link
                   href="/request-product"
                   onClick={closeMenu}
-                  className="text-white/35 text-[11px] tracking-wide active:opacity-60 transition-opacity duration-150"
+                  className="font-sans text-black/40 text-[11px] tracking-wide active:opacity-50 transition-opacity duration-150"
                 >
                   Request a Product
                 </Link>
@@ -179,7 +182,7 @@ export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
                   href="https://www.instagram.com/designerdrip.store"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white/35 text-[11px] tracking-wide active:opacity-60 transition-opacity duration-150"
+                  className="font-sans text-black/40 text-[11px] tracking-wide active:opacity-50 transition-opacity duration-150"
                 >
                   Instagram
                 </a>
@@ -187,7 +190,7 @@ export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
                   <Link
                     href="/account"
                     onClick={closeMenu}
-                    className="text-white/35 text-[11px] tracking-wide active:opacity-60 transition-opacity duration-150"
+                    className="font-sans text-black/40 text-[11px] tracking-wide active:opacity-50 transition-opacity duration-150"
                   >
                     Account
                   </Link>
@@ -195,14 +198,14 @@ export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
                   <Link
                     href="/auth/login"
                     onClick={closeMenu}
-                    className="text-white/35 text-[11px] tracking-wide active:opacity-60 transition-opacity duration-150"
+                    className="font-sans text-black/40 text-[11px] tracking-wide active:opacity-50 transition-opacity duration-150"
                   >
                     Sign in
                   </Link>
                 )}
               </div>
 
-              <div className="text-white/20 text-[10px] tracking-wide">© 2026 Saint Yve</div>
+              <div className="font-sans text-black/25 text-[10px] tracking-wide">© 2026 Saint Yve</div>
             </div>
           </div>
         </>,
