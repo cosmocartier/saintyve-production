@@ -565,7 +565,7 @@ export default function CheckoutPage() {
   }
 
   const inputClass =
-    "w-full h-12 px-4 border border-zinc-300 rounded-none text-[14px] text-black placeholder:text-zinc-400 focus:border-black focus:outline-none transition-colors bg-white font-sans"
+    "w-full h-12 px-0 border-0 border-b border-zinc-300 rounded-none text-[14px] text-black placeholder:text-zinc-400 focus:border-black focus:outline-none transition-colors bg-transparent font-sans"
   const labelClass = "block text-[11px] uppercase tracking-[0.1em] text-black mb-2"
 
   return (
@@ -628,7 +628,7 @@ export default function CheckoutPage() {
                         type="checkbox"
                         checked={privacyAccepted}
                         onChange={(e) => setPrivacyAccepted(e.target.checked)}
-                        className="w-4 h-4 mt-0.5 text-black focus:ring-black border-zinc-300 rounded-none"
+                        className="w-4 h-4 mt-0.5 accent-black text-black focus:ring-black border-zinc-300 rounded-none"
                       />
                       <span className="text-[13px] text-zinc-600 leading-relaxed">
                         I have read and understood the{" "}
@@ -888,7 +888,7 @@ export default function CheckoutPage() {
                         setPromoError("")
                       }}
                       placeholder="Enter promo code"
-                      className="flex-1 px-3 h-10 text-[13px] border border-zinc-300 rounded-none focus:outline-none focus:border-black"
+                      className="flex-1 px-0 h-10 text-[13px] border-0 border-b border-zinc-300 rounded-none bg-transparent focus:outline-none focus:border-black"
                       disabled={isApplyingPromo}
                     />
                     <button
