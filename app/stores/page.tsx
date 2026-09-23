@@ -47,14 +47,16 @@ export default function StoresPage() {
           </div>
 
           {/* Right: Store image */}
-          <div className="relative aspect-[4/3] lg:aspect-auto lg:h-screen order-1 lg:order-2">
-            <Image
-              src="/images/stores/saint-yve-berlin-store.png"
-              alt="Saint Yve Berlin store interior"
-              fill
-              priority
-              className="object-cover"
-            />
+          <div className="order-1 lg:order-2 flex items-center justify-center px-6 py-8 md:px-12 md:py-12 lg:px-16 lg:py-16">
+            <div className="relative aspect-[4/3] w-full max-w-[900px] overflow-hidden">
+              <Image
+                src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/73f06fb4-44be-4606-5bc7-9b51b88fee00/w=800"
+                alt="Saint Yve Berlin store interior"
+                fill
+                priority
+                className="object-cover"
+              />
+            </div>
           </div>
         </section>
       </main>
