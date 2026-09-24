@@ -108,7 +108,7 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
               if (item.products.price !== null && item.products.price !== undefined) {
                 const priceValue =
                   typeof item.products.price === "string"
-                    ? Number.parseFloat(item.products.price.replace(/[€$EUR]/g, ""))
+                    ? Number.parseFloat(item.products.price.replace(/[€$EUR,]/g, ""))
                     : item.products.price
                 formattedPrice = `EUR ${priceValue.toFixed(2)}`
               }
