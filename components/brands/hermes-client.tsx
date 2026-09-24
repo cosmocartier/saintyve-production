@@ -13,7 +13,7 @@ interface HermesClientProps {
 // Sections without an entry intentionally render no image and no header space.
 const SECTION_IMAGES: Record<string, string | undefined> = {
   Kelly: "https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/da1ec283-054c-48ed-119e-1be473a16c00/w=800",
-  Birkin: UNDEFINED,
+  Birkin: undefined,
 }
 
 export function HermesClient({ initialProducts }: HermesClientProps) {
