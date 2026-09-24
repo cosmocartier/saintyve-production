@@ -75,6 +75,7 @@ export function ProductPageClient({
 
   // Get the correct price based on the toggle state
   const displayPrice = useRetailPrice ? (product.retail_price || product.price) : product.price
+  const formatPrice = (price: number) => price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
   const availableColors = images
     .filter((img) => img.color_name && img.color_hex)
@@ -187,7 +188,7 @@ export function ProductPageClient({
     addItem({
       id: product.id,
       name: product.name,
-      price: `EUR ${displayPrice.toFixed(2)}`,
+      price: `EUR ${formatPrice(displayPrice)}`,
       image: cartImage,
       variant: variantToAdd.size || undefined,
       variantId: variantToAdd.id || undefined,
@@ -302,7 +303,7 @@ export function ProductPageClient({
     await toggleLike({
       id: product.id,
       name: product.name,
-      price: `EUR ${displayPrice.toFixed(2)}`,
+      price: `EUR ${formatPrice(displayPrice)}`,
       image: cartImage,
       slug: product.slug,
     })
@@ -392,7 +393,7 @@ export function ProductPageClient({
               <h2 className="text-2xl font-medium tracking-[0.06em] uppercase text-black text-balance mb-4">
                 {modelName}
               </h2>
-              <p className="text-base tracking-wide font-normal">EUR {displayPrice.toFixed(2)}</p>
+              <p className="text-base tracking-wide font-normal">EUR {formatPrice(displayPrice)}</p>
             </div>
 
             {/* Chat + wishlist icons */}
@@ -442,7 +443,7 @@ export function ProductPageClient({
                 />
               )}
               {product.retail_price != null && (
-                <DetailRow label="Retail Price" value={`EUR ${product.retail_price.toFixed(2)}`} />
+                <DetailRow label="Retail Price" value={`EUR ${formatPrice(product.retail_price)}`} />
               )}
             </div>
           </div>

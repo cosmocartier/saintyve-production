@@ -89,10 +89,10 @@ export function ProductHero({
         </button>
 
         <div className="flex items-baseline justify-center gap-3">
-          <p className="text-base tracking-wide font-normal">EUR {displayPrice.toFixed(2)}</p>
+          <p className="text-base tracking-wide font-normal">EUR {displayPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
           {discountedPrice != null && (
             <p className="text-sm tracking-wide text-zinc-500 line-through font-normal">
-              EUR {basePrice.toFixed(2)}
+              EUR {basePrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
           )}
         </div>
