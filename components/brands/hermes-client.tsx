@@ -12,8 +12,8 @@ interface HermesClientProps {
 // Add a URL here only when a curated mobile section image is available.
 // Sections without an entry intentionally render no image and no header space.
 const SECTION_IMAGES: Record<string, string | undefined> = {
-  Kelly: undefined,
-  Birkin: undefined,
+  Kelly: UNDEFINED,
+  Birkin: "https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/da1ec283-054c-48ed-119e-1be473a16c00/w=800",
 }
 
 export function HermesClient({ initialProducts }: HermesClientProps) {
