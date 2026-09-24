@@ -56,8 +56,8 @@ export function HermesClient({ initialProducts }: HermesClientProps) {
   const birkin = products.filter((product) => /\bbirkin\b/i.test(product.model || ""))
 
   const sections = [
-    { title: "Kelly", items: kelly, href: "/brands/hermes/kelly" },
-    { title: "Birkin", items: birkin, href: "/brands/hermes/birkin" },
+  { title: "Birkin", items: birkin, href: "/brands/hermes/birkin" },
+  { title: "Kelly", items: kelly, href: "/brands/hermes/kelly" },
   ]
     .filter((section) => section.items.length > 0)
     .map((section) => ({
