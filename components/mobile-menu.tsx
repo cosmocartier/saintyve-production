@@ -129,7 +129,7 @@ export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
                             onClick={closeMenu}
                             className="font-sans text-white/40 text-[11px] tracking-normal active:opacity-50 transition-opacity duration-150"
                           >
-                     current        {"N\u00B0 " + item.label}
+                     current simpl       {"N\u00B0 " + item.label}
                           </Link>
                         ) : (
                           <Link
