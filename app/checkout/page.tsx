@@ -331,7 +331,7 @@ export default function CheckoutPage() {
 
       if (items.length > 0) {
         const orderItemsToInsert = items.map((item) => {
-          const priceNum = Number.parseFloat(item.price.replace(/€|EUR/g, "").trim())
+          const priceNum = Number.parseFloat(item.price.replace(/€|EUR/g, "").replace(/,/g, "").trim())
 
           return {
             order_id: order.id,

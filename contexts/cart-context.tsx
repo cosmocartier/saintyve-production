@@ -30,11 +30,13 @@ interface CartContextType {
   getSubtotal: () => number
 }
 
-// Single source of truth for parsing a cart item's displayed price (e.g. "EUR 349.00") into a
+// Single source of truth for parsing a cart item's displayed price (e.g. "EUR 1,349.00") into a
 // number. Shared by getSubtotal below and by anything else (like checkout-attempt tracking)
-// that needs the same numeric value.
+// that needs the same numeric value. Strips currency symbols/labels AND thousands separators
+// (commas) before parsing, since parseFloat stops at the first comma otherwise (e.g.
+// "1,200.00" would parse as 1 instead of 1200).
 export function parseCartPrice(price: string): number {
-  return Number.parseFloat(price.replace(/€|EUR/g, "").trim()) || 0
+  return Number.parseFloat(price.replace(/€|EUR/g, "").replace(/,/g, "").trim()) || 0
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
