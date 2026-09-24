@@ -4,6 +4,10 @@ import type { Product } from "@/lib/types/product"
 import { ProductImageZoom } from "@/components/product-image-zoom"
 import { generateAltText } from "@/lib/generate-alt-text"
 
+function formatPrice(value: number): string {
+  return value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+}
+
 interface ProductHeroProps {
   product: Product
   brandName: string | null
@@ -89,10 +93,10 @@ export function ProductHero({
         </button>
 
         <div className="flex items-baseline justify-center gap-3">
-          <p className="text-base tracking-wide font-normal">EUR {displayPrice.toFixed(2)}</p>
+          <p className="text-base tracking-wide font-normal">EUR {formatPrice(displayPrice)}</p>
           {discountedPrice != null && (
             <p className="text-sm tracking-wide text-zinc-500 line-through font-normal">
-              EUR {basePrice.toFixed(2)}
+              EUR {formatPrice(basePrice)}
             </p>
           )}
         </div>
