@@ -2,12 +2,17 @@
 
 import { useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
-import { useCart } from "@/contexts/cart-context"
+import { useCart, parseCartPrice } from "@/contexts/cart-context"
 import { trackCheckoutAttempt } from "@/lib/checkout-attempts"
 import gsap from "gsap"
-import { Plus, Minus } from "lucide-react"
 
 const WHATSAPP_PHONE_NUMBER = "971528079266"
+
+// Renders a price string (e.g. "EUR 4500.00") with proper thousands formatting: "EUR 4,500.00".
+function formatPrice(price: string): string {
+  const amount = parseCartPrice(price)
+  return `EUR ${amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+}
 
 export function CartSidebar() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, getSubtotal } = useCart()
@@ -98,111 +103,127 @@ export function CartSidebar() {
         }}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-[1em] border-b border-white/15">
-          <span className="text-white/40 text-xs font-medium tracking-widest uppercase">BAG</span>
-          <button
-            onClick={closeCart}
-            className="text-white/40 text-xs font-medium tracking-widest uppercase cursor-pointer hover:opacity-70 transition-opacity"
-          >
-            CLOSE
-          </button>
+        <div className="border-b border-white/10">
+          <div className="flex items-center justify-between px-6 pt-6 pb-3">
+            <span className="text-white text-[11px] font-medium tracking-[0.28em] uppercase">Bag</span>
+            <button
+              onClick={closeCart}
+              className="text-white/45 text-[10px] font-medium tracking-[0.28em] uppercase cursor-pointer hover:text-white transition-colors"
+            >
+              Close
+            </button>
+          </div>
+          {items.length > 0 && (
+            <div className="px-6 pb-4">
+              <span className="text-white/35 text-[10px] font-normal tracking-[0.32em] uppercase">
+                {String(items.length).padStart(2, "0")} Item{items.length === 1 ? "" : "s"}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Cart Items Section */}
-        <div className="flex-1 overflow-y-auto relative">
+        <div className="flex-1 overflow-y-auto relative pb-[220px]">
           {items.length === 0 ? (
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-sm font-medium tracking-widest uppercase">
-              YOUR BAG IS EMPTY
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white/60 text-[11px] font-medium tracking-[0.28em] uppercase">
+              Your Bag Is Empty
             </div>
           ) : (
             <div>
-              {items.map((item) => (
-                <div
-                  key={`${item.id}-${item.variant || "default"}`}
-                  className="w-full p-[1em] flex gap-[1em] border-b border-white/15"
-                >
-                  {/* Image Container */}
-                  <div className="flex-[1] aspect-square">
-                    <img
-                      src={item.image || "/placeholder.svg"}
-                      alt={item.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
+              {items.map((item) => {
+                const brandName = item.name.split(" ")[0]
+                const modelName = item.name.split(" ").slice(1).join(" ") || item.name
 
-                  {/* Info Container */}
-                  <div className="flex-[3] flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-start justify-between mb-1">
-                        <span className="text-white text-sm font-medium tracking-wide">{item.name}</span>
-                        <span className="text-white text-sm font-medium tracking-wide">{item.price}</span>
-                      </div>
-                      <div className="flex flex-col gap-0.5">
-                        {item.color && (
-                          <span className="text-white/60 text-xs font-medium tracking-widest uppercase">
-                            Color: {item.color}
-                          </span>
-                        )}
-                        {item.variant && (
-                          <span className="text-white/60 text-xs font-medium tracking-widest uppercase">
-                            Size: {item.variant}
-                          </span>
-                        )}
-                      </div>
+                return (
+                  <div
+                    key={`${item.id}-${item.variant || "default"}`}
+                    className="w-full px-6 py-8 flex gap-5 border-b border-white/10"
+                  >
+                    {/* Image Container */}
+                    <div className="w-[104px] shrink-0 aspect-square bg-white flex items-center justify-center p-3">
+                      <img
+                        src={item.image || "/placeholder.svg"}
+                        alt={item.name}
+                        className="w-full h-full object-contain"
+                      />
                     </div>
 
-                    {/* Quantity Controls */}
-                    <div className="flex items-center justify-between mt-2">
-                      <div className="flex items-center gap-3 border border-white/15 px-2 py-1">
-                        <button
-                          onClick={() => updateQuantity(item.id, item.variant, item.quantity - 1)}
-                          disabled={item.quantity <= 1}
-                          className="text-white hover:text-white/70 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-                        >
-                          <Minus className="w-3 h-3" />
-                        </button>
-                        <span className="text-white text-xs font-medium tracking-widest min-w-[20px] text-center">
-                          {item.quantity}
+                    {/* Info Container */}
+                    <div className="flex-1 min-w-0 flex flex-col justify-between">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <div className="text-white/40 text-[10px] font-medium tracking-[0.28em] uppercase mb-1.5">
+                            {brandName}
+                          </div>
+                          <div className="text-white text-sm font-medium leading-snug break-words">{modelName}</div>
+                          {item.color && <div className="text-white/45 text-xs mt-1.5">{item.color}</div>}
+                          {item.variant && <div className="text-white/45 text-xs mt-0.5">Size {item.variant}</div>}
+                        </div>
+                        <span className="text-white text-sm font-medium tabular-nums whitespace-nowrap">
+                          {formatPrice(item.price)}
                         </span>
-                        <button
-                          onClick={() => updateQuantity(item.id, item.variant, item.quantity + 1)}
-                          className="text-white hover:text-white/70 transition-colors"
-                        >
-                          <Plus className="w-3 h-3" />
-                        </button>
                       </div>
 
-                      <button
-                        onClick={() => removeItem(item.id)}
-                        className="text-white text-xs font-medium tracking-widest uppercase cursor-pointer hover:opacity-70 transition-opacity"
-                      >
-                        REMOVE
-                      </button>
+                      {/* Quantity Controls */}
+                      <div className="flex items-center justify-between mt-6">
+                        <div className="flex items-center gap-1 -ml-2">
+                          <button
+                            onClick={() => updateQuantity(item.id, item.variant, item.quantity - 1)}
+                            disabled={item.quantity <= 1}
+                            aria-label="Decrease quantity"
+                            className="p-2 text-white/70 hover:text-white transition-colors disabled:opacity-25 disabled:cursor-not-allowed leading-none"
+                          >
+                            <span className="text-base">−</span>
+                          </button>
+                          <span className="text-white text-xs tabular-nums w-5 text-center">{item.quantity}</span>
+                          <button
+                            onClick={() => updateQuantity(item.id, item.variant, item.quantity + 1)}
+                            aria-label="Increase quantity"
+                            className="p-2 text-white/70 hover:text-white transition-colors leading-none"
+                          >
+                            <span className="text-base">+</span>
+                          </button>
+                        </div>
+
+                        <button
+                          onClick={() => removeItem(item.id)}
+                          className="text-white/40 text-[10px] font-medium tracking-[0.24em] uppercase cursor-pointer hover:text-white transition-colors"
+                        >
+                          Remove
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           )}
         </div>
 
         {/* Footer/Summary Section */}
         {items.length > 0 && (
-          <div className="absolute bottom-0 left-0 w-full p-[1em] border-t border-white/15 bg-black">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-white text-xs font-medium tracking-widest uppercase">SHIPPING</span>
-              <span className="text-white text-xs font-medium tracking-widest uppercase">AT CHECKOUT</span>
+          <div
+            className="absolute bottom-0 left-0 w-full bg-black border-t border-white/10"
+            style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+          >
+            <div className="px-6 pt-5 flex items-center justify-between">
+              <span className="text-white/40 text-[10px] font-medium tracking-[0.28em] uppercase">Shipping</span>
+              <span className="text-white/40 text-[10px] font-medium tracking-[0.28em] uppercase">At Checkout</span>
             </div>
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-white text-sm font-medium tracking-widest uppercase">SUBTOTAL</span>
-              <span className="text-white text-sm font-medium tracking-wide">EUR {getSubtotal().toFixed(2)}</span>
+            <div className="px-6 pt-2 pb-5 flex items-center justify-between">
+              <span className="text-white text-xs font-medium tracking-[0.24em] uppercase">Subtotal</span>
+              <span className="text-white text-sm font-medium tabular-nums">
+                {formatPrice(`EUR ${getSubtotal()}`)}
+              </span>
             </div>
-            <button
-              onClick={handleDiscussAndOrder}
-              className="w-full h-[52px] flex items-center justify-center px-6 rounded-none bg-white text-black cursor-pointer hover:bg-zinc-200 transition-colors active:scale-[0.99]"
-            >
-              <span className="text-[11px] font-medium tracking-[0.18em] uppercase">DISCUSS &amp; ORDER IT NOW</span>
-            </button>
+            <div className="px-6 pb-6">
+              <button
+                onClick={handleDiscussAndOrder}
+                className="w-full h-[52px] flex items-center justify-center bg-white text-black cursor-pointer hover:bg-white/90 transition-colors active:scale-[0.99]"
+              >
+                <span className="text-[11px] font-medium tracking-[0.2em] uppercase">Discuss &amp; Order</span>
+              </button>
+            </div>
           </div>
         )}
       </div>
