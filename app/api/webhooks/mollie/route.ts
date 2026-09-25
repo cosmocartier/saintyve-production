@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server"
 import { createClient as createSupabaseClient } from "@supabase/supabase-js"
 import { getMollieClient } from "@/lib/mollie/client"
 import { sendOrderProcessingEmail } from "@/app/api/webhooks/order-processing/email-sender"
+import { resolveOrderItemImages } from "@/lib/products/resolve-order-item-images"
 
 const FAILED_STATUSES = new Set(["canceled", "expired", "failed"])
 
@@ -107,7 +108,10 @@ export async function POST(request: NextRequest) {
         .select(
           `
           *,
-          products:product_id ( id, name, slug, image_folder ),
+          products:product_id (
+            id, name, slug, image_folder, use_cloudflare_images,
+            product_images ( url, display_order, color_name )
+          ),
           product_variants:variant_id ( id, size, color, sku )
         `,
         )
@@ -118,10 +122,19 @@ export async function POST(request: NextRequest) {
       } else {
         const { data: fullOrder } = await supabase.from("orders").select("*").eq("id", orderId).single()
 
+        // Resolve each item's product image using the exact same Cloudflare-vs-legacy
+        // resolution the Cart Drawer and Order Confirmation page rely on, so the
+        // confirmation email shows the same image the customer already saw.
+        const resolvedImages = await resolveOrderItemImages(supabase, orderItems || [])
+        const orderItemsWithImages = (orderItems || []).map((item) => ({
+          ...item,
+          resolvedImage: resolvedImages.get(item.id),
+        }))
+
         try {
           const emailSent = await sendOrderProcessingEmail({
             order: fullOrder ?? order,
-            orderItems: orderItems || [],
+            orderItems: orderItemsWithImages,
           })
           console.log("[Email] Confirmation sent:", emailSent)
 
