@@ -1,9 +1,14 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { createClient as createSupabaseClient } from "@supabase/supabase-js"
 import { getMollieClient } from "@/lib/mollie/client"
+import { sendOrderProcessingEmail } from "@/app/api/webhooks/order-processing/email-sender"
 
 const FAILED_STATUSES = new Set(["canceled", "expired", "failed"])
 
+// Mollie is the sole source of truth for payment state. This webhook never trusts
+// the browser/return URL — it always re-fetches the payment from Mollie's API before
+// touching the order, and only ever sends the customer confirmation email once the
+// payment is verified as "paid".
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData()
@@ -13,14 +18,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Missing payment id" }, { status: 400 })
     }
 
+    console.log("[Mollie] Webhook received. Payment ID:", paymentId)
+
     const mollie = getMollieClient()
     const payment = await mollie.payments.get(paymentId)
 
+    console.log("[Mollie] Payment status:", payment.status)
+
     const orderId = payment.metadata && (payment.metadata as any).orderId
     if (!orderId) {
-      console.error("[v0] Mollie webhook: payment has no orderId metadata", paymentId)
+      console.error("[Mollie] Webhook: payment has no orderId metadata", paymentId)
       return NextResponse.json({ received: true })
     }
+
+    console.log("[Mollie] Order ID:", orderId)
 
     const supabase = createSupabaseClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
 
@@ -31,7 +42,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (orderError || !order) {
-      console.error("[v0] Mollie webhook: order not found", orderId)
+      console.error("[Mollie] Webhook: order not found", orderId)
       return NextResponse.json({ received: true })
     }
 
@@ -47,6 +58,8 @@ export async function POST(request: NextRequest) {
       updated_at: new Date().toISOString(),
     }
 
+    // "open", "pending", and "authorized" are NOT successful payments. The order stays
+    // unpaid and no customer-facing action happens for any of them.
     if (payment.status === "paid" && !wasAlreadyPaid) {
       updates.status = "completed"
       updates.paid_at = new Date().toISOString()
@@ -56,28 +69,72 @@ export async function POST(request: NextRequest) {
       updates.cancel_reason = `mollie_${payment.status}`
     }
 
-    const { error: updateError } = await supabase.from("orders").update(updates).eq("id", orderId)
+    // Idempotency guard against duplicate Mollie webhook deliveries: when marking an
+    // order paid, the update is conditioned on the order NOT already being "completed".
+    // Supabase performs this compare-and-swap atomically, so only the webhook delivery
+    // that actually flips the status gets rows back — any duplicate delivery updates
+    // zero rows and therefore never re-sends the confirmation email.
+    let updateQuery = supabase.from("orders").update(updates).eq("id", orderId)
+    if (payment.status === "paid") {
+      updateQuery = updateQuery.neq("status", "completed")
+    }
+
+    const { data: updatedRows, error: updateError } = await updateQuery.select("id")
 
     if (updateError) {
-      console.error("[v0] Mollie webhook: failed to update order", updateError)
+      console.error("[Mollie] Webhook: failed to update order", updateError)
       return NextResponse.json({ error: "Failed to update order" }, { status: 500 })
     }
 
-    if (payment.status === "paid" && !wasAlreadyPaid) {
-      fetch(`${request.nextUrl.origin}/api/orders/confirm`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ orderId }),
-      }).catch((error) => {
-        console.error("[v0] Mollie webhook: failed to trigger confirmation email", error)
-      })
-    }
+    const orderWasJustMarkedPaid =
+      payment.status === "paid" && !wasAlreadyPaid && (updatedRows?.length ?? 0) > 0
 
-    console.log("[v0] Mollie webhook processed:", { orderId, paymentStatus: payment.status })
+    if (orderWasJustMarkedPaid) {
+      console.log("[Order] Marked as paid:", orderId)
+
+      const { data: orderItems, error: itemsError } = await supabase
+        .from("order_items")
+        .select(
+          `
+          *,
+          products:product_id ( id, name, slug, image_folder ),
+          product_variants:variant_id ( id, size, color, sku )
+        `,
+        )
+        .eq("order_id", orderId)
+
+      if (itemsError) {
+        console.error("[Order] Failed to fetch order items for confirmation email:", itemsError)
+      } else {
+        const { data: fullOrder } = await supabase.from("orders").select("*").eq("id", orderId).single()
+
+        try {
+          const emailSent = await sendOrderProcessingEmail({
+            order: fullOrder ?? order,
+            orderItems: orderItems || [],
+          })
+          console.log("[Email] Confirmation sent:", emailSent)
+
+          if (emailSent) {
+            // Idempotency marker: if Mollie redelivers this webhook, the compare-and-swap
+            // update above already prevents a second run of this block, and this column
+            // also lets other flows (e.g. /api/orders/confirm) know a confirmation went out.
+            await supabase
+              .from("orders")
+              .update({ confirmation_email_sent_at: new Date().toISOString() })
+              .eq("id", orderId)
+          }
+        } catch (emailError) {
+          console.error("[Email] Failed to send confirmation email:", emailError)
+        }
+      }
+    } else if (payment.status === "paid" && wasAlreadyPaid) {
+      console.log("[Mollie] Payment already marked paid — skipping duplicate email for order:", orderId)
+    }
 
     return NextResponse.json({ received: true })
   } catch (error) {
-    console.error("[v0] Error in Mollie webhook:", error)
+    console.error("[Mollie] Error in webhook:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }

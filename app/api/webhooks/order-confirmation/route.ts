@@ -164,6 +164,42 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: errorMsg }, { status: 500 })
     }
 
+    // This webhook fires on every INSERT into "orders", which happens the moment the
+    // customer clicks Pay — long before Mollie confirms anything. Creating the order is
+    // NOT the same as completing it, so this must never notify the customer at that point.
+    // Mollie's own webhook (/api/webhooks/mollie) is the sole trigger for the paid
+    // confirmation email; this handler only proceeds if the order somehow already
+    // reached a paid state and has not been confirmed yet (defensive idempotency).
+    const isPaidOrBeyond = ["completed", "paid", "processing", "shipped", "fulfilled", "delivered"].includes(
+      order.status,
+    )
+
+    if (!isPaidOrBeyond) {
+      console.log("[v0] Order confirmation webhook skipped — order not paid yet:", order.id, order.status)
+      await logWebhook(supabase, {
+        eventType: payload.type,
+        tableName: payload.table,
+        recordId: orderId,
+        payload,
+        status: "success",
+        errorMessage: "Skipped — order not paid yet",
+      })
+      return NextResponse.json({ success: true, skipped: true, reason: "Order not paid yet" })
+    }
+
+    if (order.confirmation_email_sent_at) {
+      console.log("[v0] Order confirmation webhook skipped — confirmation already sent:", order.id)
+      await logWebhook(supabase, {
+        eventType: payload.type,
+        tableName: payload.table,
+        recordId: orderId,
+        payload,
+        status: "success",
+        errorMessage: "Skipped — confirmation already sent",
+      })
+      return NextResponse.json({ success: true, skipped: true, reason: "Confirmation already sent" })
+    }
+
     // Fetch order items with retries
     console.log("[v0] Fetching order items for order:", orderId)
     let orderItems = []
@@ -259,6 +295,12 @@ export async function POST(request: NextRequest) {
         { status: 500 },
       )
     }
+
+    // Mark confirmation as sent so duplicate deliveries never re-send the email.
+    await supabase
+      .from("orders")
+      .update({ confirmation_email_sent_at: new Date().toISOString() })
+      .eq("id", orderId)
 
     // Success - log it
     await logWebhook(supabase, {

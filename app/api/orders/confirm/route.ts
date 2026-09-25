@@ -20,6 +20,21 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 })
     }
 
+    // Safety guard: this endpoint must only ever notify the customer once the order
+    // has actually been paid. Mollie is the payment authority — an order sitting at
+    // "pending"/"open" (Mollie payment not yet confirmed) must never trigger a
+    // customer-facing confirmation, no matter what triggered this request.
+    const isPaidOrBeyond = ["completed", "paid", "processing", "shipped", "delivered"].includes(order.status)
+    if (!isPaidOrBeyond) {
+      console.log("[v0] Order confirm skipped — order is not paid yet:", order.id, order.status)
+      return NextResponse.json({ success: true, skipped: true, reason: "Order not paid yet" })
+    }
+
+    if (order.confirmation_email_sent_at) {
+      console.log("[v0] Order confirm skipped — confirmation already sent:", order.id)
+      return NextResponse.json({ success: true, skipped: true, reason: "Confirmation already sent" })
+    }
+
     // Fetch order items with product details
     const { data: orderItems, error: itemsError } = await supabase
       .from("order_items")
@@ -56,6 +71,9 @@ export async function POST(request: NextRequest) {
       console.error("[v0] Failed to send confirmation email")
       return NextResponse.json({ error: "Failed to send confirmation email" }, { status: 500 })
     }
+
+    // Mark confirmation as sent so duplicate/retried calls never re-send the email.
+    await supabase.from("orders").update({ confirmation_email_sent_at: new Date().toISOString() }).eq("id", order.id)
 
     console.log("[v0] Order confirmation email sent successfully")
 
