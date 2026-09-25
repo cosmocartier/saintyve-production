@@ -12,6 +12,8 @@ type Order = {
   created_at: string
   status: string
   supplier_status: string | null
+  payment_status: string | null
+  mollie_payment_id: string | null
   total: number
   payment_method: string | null
   tracking_number: string | null
@@ -332,6 +334,45 @@ export default function AdminOrdersPage() {
     }
   }
 
+  // The Mollie webhook is the sole writer of `payment_status` — it always mirrors
+  // Mollie's own payment states (open/pending/authorized/paid/failed/canceled/expired).
+  // For non-Mollie orders (bank transfer, PayPal) there is no Mollie payment, so we
+  // derive an equivalent label from the order's own status instead.
+  const getPaymentStatusInfo = (order: Order) => {
+    if (order.payment_method === "mollie") {
+      const status = order.payment_status || "open"
+      switch (status) {
+        case "paid":
+          return { label: "Paid", color: "bg-emerald-500/10 text-emerald-400" }
+        case "authorized":
+          return { label: "Authorized", color: "bg-blue-500/10 text-blue-400" }
+        case "pending":
+          return { label: "Pending", color: "bg-amber-500/10 text-amber-400" }
+        case "failed":
+          return { label: "Failed", color: "bg-red-500/10 text-red-400" }
+        case "canceled":
+          return { label: "Canceled", color: "bg-red-500/10 text-red-400" }
+        case "expired":
+          return { label: "Expired", color: "bg-white/5 text-white/30" }
+        default:
+          return { label: "Open", color: "bg-amber-500/10 text-amber-400" }
+      }
+    }
+
+    // Bank transfer / PayPal: no Mollie payment_status exists, so map the order's
+    // own lifecycle status to an equivalent payment state.
+    switch (order.status) {
+      case "completed":
+        return { label: "Paid", color: "bg-emerald-500/10 text-emerald-400" }
+      case "processing":
+        return { label: "Under Review", color: "bg-blue-500/10 text-blue-400" }
+      case "cancelled":
+        return { label: "Canceled", color: "bg-red-500/10 text-red-400" }
+      default:
+        return { label: "Awaiting Payment", color: "bg-amber-500/10 text-amber-400" }
+    }
+  }
+
   const getSupplierStatusLabel = (status: string | null) => {
     if (!status) return "Not Started"
     switch (status) {
@@ -440,7 +481,7 @@ export default function AdminOrdersPage() {
                       className="w-3.5 h-3.5 rounded border-white/20 bg-white/5 cursor-pointer accent-white/60"
                     />
                   </th>
-                  {["Order ID", "Customer", "Date", "Order Status", "Fulfillment", "Payment", "Total", "Items", "Profit", "Reminder"].map((h) => (
+                  {["Order ID", "Customer", "Date", "Order Status", "Fulfillment", "Payment", "Payment Status", "Total", "Items", "Profit", "Reminder"].map((h) => (
                     <th key={h} className={`px-5 py-3.5 font-sans text-[9px] font-medium tracking-[0.22em] uppercase text-white/25 ${h === "Total" ? "text-right" : "text-left"}`}>
                       {h}
                     </th>
@@ -450,13 +491,13 @@ export default function AdminOrdersPage() {
               <tbody className="divide-y divide-white/[0.04]">
                 {loading ? (
                   <tr>
-                    <td colSpan={11} className="px-5 py-12 text-center font-sans text-[10px] tracking-widest uppercase text-white/20">
+                    <td colSpan={12} className="px-5 py-12 text-center font-sans text-[10px] tracking-widest uppercase text-white/20">
                       Loading orders...
                     </td>
                   </tr>
                 ) : filteredOrders.length === 0 ? (
                   <tr>
-                    <td colSpan={11} className="px-5 py-12 text-center font-sans text-[10px] tracking-widest uppercase text-white/20">
+                    <td colSpan={12} className="px-5 py-12 text-center font-sans text-[10px] tracking-widest uppercase text-white/20">
                       No orders found
                     </td>
                   </tr>
@@ -536,7 +577,19 @@ export default function AdminOrdersPage() {
                         className="px-5 py-4 font-sans text-[11px] text-white/45 cursor-pointer"
                         onClick={() => handleViewOrder(order.id, order.total, order.shipping_address)}
                       >
-                        {order.payment_method === "paypal" ? "PayPal" : order.payment_method === "bank_transfer" ? "Bank Transfer" : "—"}
+                        {order.payment_method === "paypal" ? "PayPal" : order.payment_method === "bank_transfer" ? "Bank Transfer" : order.payment_method === "mollie" ? "Mollie" : "—"}
+                      </td>
+                      <td className="px-5 py-4 cursor-pointer" onClick={() => handleViewOrder(order.id, order.total, order.shipping_address)}>
+                        {(() => {
+                          const { label, color } = getPaymentStatusInfo(order)
+                          return (
+                            <span
+                              className={`inline-block px-2.5 py-1 font-sans text-[9px] tracking-[0.16em] uppercase rounded-full font-medium ${color}`}
+                            >
+                              {label}
+                            </span>
+                          )
+                        })()}
                       </td>
                       <td
                         className="px-5 py-4 font-sans text-[11px] font-medium text-white/80 text-right cursor-pointer"
