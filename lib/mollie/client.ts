@@ -22,11 +22,21 @@ export function getMollieClient() {
 
 /**
  * Resolves the public base URL used for Mollie's redirectUrl/webhookUrl.
- * Falls back to the Vercel deployment URL, then localhost for local dev.
+ *
+ * NEXT_PUBLIC_SITE_URL (the real saintyve.com domain) is authoritative and should
+ * always be set in production — without it, customers who finish paying on Mollie
+ * get redirected to an auto-generated Vercel deployment URL instead of the real site.
+ * VERCEL_PROJECT_PRODUCTION_URL (the project's stable production domain) is a safer
+ * fallback than VERCEL_URL, which points at the current preview/deployment URL and
+ * changes on every deploy. localhost is last, for local dev only.
  */
 export function getSiteBaseUrl() {
   if (process.env.NEXT_PUBLIC_SITE_URL) {
     return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "")
+  }
+
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
   }
 
   if (process.env.VERCEL_URL) {

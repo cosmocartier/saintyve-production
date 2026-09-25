@@ -437,18 +437,14 @@ export default function CheckoutPage() {
         }
       }
 
-      clearCart()
+      // NOTE: The cart is intentionally NOT cleared here. The order has been created
+      // but the customer has not paid yet — Mollie payment is still pending. The cart
+      // is only cleared once the order-confirmation page observes a "paid" status.
+      // No confirmation email is sent at this point either — that only happens once
+      // the Mollie webhook confirms the payment as "paid".
 
       console.log("[v0] Redirecting to payment page for method:", paymentMethod)
       window.location.href = `/pay/${order.id}`
-
-      fetch("/api/orders/confirm", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ orderId: order.id }),
-      }).catch((error) => {
-        console.error("[v0] Error in background email sending:", error)
-      })
     } catch (error) {
       console.error("[v0] Unexpected error during order creation:", error)
       toast({
