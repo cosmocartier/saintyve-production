@@ -62,7 +62,9 @@ export async function POST(request: NextRequest) {
     // unpaid and no customer-facing action happens for any of them.
     if (payment.status === "paid" && !wasAlreadyPaid) {
       updates.status = "completed"
-      updates.paid_at = new Date().toISOString()
+      // Prefer Mollie's own paidAt timestamp (the moment Mollie confirmed the payment)
+      // and only fall back to our own clock if Mollie didn't return one.
+      updates.paid_at = (payment as any).paidAt ?? new Date().toISOString()
     } else if (FAILED_STATUSES.has(payment.status) && order.status === "pending") {
       updates.status = "cancelled"
       updates.cancelled_at = new Date().toISOString()
@@ -79,11 +81,19 @@ export async function POST(request: NextRequest) {
       updateQuery = updateQuery.neq("status", "completed")
     }
 
+    if (payment.status === "paid" && !wasAlreadyPaid) {
+      console.log("[Mollie] Updating order to paid:", orderId)
+    }
+
     const { data: updatedRows, error: updateError } = await updateQuery.select("id")
 
     if (updateError) {
-      console.error("[Mollie] Webhook: failed to update order", updateError)
+      console.error("[Mollie] Failed to update order:", orderId, updateError)
       return NextResponse.json({ error: "Failed to update order" }, { status: 500 })
+    }
+
+    if (payment.status === "paid" && !wasAlreadyPaid) {
+      console.log("[Supabase] Order updated successfully:", orderId)
     }
 
     const orderWasJustMarkedPaid =
