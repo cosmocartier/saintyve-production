@@ -3,18 +3,21 @@ import { useEffect, useRef, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
-import { MapPin, Calendar, CheckCircle2, XCircle } from "lucide-react"
+import { Check, X } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 import { StaticNavigation } from "@/components/static-navigation"
 import { CartSidebar } from "@/components/cart-sidebar"
 import { isPaidOrBeyond } from "@/lib/orders/status"
+import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 
 type OrderItem = {
   id: string
   quantity: number
   price: number
   products: {
+    id: string
     name: string
+    use_cloudflare_images: boolean | null
     product_images: {
       url: string
       display_order: number
@@ -25,6 +28,7 @@ type OrderItem = {
     size: string
     color: string | null
   } | null
+  resolvedImage: string
 }
 
 type Order = {
@@ -39,6 +43,12 @@ type Order = {
   customer_name: string
   customer_email: string
   shipping_address: any
+}
+
+// Formats a numeric amount the same way the cart drawer does: "EUR 1,200.00" —
+// thousands separators, always two decimals.
+function formatEUR(amount: number): string {
+  return `EUR ${amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
 }
 
 // How long we poll the order row for a webhook-driven status change
@@ -86,7 +96,9 @@ export default function OrderConfirmationPage() {
         `
         *,
         products (
+          id,
           name,
+          use_cloudflare_images,
           product_images (
             url,
             display_order,
@@ -104,28 +116,69 @@ export default function OrderConfirmationPage() {
     if (itemsError) {
       console.error("[v0] Order items fetch error:", itemsError)
     } else {
-      const processedItems = itemsData?.map((item) => {
-        if (item.products?.product_images && item.product_variants?.color) {
-          const colorImages = item.products.product_images
-            .filter((img: any) => img.color_name === item.product_variants.color)
-            .sort((a: any, b: any) => a.display_order - b.display_order)
+      // Resolve each item's product image using the exact same
+      // Cloudflare-vs-legacy resolution the Cart Drawer relies on
+      // (see components/product-page/product-page-client.tsx): products
+      // flagged use_cloudflare_images read from product_images_cf via
+      // buildCfUrl(..., "pdp"); everything else falls back to the legacy
+      // product_images table, filtered by the purchased variant's color.
+      const cfProductIds = Array.from(
+        new Set(
+          (itemsData || [])
+            .filter((item: any) => item.products?.use_cloudflare_images && item.products?.id)
+            .map((item: any) => item.products.id),
+        ),
+      )
 
-          if (colorImages.length > 0) {
-            return { ...item, products: { ...item.products, product_images: colorImages } }
+      const cfImagesByProduct = new Map<string, { cf_image_id: string; sort_order: number; title_image: boolean }[]>()
+
+      if (cfProductIds.length > 0) {
+        const { data: cfImages, error: cfError } = await supabase
+          .from("product_images_cf")
+          .select("product_id, cf_image_id, sort_order, title_image, role")
+          .in("product_id", cfProductIds)
+          .not("role", "in", "(category,onwear)")
+          .order("sort_order", { ascending: true })
+
+        if (cfError) {
+          console.error("[v0] product_images_cf fetch error:", cfError)
+        } else {
+          cfImages?.forEach((img: any) => {
+            if (!cfImagesByProduct.has(img.product_id)) cfImagesByProduct.set(img.product_id, [])
+            cfImagesByProduct.get(img.product_id)!.push(img)
+          })
+        }
+      }
+
+      const processedItems = (itemsData || []).map((item: any) => {
+        let resolvedImage = "/placeholder.svg"
+
+        if (item.products?.use_cloudflare_images && item.products?.id) {
+          const cfImages = cfImagesByProduct.get(item.products.id) || []
+          const titleImage = cfImages.find((img) => img.title_image) || cfImages[0]
+          if (titleImage) {
+            resolvedImage = buildCfUrl(titleImage.cf_image_id, "pdp")
           }
+        } else if (item.products?.product_images?.length) {
+          const legacyImages = item.products.product_images
+          const colorImages = item.product_variants?.color
+            ? legacyImages
+                .filter((img: any) => img.color_name === item.product_variants.color)
+                .sort((a: any, b: any) => a.display_order - b.display_order)
+            : []
+
+          const sortedImages =
+            colorImages.length > 0
+              ? colorImages
+              : [...legacyImages].sort((a: any, b: any) => a.display_order - b.display_order)
+
+          if (sortedImages[0]?.url) resolvedImage = sortedImages[0].url
         }
 
-        if (item.products?.product_images) {
-          const sortedImages = [...item.products.product_images].sort(
-            (a: any, b: any) => a.display_order - b.display_order,
-          )
-          return { ...item, products: { ...item.products, product_images: sortedImages } }
-        }
-
-        return item
+        return { ...item, resolvedImage }
       })
 
-      setOrderItems(processedItems || [])
+      setOrderItems(processedItems)
     }
 
     setLoading(false)
@@ -191,7 +244,7 @@ export default function OrderConfirmationPage() {
         <CartSidebar />
         <div className="min-h-screen bg-white pt-32 pb-20">
           <div className="flex items-center justify-center">
-            <div className="h-8 w-8 animate-spin rounded-full border-2 border-black border-t-transparent" />
+            <div className="h-6 w-6 animate-spin rounded-full border border-zinc-300 border-t-black" />
           </div>
         </div>
       </>
@@ -232,147 +285,161 @@ export default function OrderConfirmationPage() {
     <>
       <StaticNavigation />
       <CartSidebar />
-      <div className="min-h-screen bg-white pt-32 pb-20">
-        <div className="max-w-[760px] mx-auto px-6 lg:px-8">
-          {/* STATUS HERO — reflects the order's real payment status */}
-          <div className="bg-[#f7f7f7] py-10 px-6 mb-12 -mx-6 lg:-mx-8">
-            <div className="text-center space-y-3 max-w-[520px] mx-auto">
-              {isPaid && (
-                <>
-                  <CheckCircle2 className="w-6 h-6 mx-auto text-black" strokeWidth={1.5} />
-                  <p className="text-[11px] tracking-[0.2em] uppercase text-zinc-400">Order Confirmed</p>
-                  <h1 className="text-[20px] font-medium tracking-[0.05em] text-black">
-                    #{order.id.slice(0, 8).toUpperCase()}
-                  </h1>
-                  <p className="text-[13px] leading-[1.6] text-zinc-600">
-                    A confirmation with your order details has been sent to{" "}
-                    <span className="font-medium text-black">{order.customer_email}</span>
-                  </p>
-                </>
-              )}
+      <div className="min-h-screen bg-white pt-28 pb-24">
+        <div className="max-w-[520px] mx-auto px-6">
+          {/* HERO — a quiet confirmation mark, not a success graphic */}
+          <div className="text-center pt-8 pb-14">
+            {isPaid && (
+              <div className="w-6 h-6 mx-auto mb-5 rounded-full border border-black flex items-center justify-center">
+                <Check className="w-3 h-3 text-black" strokeWidth={2} />
+              </div>
+            )}
+            {isPending && (
+              <div className="w-6 h-6 mx-auto mb-5 rounded-full border border-zinc-300 border-t-black animate-spin" />
+            )}
+            {isCancelled && (
+              <div className="w-6 h-6 mx-auto mb-5 rounded-full border border-black flex items-center justify-center">
+                <X className="w-3 h-3 text-black" strokeWidth={2} />
+              </div>
+            )}
 
-              {isPending && (
-                <>
-                  <div className="w-6 h-6 mx-auto border-2 border-zinc-300 border-t-black rounded-full animate-spin" />
-                  <p className="text-[11px] tracking-[0.2em] uppercase text-zinc-400">Confirming Payment</p>
-                  <h1 className="text-[20px] font-medium tracking-[0.05em] text-black">
-                    #{order.id.slice(0, 8).toUpperCase()}
-                  </h1>
-                  <p className="text-[13px] leading-[1.6] text-zinc-600">
-                    {isVerifying
-                      ? "We're verifying your payment with Mollie. This usually takes a few seconds."
-                      : "Your payment is still being processed."}
-                  </p>
-                </>
-              )}
+            <p className="text-[10px] tracking-[0.28em] uppercase text-zinc-400 mb-3">
+              {isPaid && "Order Confirmed"}
+              {isPending && "Confirming Payment"}
+              {isCancelled && "Payment Unsuccessful"}
+            </p>
 
-              {isCancelled && (
-                <>
-                  <XCircle className="w-6 h-6 mx-auto text-black" strokeWidth={1.5} />
-                  <p className="text-[11px] tracking-[0.2em] uppercase text-zinc-400">Payment Unsuccessful</p>
-                  <h1 className="text-[20px] font-medium tracking-[0.05em] text-black">
-                    #{order.id.slice(0, 8).toUpperCase()}
-                  </h1>
-                  <p className="text-[13px] leading-[1.6] text-zinc-600">
-                    Your payment wasn&apos;t completed and this order has been cancelled. No funds were captured.
-                  </p>
-                  <div className="pt-3">
-                    <Link
-                      href="/"
-                      className="inline-flex items-center justify-center bg-black text-white px-8 h-11 text-[12px] uppercase tracking-[0.15em] hover:bg-zinc-800 transition-colors"
-                    >
-                      Return to Shop
-                    </Link>
-                  </div>
-                </>
-              )}
-            </div>
+            <h1 className="text-[22px] font-medium tracking-[0.06em] text-black mb-4">
+              #{order.id.slice(0, 8).toUpperCase()}
+            </h1>
+
+            {isPaid && (
+              <p className="text-[13px] leading-[1.7] text-zinc-500 max-w-[380px] mx-auto">
+                A confirmation with your order details has been sent to{" "}
+                <span className="text-black">{order.customer_email}</span>
+              </p>
+            )}
+
+            {isPending && (
+              <p className="text-[13px] leading-[1.7] text-zinc-500 max-w-[380px] mx-auto">
+                {isVerifying
+                  ? "We're verifying your payment. This usually takes a few seconds."
+                  : "Your payment is still being processed."}
+              </p>
+            )}
+
+            {isCancelled && (
+              <>
+                <p className="text-[13px] leading-[1.7] text-zinc-500 max-w-[380px] mx-auto mb-6">
+                  Your payment wasn&apos;t completed and this order has been cancelled. No funds were captured.
+                </p>
+                <Link
+                  href="/"
+                  className="inline-flex items-center justify-center bg-black text-white px-8 h-11 text-[11px] uppercase tracking-[0.18em] hover:bg-zinc-800 transition-colors"
+                >
+                  Return to Shop
+                </Link>
+              </>
+            )}
           </div>
 
           {isPaid && (
             <>
-              <div className="mb-12">
-                <h2 className="text-[13px] uppercase tracking-[0.15em] font-medium text-black border-b border-zinc-200 pb-3 mb-6">
-                  Order Summary
-                </h2>
+              <div className="border-t border-zinc-200" />
 
-                <div className="space-y-6 mb-8">
-                  {orderItems.map((item) => (
-                    <div key={item.id} className="flex gap-6 pb-6 border-b border-zinc-100 last:border-0">
-                      <div className="w-20 h-20 bg-zinc-100 flex-shrink-0">
-                        <Image
-                          src={item.products?.product_images?.[0]?.url || "/placeholder.svg"}
-                          alt={item.products?.name || "Product"}
-                          width={80}
-                          height={80}
-                          className="w-full h-full object-cover"
-                        />
+              {/* ORDER SUMMARY */}
+              <div className="pt-14">
+                <h2 className="text-[11px] uppercase tracking-[0.22em] text-zinc-500 mb-6">Order Summary</h2>
+
+                <div>
+                  {orderItems.map((item) => {
+                    const productName = item.products?.name || "Product"
+                    const brandName = productName.split(" ")[0]
+                    const modelName = productName.split(" ").slice(1).join(" ") || productName
+
+                    return (
+                      <div key={item.id} className="flex gap-5 py-7 border-b border-zinc-100 first:pt-0">
+                        <div className="w-[76px] h-[76px] shrink-0 bg-zinc-50 flex items-center justify-center p-2">
+                          <img
+                            src={item.resolvedImage || "/placeholder.svg"}
+                            alt={productName}
+                            className="w-full h-full object-contain"
+                          />
+                        </div>
+
+                        <div className="flex-1 min-w-0 flex items-start justify-between gap-4">
+                          <div className="min-w-0">
+                            <p className="text-[10px] tracking-[0.22em] uppercase text-zinc-400 mb-1.5">
+                              {brandName}
+                            </p>
+                            <p className="text-[14px] font-medium text-black leading-snug break-words mb-1.5">
+                              {modelName}
+                            </p>
+                            {item.product_variants?.color && (
+                              <p className="text-[12px] text-zinc-500">{item.product_variants.color}</p>
+                            )}
+                            {item.product_variants?.size && (
+                              <p className="text-[12px] text-zinc-500">Size {item.product_variants.size}</p>
+                            )}
+                            <p className="text-[11px] tracking-[0.1em] text-zinc-400 mt-2">
+                              Quantity {String(item.quantity).padStart(2, "0")}
+                            </p>
+                          </div>
+
+                          <p className="text-[13px] text-black font-medium tabular-nums whitespace-nowrap">
+                            {formatEUR(item.price * item.quantity)}
+                          </p>
+                        </div>
                       </div>
-                      <div className="flex-1">
-                        <h3 className="text-[14px] text-black mb-1">{item.products?.name}</h3>
-                        {item.product_variants?.color && (
-                          <p className="text-[12px] text-zinc-500">Color: {item.product_variants.color}</p>
-                        )}
-                        {item.product_variants?.size && (
-                          <p className="text-[12px] text-zinc-500">Size: {item.product_variants.size}</p>
-                        )}
-                        <p className="text-[12px] text-zinc-500">Quantity: {item.quantity}</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-[14px] text-black font-medium">
-                          EUR {(item.price * item.quantity).toFixed(2)}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+                    )
+                  })}
                 </div>
 
-                <div className="space-y-3 pt-6 border-t border-zinc-200">
-                  <div className="flex justify-between text-[14px]">
-                    <span className="text-zinc-500">Subtotal</span>
-                    <span className="text-black">EUR {order.subtotal_amount.toFixed(2)}</span>
+                <div className="pt-7 space-y-3">
+                  <div className="flex justify-between text-[13px]">
+                    <span className="text-zinc-500 tracking-[0.05em] uppercase">Subtotal</span>
+                    <span className="text-black tabular-nums">{formatEUR(order.subtotal_amount)}</span>
                   </div>
                   {order.discount_amount > 0 && (
-                    <div className="flex justify-between text-[14px]">
-                      <span className="text-zinc-500">
+                    <div className="flex justify-between text-[13px]">
+                      <span className="text-zinc-500 tracking-[0.05em] uppercase">
                         Discount {order.coupon_code && <span className="font-mono">({order.coupon_code})</span>}
                       </span>
-                      <span className="text-black">– EUR {order.discount_amount.toFixed(2)}</span>
+                      <span className="text-black tabular-nums">– {formatEUR(order.discount_amount)}</span>
                     </div>
                   )}
-                  <div className="flex justify-between text-[14px]">
-                    <span className="text-zinc-500">Shipping</span>
-                    <span className="text-black">Free</span>
+                  <div className="flex justify-between text-[13px]">
+                    <span className="text-zinc-500 tracking-[0.05em] uppercase">Shipping</span>
+                    <span className="text-black tracking-[0.05em] uppercase">Free</span>
                   </div>
-                  <div className="flex justify-between text-[20px] pt-4 border-t border-zinc-200 font-medium">
-                    <span className="text-black">Total</span>
-                    <span className="text-black">EUR {order.total_amount.toFixed(2)}</span>
+                  <div className="pt-4 border-t border-zinc-200 flex justify-between items-baseline">
+                    <span className="text-[13px] text-black tracking-[0.08em] uppercase font-medium">Total</span>
+                    <span className="text-[17px] text-black font-medium tabular-nums">
+                      {formatEUR(order.total_amount)}
+                    </span>
                   </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+              <div className="border-t border-zinc-200 mt-14" />
+
+              {/* SHIPPING ADDRESS + ESTIMATED DELIVERY */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 pt-14">
                 <div>
-                  <div className="flex items-center gap-2 mb-4">
-                    <MapPin className="w-4 h-4 text-zinc-400" strokeWidth={1.5} />
-                    <h3 className="text-[12px] uppercase tracking-[0.15em] text-black">Shipping Address</h3>
-                  </div>
-                  <div className="text-[13px] leading-relaxed space-y-0.5 text-zinc-600">
-                    <p className="font-medium text-black">{order.customer_name}</p>
-                    <p>{order.shipping_address?.address}</p>
-                    <p>
+                  <h3 className="text-[11px] uppercase tracking-[0.22em] text-zinc-500 mb-4">Shipping Address</h3>
+                  <div className="text-[13px] leading-[1.7] space-y-0.5">
+                    <p className="text-black font-medium">{order.customer_name}</p>
+                    <p className="text-zinc-500">{order.shipping_address?.address}</p>
+                    <p className="text-zinc-500">
                       {order.shipping_address?.city}, {order.shipping_address?.postalCode}
                     </p>
-                    <p>{order.shipping_address?.country}</p>
+                    <p className="text-zinc-500">{order.shipping_address?.country}</p>
                   </div>
                 </div>
 
                 <div>
-                  <div className="flex items-center gap-2 mb-4">
-                    <Calendar className="w-4 h-4 text-zinc-400" strokeWidth={1.5} />
-                    <h3 className="text-[12px] uppercase tracking-[0.15em] text-black">Estimated Delivery</h3>
-                  </div>
-                  <p className="text-[18px] font-light text-black mb-2">
+                  <h3 className="text-[11px] uppercase tracking-[0.22em] text-zinc-500 mb-4">Estimated Delivery</h3>
+                  <p className="text-[17px] text-black font-medium mb-2">
                     {getEstimatedDeliveryDate(order.created_at)}
                   </p>
                   <p className="text-[12px] text-zinc-500 leading-relaxed">
@@ -380,17 +447,20 @@ export default function OrderConfirmationPage() {
                   </p>
                 </div>
               </div>
+
+              <div className="border-t border-zinc-200 mt-14" />
             </>
           )}
 
-          <div className="text-center pt-8 border-t border-zinc-200">
-            <p className="text-[11px] text-zinc-400 tracking-[0.15em] uppercase mb-2">Need Assistance?</p>
-            <p className="text-[13px] text-zinc-600">
-              Contact us at{" "}
-              <a href="mailto:support@designerdrip.store" className="underline hover:no-underline text-black">
-                support@designerdrip.store
-              </a>
-            </p>
+          {/* SUPPORT */}
+          <div className={`text-center ${isPaid ? "pt-14" : "pt-8 border-t border-zinc-200"}`}>
+            <p className="text-[10px] text-zinc-400 tracking-[0.22em] uppercase mb-2.5">Need Assistance?</p>
+            <a
+              href="mailto:support@designerdrip.store"
+              className="text-[13px] text-black underline decoration-zinc-300 hover:decoration-black underline-offset-4 transition-colors break-all"
+            >
+              support@designerdrip.store
+            </a>
           </div>
         </div>
       </div>
