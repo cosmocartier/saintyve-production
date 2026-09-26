@@ -16,13 +16,11 @@ import Link from "next/link"
 import { Plus } from "lucide-react"
 import { generateAltText } from "@/lib/generate-alt-text"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
-import { Footer } from "@/components/footer"
 import { buildImageObject } from "@/lib/cloudflare/cloudflare-images"
 import { ProductImageLightbox } from "@/components/product-page/product-image-lightbox"
 import { ProductHero } from "@/components/product-page/product-hero"
 import { ProductInfo } from "@/components/product-page/product-info"
 import { BuildQualityBadge } from "@/components/build-quality-badge"
-import { OnWearGallery } from "@/components/product-page/on-wear-gallery"
 import { usePriceMode } from "@/contexts/price-mode-context"
 import { useWishlist } from "@/contexts/wishlist-context"
 
@@ -230,6 +228,12 @@ export function ProductPageClient({
   const canAddToCart =
     filteredVariants.length === 0 || !hasMultipleSizes || (selectedVariant && selectedVariant.stock_quantity > 0)
 
+  // Stock quantity for the currently resolved variant, sourced directly from product_variants.stock_quantity.
+  // When the product has multiple sizes, only show a number once a specific size has been selected.
+  const stockQuantity: number | null = hasMultipleSizes
+    ? (selectedVariant?.stock_quantity ?? null)
+    : (selectedVariant?.stock_quantity ?? filteredVariants[0]?.stock_quantity ?? null)
+
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -370,6 +374,7 @@ export function ProductPageClient({
           setIsShippingOpen={setIsShippingOpen}
           isInWishlist={isLiked(product.id)}
           onToggleWishlist={handleToggleWishlist}
+          stockQuantity={stockQuantity}
         />
       </div>
 
@@ -491,13 +496,8 @@ export function ProductPageClient({
         </SheetContent>
       </Sheet>
 
-      {/* On-Wear editorial mosaic */}
-          <OnWearGallery productId={product.id} brand={product.brand ?? brandName} />
-
       {/* Build Quality Badge */}
       <BuildQualityBadge replicationAccuracy={product.replication_accuracy} isProductPage={true} />
-
-      <Footer />
     </div>
   )
 }

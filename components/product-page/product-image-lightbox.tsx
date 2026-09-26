@@ -3,7 +3,6 @@
 import type React from "react"
 
 import { useState, useEffect, useCallback, useRef } from "react"
-import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface ImageData {
@@ -21,6 +20,10 @@ interface ProductImageLightboxProps {
   onClose: () => void
 }
 
+function pad(n: number) {
+  return String(n).padStart(2, "0")
+}
+
 export function ProductImageLightbox({ images, initialIndex, isOpen, onClose }: ProductImageLightboxProps) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex)
   const [isZoomed, setIsZoomed] = useState(false)
@@ -30,10 +33,14 @@ export function ProductImageLightbox({ images, initialIndex, isOpen, onClose }: 
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
 
   const imageRef = useRef<HTMLDivElement>(null)
+  const touchStartX = useRef<number | null>(null)
+  const touchStartY = useRef<number | null>(null)
   const isMobile = typeof window !== "undefined" && window.innerWidth < 1024
 
   useEffect(() => {
     setCurrentIndex(initialIndex)
+    setIsZoomed(false)
+    setPanOffset({ x: 0, y: 0 })
   }, [initialIndex])
 
   useEffect(() => {
@@ -46,6 +53,18 @@ export function ProductImageLightbox({ images, initialIndex, isOpen, onClose }: 
       document.body.style.overflow = ""
     }
   }, [isOpen])
+
+  const handlePrevious = useCallback(() => {
+    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1))
+    setIsZoomed(false)
+    setPanOffset({ x: 0, y: 0 })
+  }, [images.length])
+
+  const handleNext = useCallback(() => {
+    setCurrentIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0))
+    setIsZoomed(false)
+    setPanOffset({ x: 0, y: 0 })
+  }, [images.length])
 
   // Keyboard navigation
   useEffect(() => {
@@ -63,19 +82,7 @@ export function ProductImageLightbox({ images, initialIndex, isOpen, onClose }: 
 
     window.addEventListener("keydown", handleKeyDown)
     return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [isOpen, currentIndex])
-
-  const handlePrevious = () => {
-    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1))
-    setIsZoomed(false)
-    setPanOffset({ x: 0, y: 0 })
-  }
-
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0))
-    setIsZoomed(false)
-    setPanOffset({ x: 0, y: 0 })
-  }
+  }, [isOpen, handlePrevious, handleNext, onClose])
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -109,78 +116,90 @@ export function ProductImageLightbox({ images, initialIndex, isOpen, onClose }: 
 
   const toggleZoom = () => {
     if (isMobile) return
-    setIsZoomed(!isZoomed)
-    if (isZoomed) {
-      setPanOffset({ x: 0, y: 0 })
+    setIsZoomed((prev) => {
+      if (prev) setPanOffset({ x: 0, y: 0 })
+      return !prev
+    })
+  }
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX
+    touchStartY.current = e.touches[0].clientY
+  }
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null || touchStartY.current === null) return
+    const dx = e.changedTouches[0].clientX - touchStartX.current
+    const dy = e.changedTouches[0].clientY - touchStartY.current
+
+    if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx > 0) {
+        handlePrevious()
+      } else {
+        handleNext()
+      }
     }
+
+    touchStartX.current = null
+    touchStartY.current = null
   }
 
   if (!isOpen) return null
 
   const currentImage = images[currentIndex]
   const mainImageSrc = isMobile ? currentImage.pdpSrc : currentImage.zoomSrc
+  const hasMultiple = images.length > 1
 
   return (
     <div
-      className="fixed inset-0 z-[9999] bg-white/98 backdrop-blur-sm animate-in fade-in duration-300"
+      className="fixed inset-0 z-[9999] bg-black animate-in fade-in duration-200"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose()
       }}
     >
-      {/* Header */}
-      <div className="absolute top-0 left-0 right-0 h-16 flex items-center justify-between px-6 z-10 bg-gradient-to-b from-white/90 to-transparent">
-        <div className="text-sm text-zinc-600">
-          {currentIndex + 1} / {images.length}
-        </div>
-
-        {!isMobile && (
-          <button
-            onClick={toggleZoom}
-            className="flex items-center gap-2 px-4 py-2 text-sm text-zinc-700 hover:text-zinc-900 transition-colors"
-          >
-            {isZoomed ? (
-              <>
-                <ZoomOut className="w-4 h-4" />
-                Zoom Out
-              </>
-            ) : (
-              <>
-                <ZoomIn className="w-4 h-4" />
-                Click to Zoom
-              </>
-            )}
-          </button>
-        )}
-
+      {/* Top bar */}
+      <div
+        className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-5 sm:px-8"
+        style={{ paddingTop: "max(1.25rem, env(safe-area-inset-top))" }}
+      >
         <button
           onClick={onClose}
-          className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-zinc-100 transition-colors"
+          className="text-[11px] font-medium tracking-[0.2em] uppercase text-white/70 transition-colors hover:text-white"
           aria-label="Close"
         >
-          <X className="w-5 h-5" />
+          Close
         </button>
+
+        {hasMultiple && (
+          <div className="text-[11px] font-medium tracking-[0.2em] text-white/50">
+            {pad(currentIndex + 1)} / {pad(images.length)}
+          </div>
+        )}
       </div>
 
-      {/* Main Image */}
-      <div className="absolute inset-0 flex items-center justify-center p-16 pt-24 pb-32">
+      {/* Main image */}
+      <div className="absolute inset-0 flex items-center justify-center px-5 py-20 sm:px-16 sm:py-24">
         <div
           ref={imageRef}
           className={cn(
-            "relative w-full h-full flex items-center justify-center overflow-hidden",
+            "relative flex h-full w-full items-center justify-center overflow-hidden",
             !isMobile && isZoomed && "cursor-move",
           )}
           onClick={!isMobile ? toggleZoom : undefined}
-          onMouseMove={handleMouseMove}
+          onMouseMove={isZoomed ? handleMouseMoveWhilePanning : handleMouseMove}
           onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMoveWhilePanning}
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
         >
           <img
+            key={currentIndex}
             src={mainImageSrc || "/placeholder.svg"}
             alt={currentImage.alt}
+            crossOrigin="anonymous"
             className={cn(
-              "max-w-full max-h-full object-contain select-none transition-transform duration-300 ease-out",
+              "max-h-full max-w-full select-none object-contain transition-transform duration-300 ease-out animate-in fade-in duration-150",
               isZoomed && "scale-[2.5]",
             )}
             style={
@@ -196,49 +215,25 @@ export function ProductImageLightbox({ images, initialIndex, isOpen, onClose }: 
         </div>
       </div>
 
-      {/* Navigation Arrows */}
-      {images.length > 1 && (
+      {/* Prev / next controls */}
+      {hasMultiple && (
         <>
           <button
             onClick={handlePrevious}
-            className="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center rounded-full bg-white/90 hover:bg-white shadow-lg transition-all"
+            className="absolute left-2 top-1/2 flex h-12 w-10 -translate-y-1/2 items-center justify-center text-white/40 transition-colors hover:text-white/90 sm:left-5"
             aria-label="Previous image"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <span className="text-2xl font-light">&larr;</span>
           </button>
           <button
             onClick={handleNext}
-            className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center rounded-full bg-white/90 hover:bg-white shadow-lg transition-all"
+            className="absolute right-2 top-1/2 flex h-12 w-10 -translate-y-1/2 items-center justify-center text-white/40 transition-colors hover:text-white/90 sm:right-5"
             aria-label="Next image"
           >
-            <ChevronRight className="w-6 h-6" />
+            <span className="text-2xl font-light">&rarr;</span>
           </button>
         </>
       )}
-
-      {/* Thumbnail Rail */}
-      <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-white/90 to-transparent">
-        <div className="flex items-center justify-center gap-2 h-full px-6 overflow-x-auto">
-          {images.map((image, index) => (
-            <button
-              key={image.id}
-              onClick={() => {
-                setCurrentIndex(index)
-                setIsZoomed(false)
-                setPanOffset({ x: 0, y: 0 })
-              }}
-              className={cn(
-                "flex-shrink-0 w-16 h-16 rounded-sm overflow-hidden border-2 transition-all",
-                currentIndex === index
-                  ? "border-zinc-900 scale-110"
-                  : "border-transparent opacity-60 hover:opacity-100",
-              )}
-            >
-              <img src={image.thumbSrc || "/placeholder.svg"} alt={image.alt} className="w-full h-full object-cover" />
-            </button>
-          ))}
-        </div>
-      </div>
     </div>
   )
 }

@@ -43,6 +43,7 @@ interface ProductInfoProps {
   setIsShippingOpen: (open: boolean) => void
   isInWishlist?: boolean
   onToggleWishlist?: () => void
+  stockQuantity?: number | null
 }
 
 export function ProductInfo({
@@ -66,6 +67,7 @@ export function ProductInfo({
   setIsShippingOpen,
   isInWishlist = false,
   onToggleWishlist,
+  stockQuantity = null,
 }: ProductInfoProps) {
   const router = useRouter()
   const [isWishlistAnimating, setIsWishlistAnimating] = useState(false)
@@ -284,6 +286,16 @@ export function ProductInfo({
             </button>
           )}
         </div>
+
+        {stockQuantity !== null && (
+          <p className="text-center text-[10px] font-medium tracking-[0.2em] uppercase text-zinc-500">
+            {stockQuantity === 0
+              ? "Currently Unavailable"
+              : stockQuantity === 1
+                ? "1 Piece Available"
+                : `${stockQuantity} Pieces Available`}
+          </p>
+        )}
       </div>
     </div>
   )
