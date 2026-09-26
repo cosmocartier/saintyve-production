@@ -2,6 +2,7 @@ export interface Product {
   id: string
   slug: string
   name: string
+  brand?: string | null
   model?: string | null
   color?: string | null
   material?: string | null

@@ -492,7 +492,7 @@ export function ProductPageClient({
       </Sheet>
 
       {/* On-Wear editorial mosaic */}
-      <OnWearGallery productId={product.id} />
+          <OnWearGallery productId={product.id} brand={product.brand ?? brandName} />
 
       {/* Build Quality Badge */}
       <BuildQualityBadge replicationAccuracy={product.replication_accuracy} isProductPage={true} />
