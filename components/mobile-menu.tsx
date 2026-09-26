@@ -30,53 +30,75 @@ const INDEX = [
   },
 ]
 
-// Refined, fast easing — perceptible but never sluggish.
+// Fast, precise easing — the drawer should feel instant, never sluggish.
 const EASE_OUT = "cubic-bezier(0.16, 1, 0.3, 1)"
 const EASE_IN = "cubic-bezier(0.7, 0, 0.84, 0)"
+const OPEN_MS = 0.2
+const CLOSE_MS = 0.16
 
 export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
   const [isOpen, setIsOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
 
-  const sidebarRef = useRef<HTMLDivElement>(null)
-  const overlayRef = useRef<HTMLDivElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
 
   const openMenu = () => setIsOpen(true)
   const closeMenu = () => setIsOpen(false)
 
+  // Open / close animation.
   useEffect(() => {
-    if (!sidebarRef.current || !overlayRef.current) return
+    if (!panelRef.current) return
 
-    const sidebar = sidebarRef.current
-    const overlay = overlayRef.current
-
-    gsap.killTweensOf([sidebar, overlay])
+    const panel = panelRef.current
+    gsap.killTweensOf(panel)
 
     if (isOpen) {
-      sidebar.style.pointerEvents = "auto"
-      overlay.style.pointerEvents = "auto"
-
-      gsap.to(sidebar, { x: "0%", duration: 0.32, ease: EASE_OUT })
-      gsap.to(overlay, { opacity: 1, duration: 0.22, ease: EASE_OUT })
+      panel.style.pointerEvents = "auto"
+      gsap.to(panel, { opacity: 1, duration: OPEN_MS, ease: EASE_OUT })
+      closeButtonRef.current?.focus()
     } else {
-      gsap.to(sidebar, {
-        x: "-100%",
-        duration: 0.26,
-        ease: EASE_IN,
-        onComplete: () => {
-          sidebar.style.pointerEvents = "none"
-        },
-      })
-
-      gsap.to(overlay, {
+      gsap.to(panel, {
         opacity: 0,
-        duration: 0.2,
+        duration: CLOSE_MS,
         ease: EASE_IN,
         onComplete: () => {
-          overlay.style.pointerEvents = "none"
+          panel.style.pointerEvents = "none"
         },
       })
     }
+  }, [isOpen])
+
+  // Lock background scroll without a layout jump; restore exact position on close.
+  useEffect(() => {
+    if (!isOpen) return
+
+    const scrollY = window.scrollY
+    const body = document.body
+    body.style.position = "fixed"
+    body.style.top = `-${scrollY}px`
+    body.style.left = "0"
+    body.style.right = "0"
+    body.style.width = "100%"
+
+    return () => {
+      body.style.position = ""
+      body.style.top = ""
+      body.style.left = ""
+      body.style.right = ""
+      body.style.width = ""
+      window.scrollTo(0, scrollY)
+    }
+  }, [isOpen])
+
+  // Escape to close.
+  useEffect(() => {
+    if (!isOpen) return
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeMenu()
+    }
+    window.addEventListener("keydown", handleKey)
+    return () => window.removeEventListener("keydown", handleKey)
   }, [isOpen])
 
   useEffect(() => {
@@ -85,75 +107,78 @@ export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
 
   const menuPortal = mounted
     ? createPortal(
-        <>
-          <div
-            ref={overlayRef}
-            onClick={closeMenu}
-            className="fixed inset-0 z-[9999] bg-black/20 opacity-0 pointer-events-none md:hidden"
-          />
-
-          <div
-            ref={sidebarRef}
-            className="md:hidden fixed top-0 left-0 h-[100svh] w-full bg-black/95 backdrop-blur-xl z-[10000] flex flex-col pointer-events-none"
-            style={{ transform: "translateX(-100%)", willChange: "transform" }}
-          >
-            {/* Close */}
-            <div className="flex items-center justify-end px-6 pt-6 pb-2">
-              <button onClick={closeMenu} aria-label="Close menu" className="cursor-pointer active:opacity-50 transition-opacity duration-150">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <line x1="1" y1="1" x2="13" y2="13" stroke="white" strokeWidth="1.25" />
-                  <line x1="13" y1="1" x2="1" y2="13" stroke="white" strokeWidth="1.25" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Editorial index */}
-            <nav className="flex-1 overflow-y-auto flex flex-col justify-center px-6 py-8">
-              <div className="flex flex-col gap-14">
-                {INDEX.map((entry) => (
-                  <div key={entry.brand}>
-                    <Link
-                      href={entry.href}
-                      onClick={closeMenu}
-                      className="font-sans font-bold text-[2.5rem] leading-none text-white active:opacity-50 transition-opacity duration-150"
-                    >
-                      {entry.brand}
-                    </Link>
-
-                    <div className="mt-5 flex flex-col gap-3">
-                      {entry.items.map((item) =>
-                        item.isMeta ? (
-                          <Link
-                            key={item.label}
-                            href={item.href}
-                            onClick={closeMenu}
-                            className="font-sans text-white/40 text-[11px] tracking-normal active:opacity-50 transition-opacity duration-150"
-                          >
-                     current simpl       {"N\u00B0 " + item.label}
-                          </Link>
-                        ) : (
-                          <Link
-                            key={item.label}
-                            href={item.href}
-                            onClick={closeMenu}
-                            className="font-sans text-white/70 text-xs font-medium tracking-[0.18em] uppercase active:text-white active:opacity-70 transition-opacity duration-150"
-                          >
-                            {item.label}
-                          </Link>
-                        ),
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </nav>
-
-            {/* Footer */}
-            <div className="px-6 pb-8 pt-4">
-              <div className="font-sans text-white/25 text-[10px] tracking-wide">© 2026 Saint Yve</div>
-            </div>
+        <div
+          ref={panelRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Site navigation"
+          className="md:hidden fixed inset-0 h-[100dvh] w-full bg-black z-[10000] flex flex-col pointer-events-none opacity-0 overscroll-none"
+          style={{ willChange: "opacity" }}
+        >
+          {/* Close */}
+          <div className="flex items-center justify-end px-6 pt-[max(1.5rem,env(safe-area-inset-top))] pb-2 shrink-0">
+            <button
+              ref={closeButtonRef}
+              onClick={closeMenu}
+              aria-label="Close menu"
+              className="flex items-center justify-center h-11 w-11 -mr-3 cursor-pointer active:opacity-50 transition-opacity duration-150"
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <line x1="1" y1="1" x2="13" y2="13" stroke="white" strokeWidth="1.25" />
+                <line x1="13" y1="1" x2="1" y2="13" stroke="white" strokeWidth="1.25" />
+              </svg>
+            </button>
           </div>
-        </>,
+
+          {/* Editorial index */}
+          <nav
+            className="flex-1 min-h-0 overflow-y-auto overscroll-contain flex flex-col justify-center px-6 py-8"
+            aria-label="Product houses"
+          >
+            <div className="flex flex-col gap-14">
+              {INDEX.map((entry) => (
+                <div key={entry.brand}>
+                  <Link
+                    href={entry.href}
+                    onClick={closeMenu}
+                    className="inline-block font-sans font-bold text-[2.5rem] leading-none text-white active:opacity-50 transition-opacity duration-150"
+                  >
+                    {entry.brand}
+                  </Link>
+
+                  <div className="mt-5 flex flex-col gap-1">
+                    {entry.items.map((item) =>
+                      item.isMeta ? (
+                        <Link
+                          key={item.label}
+                          href={item.href}
+                          onClick={closeMenu}
+                          className="block py-1.5 font-sans text-white/40 text-[11px] tracking-normal active:opacity-50 transition-opacity duration-150"
+                        >
+                          {`N\u00B0 ${item.label}`}
+                        </Link>
+                      ) : (
+                        <Link
+                          key={item.label}
+                          href={item.href}
+                          onClick={closeMenu}
+                          className="block py-1.5 font-sans text-white/70 text-xs font-medium tracking-[0.18em] uppercase active:text-white active:opacity-70 transition-opacity duration-150"
+                        >
+                          {item.label}
+                        </Link>
+                      ),
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </nav>
+
+          {/* Footer */}
+          <div className="px-6 pt-4 pb-[max(2rem,env(safe-area-inset-bottom))] shrink-0">
+            <div className="font-sans text-white/25 text-[10px] tracking-wide">© 2026 Saint Yve</div>
+          </div>
+        </div>,
         document.body,
       )
     : null
@@ -162,10 +187,11 @@ export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
     <>
       <button
         onClick={openMenu}
-        className="md:hidden cursor-pointer active:opacity-60 transition-opacity duration-150 relative z-10"
-        aria-label="Open menu"
+        className="md:hidden flex items-center justify-center h-11 w-11 -ml-3 cursor-pointer active:opacity-60 transition-opacity duration-150 relative z-10"
+        aria-label={isOpen ? "Close menu" : "Open menu"}
+        aria-expanded={isOpen}
       >
-        <svg width="17" height="11" viewBox="0 0 17 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="17" height="11" viewBox="0 0 17 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <rect x="0" y="0" width="17" height="1.75" fill="black" />
           <rect x="6" y="8.75" width="11" height="1.75" fill="black" />
         </svg>
