@@ -312,6 +312,7 @@ export default function CheckoutPage() {
           customer_name: formData.fullName,
           shipping_address: formData,
           reserved_until: reservedUntil,
+          storefront: "saintyve.com",
         })
         .select()
         .single()
