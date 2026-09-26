@@ -3,9 +3,11 @@
 import { useEffect, useState } from "react"
 import { createBrowserClient } from "@/lib/supabase/client"
 import { AdminSidebar } from "@/components/admin/admin-sidebar"
+import { AdminMobileSidebarSheet } from "@/components/admin/admin-mobile-sidebar-sheet"
 import { OrderDetailsSidebar } from "@/components/admin/order-details-sidebar"
 import { CreateOrderModal } from "@/components/admin/create-order-modal"
 import { Search, Plus } from "lucide-react"
+import Link from "next/link"
 
 type Order = {
   id: string
@@ -88,6 +90,7 @@ export default function AdminOrdersPage() {
   const [selectedOrderCredits, setSelectedOrderCredits] = useState<number>(0)
   const [selectedOrderCoupon, setSelectedOrderCoupon] = useState<string | null>(null)
   const [selectedOrderDiscount, setSelectedOrderDiscount] = useState<number>(0)
+  const [userEmail, setUserEmail] = useState<string>("")
   const supabase = createBrowserClient()
 
   useEffect(() => {
@@ -116,6 +119,7 @@ export default function AdminOrdersPage() {
       return
     }
 
+    setUserEmail(user.email || "")
     fetchOrders()
   }
 
@@ -402,74 +406,193 @@ export default function AdminOrdersPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-[#0e0e0e] overflow-hidden">
-      <AdminSidebar />
+    <div className="relative min-h-screen w-full overflow-x-hidden bg-[#0e0e0e]">
+      {/* Mobile top bar */}
+      <header className="sticky top-0 z-50 w-full border-b border-white/6 lg:hidden">
+        <div
+          className="flex items-center gap-3 px-5 py-4"
+          style={{ backgroundColor: "rgba(14,14,14,0.95)", backdropFilter: "blur(12px)" }}
+        >
+          <AdminMobileSidebarSheet userEmail={userEmail} />
+          <Link href="/" className="font-sans text-[11px] font-medium uppercase tracking-[0.28em] text-white/90">
+            SAINT YVE
+          </Link>
+        </div>
+      </header>
 
-      <div className="flex-1 min-w-0 overflow-auto p-8">
-        {/* Header */}
-        <div className="mb-8">
-          <p className="font-sans text-[9px] font-medium tracking-[0.22em] uppercase text-white/25 mb-3">Management</p>
-          <h1 className="font-sans text-[15px] font-light uppercase tracking-[0.1em] text-white/90 mb-1">Orders</h1>
-          <p className="font-sans text-[10px] tracking-wide text-white/30">Manage all customer orders</p>
+      <div className="flex">
+        <div className="hidden lg:block">
+          <AdminSidebar userEmail={userEmail} />
         </div>
 
-        {/* Search + filters */}
-        <div className="flex flex-col md:flex-row gap-3 mb-6 items-start md:items-center">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white/20" />
-            <input
-              type="text"
-              placeholder="Search by order ID, customer name, or email..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/8 font-sans text-[11px] text-white/70 placeholder:text-white/20 tracking-wide focus:outline-none focus:border-white/15 transition-colors"
-            />
+        <div className="min-w-0 flex-1 p-4 sm:p-6 lg:p-8">
+          {/* Header */}
+          <div className="mb-6 lg:mb-8">
+            <p className="font-sans text-[9px] font-medium tracking-[0.22em] uppercase text-white/25 mb-3">Management</p>
+            <h1 className="font-sans text-[15px] font-light uppercase tracking-[0.1em] text-white/90 mb-1">Orders</h1>
+            <p className="font-sans text-[10px] tracking-wide text-white/30">Manage all customer orders</p>
           </div>
-          <div className="flex gap-1.5">
-            {["all", "pending", "processing", "completed"].map((f) => (
-              <button
-                key={f}
-                onClick={() => setStatusFilter(f)}
-                className={`px-4 py-2.5 rounded-xl font-sans text-[10px] font-medium tracking-[0.16em] uppercase transition-all duration-200 ${
-                  statusFilter === f
-                    ? "bg-white/5 text-white/90 border border-white/10"
-                    : "text-white/35 border border-transparent hover:bg-white/[0.03] hover:text-white/60"
-                }`}
-              >
-                {f}
-              </button>
-            ))}
-          </div>
-          <button
-            onClick={() => setIsCreateOrderOpen(true)}
-            className="ml-auto flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white text-black font-sans text-[10px] font-medium tracking-[0.16em] uppercase hover:bg-white/90 transition-all flex-shrink-0"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            Create Order
-          </button>
-        </div>
 
-        {/* Bulk selection bar */}
-        {selectedOrderIds.size > 0 && (
-          <div className="mb-4 px-5 py-3 rounded-xl bg-white/[0.03] border border-white/8 flex items-center justify-between">
-            <span className="font-sans text-[10px] font-medium tracking-[0.16em] uppercase text-white/60">
-              {selectedOrderIds.size} order{selectedOrderIds.size > 1 ? "s" : ""} selected
-            </span>
-            <div className="flex items-center gap-4">
-              <p className="font-sans text-[10px] text-white/25">Only pending orders will receive a reminder</p>
-              <button
-                onClick={handleSendPaymentReminders}
-                disabled={sendingReminders}
-                className="px-4 py-2 rounded-xl font-sans text-[10px] font-medium tracking-[0.16em] uppercase border border-white/10 bg-white/[0.03] text-white/60 hover:bg-white/[0.07] hover:text-white/90 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-              >
-                {sendingReminders ? "Sending..." : "Send Payment Reminder"}
-              </button>
+          {/* Search + filters */}
+          <div className="flex flex-col gap-3 mb-6 lg:flex-row lg:items-center">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white/20" />
+              <input
+                type="text"
+                placeholder="Search by order ID, customer name, or email..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/8 font-sans text-[11px] text-white/70 placeholder:text-white/20 tracking-wide focus:outline-none focus:border-white/15 transition-colors"
+              />
             </div>
+            <div className="flex gap-1.5 overflow-x-auto">
+              {["all", "pending", "processing", "completed"].map((f) => (
+                <button
+                  key={f}
+                  onClick={() => setStatusFilter(f)}
+                  className={`shrink-0 px-4 py-2.5 rounded-xl font-sans text-[10px] font-medium tracking-[0.16em] uppercase transition-all duration-200 ${
+                    statusFilter === f
+                      ? "bg-white/5 text-white/90 border border-white/10"
+                      : "text-white/35 border border-transparent hover:bg-white/[0.03] hover:text-white/60"
+                  }`}
+                >
+                  {f}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => setIsCreateOrderOpen(true)}
+              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white text-black font-sans text-[10px] font-medium tracking-[0.16em] uppercase hover:bg-white/90 transition-all flex-shrink-0 lg:ml-auto"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              Create Order
+            </button>
           </div>
-        )}
 
-        {/* Table */}
-        <div className="rounded-2xl border border-white/8 overflow-hidden">
+          {/* Bulk selection bar */}
+          {selectedOrderIds.size > 0 && (
+            <div className="mb-4 flex flex-col gap-3 rounded-xl border border-white/8 bg-white/[0.03] px-5 py-3 sm:flex-row sm:items-center sm:justify-between">
+              <span className="font-sans text-[10px] font-medium tracking-[0.16em] uppercase text-white/60">
+                {selectedOrderIds.size} order{selectedOrderIds.size > 1 ? "s" : ""} selected
+              </span>
+              <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4">
+                <p className="font-sans text-[10px] text-white/25">Only pending orders will receive a reminder</p>
+                <button
+                  onClick={handleSendPaymentReminders}
+                  disabled={sendingReminders}
+                  className="px-4 py-2 rounded-xl font-sans text-[10px] font-medium tracking-[0.16em] uppercase border border-white/10 bg-white/[0.03] text-white/60 hover:bg-white/[0.07] hover:text-white/90 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                >
+                  {sendingReminders ? "Sending..." : "Send Payment Reminder"}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Mobile order cards */}
+          <div className="mb-4 space-y-3 md:hidden">
+            {loading ? (
+              <div className="rounded-2xl border border-white/8 px-5 py-12 text-center font-sans text-[10px] tracking-widest uppercase text-white/20">
+                Loading orders...
+              </div>
+            ) : filteredOrders.length === 0 ? (
+              <div className="rounded-2xl border border-white/8 px-5 py-12 text-center font-sans text-[10px] tracking-widest uppercase text-white/20">
+                No orders found
+              </div>
+            ) : (
+              filteredOrders.map((order) => {
+                const paymentInfo = getPaymentStatusInfo(order)
+                return (
+                  <div
+                    key={order.id}
+                    className="rounded-2xl border border-white/8 bg-white/[0.02] p-4"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-start gap-3">
+                        <input
+                          type="checkbox"
+                          checked={selectedOrderIds.has(order.id)}
+                          onChange={(e) => handleSelectOrder(order.id, e.target.checked)}
+                          className="mt-0.5 h-4 w-4 shrink-0 rounded border-white/20 bg-white/5 cursor-pointer accent-white/60"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleViewOrder(order.id, order.total, order.shipping_address)}
+                          className="text-left"
+                        >
+                          <p className="font-mono text-[11px] text-white/60">#{order.id.slice(0, 8)}</p>
+                          <p className="mt-1 font-sans text-[12px] font-medium text-white/85">
+                            {order.profiles?.full_name || (order.shipping_address as any)?.fullName || "Guest Order"}
+                          </p>
+                          <p className="font-sans text-[10px] text-white/30">
+                            {order.profiles?.email || (order.shipping_address as any)?.email}
+                          </p>
+                        </button>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-sans text-[13px] font-medium text-white/90">
+                          EUR {Number(order.total).toFixed(2)}
+                        </p>
+                        <p className="mt-1 font-sans text-[10px] text-white/30">
+                          {new Date(order.created_at).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="mt-3 flex flex-wrap items-center gap-2">
+                      <span className={`inline-block px-2.5 py-1 font-sans text-[9px] tracking-[0.16em] uppercase rounded-full font-medium ${paymentInfo.color}`}>
+                        {paymentInfo.label}
+                      </span>
+                      {order.storefront && (
+                        <span className="inline-block px-2.5 py-1 font-sans text-[9px] tracking-[0.16em] uppercase rounded-full font-medium bg-white/5 text-white/40">
+                          {order.storefront}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="mt-3 grid grid-cols-2 gap-2" onClick={(e) => e.stopPropagation()}>
+                      <select
+                        value={order.status}
+                        onChange={(e) => updateOrderStatus(order.id, e.target.value)}
+                        className={`w-full min-h-11 px-2.5 py-2 font-sans text-[9px] tracking-[0.16em] uppercase rounded-xl font-medium border-0 cursor-pointer outline-none ${
+                          order.status === "completed" ? "bg-emerald-500/10 text-emerald-400"
+                          : order.status === "processing" ? "bg-blue-500/10 text-blue-400"
+                          : order.status === "cancelled" ? "bg-red-500/10 text-red-400"
+                          : "bg-amber-500/10 text-amber-400"
+                        }`}
+                      >
+                        <option value="pending">Pending</option>
+                        <option value="processing">Processing</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                      </select>
+                      <select
+                        value={order.supplier_status || ""}
+                        onChange={(e) => {
+                          supabase.from("orders").update({ supplier_status: e.target.value }).eq("id", order.id).then(() => fetchOrders())
+                        }}
+                        className={`w-full min-h-11 px-2.5 py-2 font-sans text-[9px] tracking-[0.16em] uppercase rounded-xl font-medium border-0 cursor-pointer outline-none ${
+                          !order.supplier_status ? "bg-white/5 text-white/30"
+                          : order.supplier_status === "unprocessed" ? "bg-amber-500/10 text-amber-400"
+                          : order.supplier_status === "preparing" ? "bg-blue-500/10 text-blue-400"
+                          : order.supplier_status === "in_transit" ? "bg-purple-500/10 text-purple-400"
+                          : "bg-emerald-500/10 text-emerald-400"
+                        }`}
+                      >
+                        <option value="">Not Started</option>
+                        <option value="unprocessed">Unprocessed</option>
+                        <option value="preparing">Preparing</option>
+                        <option value="in_transit">In Transit</option>
+                        <option value="delivered">Delivered</option>
+                      </select>
+                    </div>
+                  </div>
+                )
+              })
+            )}
+          </div>
+
+          {/* Table */}
+          <div className="hidden rounded-2xl border border-white/8 overflow-hidden md:block">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -640,6 +763,7 @@ export default function AdminOrdersPage() {
                 )}
               </tbody>
             </table>
+          </div>
           </div>
         </div>
       </div>

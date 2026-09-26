@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import ProductsTable from "@/components/admin/management/products/products-table"
 import { AdminSidebar } from "@/components/admin/admin-sidebar"
+import { AdminMobileSidebarSheet } from "@/components/admin/admin-mobile-sidebar-sheet"
 import Link from "next/link"
 import { Plus, ArrowLeft } from "lucide-react"
 
@@ -102,42 +103,62 @@ export default async function AdminProductsPage({
     }) || []
 
   return (
-    <div className="flex min-h-screen bg-[#0e0e0e]">
-      <AdminSidebar userEmail={user.email || ""} />
+    <div className="relative min-h-screen w-full overflow-x-hidden bg-[#0e0e0e]">
+      {/* Mobile top bar */}
+      <header className="sticky top-0 z-50 w-full border-b border-white/6 lg:hidden">
+        <div
+          className="flex items-center gap-3 px-5 py-4"
+          style={{ backgroundColor: "rgba(14,14,14,0.95)", backdropFilter: "blur(12px)" }}
+        >
+          <AdminMobileSidebarSheet userEmail={user.email || ""} />
+          <Link
+            href="/"
+            className="font-sans text-[11px] font-medium uppercase tracking-[0.28em] text-white/90"
+          >
+            SAINT YVE
+          </Link>
+        </div>
+      </header>
 
-      <div className="flex-1 p-8">
-        <div className="mb-8">
-          {categoryInfo && (
-            <Link
-              href="/admin/products"
-              className="inline-flex items-center gap-1.5 font-sans text-[10px] uppercase tracking-[0.16em] text-white/30 hover:text-white/60 mb-5 transition-colors"
-            >
-              <ArrowLeft size={12} />
-              Back to All Products
-            </Link>
-          )}
-
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="font-sans text-[9px] font-medium tracking-[0.22em] uppercase text-white/25 mb-3">Management</p>
-              <h1 className="font-sans text-[15px] font-light uppercase tracking-[0.1em] text-white/90 mb-1">
-                {categoryInfo ? `${categoryInfo.name} Products` : "Products"}
-              </h1>
-              <p className="font-sans text-[10px] tracking-wide text-white/30">
-                {categoryInfo ? `Manage products in the ${categoryInfo.name} category` : "Manage your product catalog"}
-              </p>
-            </div>
-            <Link
-              href={`/admin/products/new${categoryId ? `?category=${categoryId}` : ""}`}
-              className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2.5 font-sans text-[10px] font-medium uppercase tracking-[0.16em] text-white/60 hover:bg-white/[0.07] hover:text-white/90 transition-all"
-            >
-              <Plus size={13} />
-              New Product
-            </Link>
-          </div>
+      <div className="flex">
+        <div className="hidden lg:block">
+          <AdminSidebar userEmail={user.email || ""} />
         </div>
 
-        <ProductsTable initialProducts={productsWithStats} categoryId={categoryId} totalCount={count || 0} />
+        <div className="min-w-0 flex-1 p-4 sm:p-6 lg:p-8">
+          <div className="mb-6 lg:mb-8">
+            {categoryInfo && (
+              <Link
+                href="/admin/products"
+                className="inline-flex items-center gap-1.5 font-sans text-[10px] uppercase tracking-[0.16em] text-white/30 hover:text-white/60 mb-5 transition-colors"
+              >
+                <ArrowLeft size={12} />
+                Back to All Products
+              </Link>
+            )}
+
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <p className="font-sans text-[9px] font-medium tracking-[0.22em] uppercase text-white/25 mb-3">Management</p>
+                <h1 className="font-sans text-[15px] font-light uppercase tracking-[0.1em] text-white/90 mb-1">
+                  {categoryInfo ? `${categoryInfo.name} Products` : "Products"}
+                </h1>
+                <p className="font-sans text-[10px] tracking-wide text-white/30">
+                  {categoryInfo ? `Manage products in the ${categoryInfo.name} category` : "Manage your product catalog"}
+                </p>
+              </div>
+              <Link
+                href={`/admin/products/new${categoryId ? `?category=${categoryId}` : ""}`}
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2.5 font-sans text-[10px] font-medium uppercase tracking-[0.16em] text-white/60 hover:bg-white/[0.07] hover:text-white/90 transition-all sm:w-auto"
+              >
+                <Plus size={13} />
+                New Product
+              </Link>
+            </div>
+          </div>
+
+          <ProductsTable initialProducts={productsWithStats} categoryId={categoryId} totalCount={count || 0} />
+        </div>
       </div>
     </div>
   )

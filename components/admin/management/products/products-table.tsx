@@ -549,8 +549,81 @@ export default function ProductsTable({ initialProducts, categoryId, totalCount 
         </span>
       </div>
 
+      {/* Mobile product cards */}
+      <div className="space-y-3 md:hidden">
+        {filteredProducts.map((product) => (
+          <div key={product.id} className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
+            <div className="flex items-start gap-3">
+              <input
+                type="checkbox"
+                checked={selectedProducts.has(product.id)}
+                onChange={(e) => handleSelectProduct(product.id, e.target.checked)}
+                className="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-white/60"
+              />
+
+              <div className="h-14 w-14 shrink-0 overflow-hidden rounded-lg border border-white/8 bg-white/[0.03]">
+                {product.primaryImage ? (
+                  <img
+                    src={product.primaryImage || "/placeholder.svg"}
+                    alt={product.name}
+                    className="h-full w-full object-cover"
+                  />
+                ) : null}
+              </div>
+
+              <div className="min-w-0 flex-1">
+                <div className="flex items-start justify-between gap-2">
+                  {product.slug ? (
+                    <a
+                      href={`https://designerdrip.store/products/${product.slug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-sans text-[12px] font-medium text-white/85 underline underline-offset-2 decoration-white/20"
+                    >
+                      {product.name}
+                    </a>
+                  ) : (
+                    <span className="font-sans text-[12px] font-medium text-white/85">{product.name}</span>
+                  )}
+                  {product.status === "live" ? (
+                    <span className="shrink-0 inline-flex items-center gap-1.5 px-2 py-1 rounded-full font-sans text-[9px] font-medium uppercase tracking-widest bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                      <span className="h-1 w-1 rounded-full bg-emerald-400" />
+                      Live
+                    </span>
+                  ) : (
+                    <span className="shrink-0 inline-flex items-center gap-1.5 px-2 py-1 rounded-full font-sans text-[9px] font-medium uppercase tracking-widest bg-white/5 text-white/30 border border-white/8">
+                      <span className="h-1 w-1 rounded-full bg-white/30" />
+                      Draft
+                    </span>
+                  )}
+                </div>
+
+                <div className="mt-2 flex items-center justify-between">
+                  <p className="font-sans text-[11px] font-medium text-white/70">EUR {product.price.toFixed(2)}</p>
+                  <p className="font-sans text-[10px] text-white/35">{product.orderCount} ordered</p>
+                </div>
+
+                <Link
+                  href={`/admin/products/${product.id}/edit`}
+                  className="mt-3 inline-flex min-h-[36px] items-center gap-1.5 rounded-xl border border-white/8 bg-white/[0.03] px-3 py-1.5 font-sans text-[9px] font-medium uppercase tracking-[0.16em] text-white/40 hover:bg-white/[0.07] hover:text-white/80 transition-all"
+                >
+                  <Edit size={11} strokeWidth={1.5} />
+                  Edit
+                </Link>
+              </div>
+            </div>
+          </div>
+        ))}
+
+        {filteredProducts.length === 0 && (
+          <div className="rounded-2xl border border-white/8 py-12 text-center">
+            <p className="font-sans text-[10px] uppercase tracking-widest text-white/20">No products found</p>
+          </div>
+        )}
+      </div>
+
       {/* Table */}
-      <div className="rounded-2xl border border-white/8 overflow-hidden">
+      <div className="hidden rounded-2xl border border-white/8 overflow-hidden md:block">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
