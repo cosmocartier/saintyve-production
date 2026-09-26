@@ -2,18 +2,20 @@
 
 import { useEffect, useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { createBrowserClient } from "@/lib/supabase/client"
 import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 
 interface OnWearGalleryProps {
   productId: string
+  brand: string | null
 }
 
-interface OnWearImage {
-  id: string
+interface RecommendedTile {
+  productId: string
+  slug: string
   cf_image_id: string
   alt_text: string | null
-  sort_order: number
 }
 
 // Fixed 6-tile editorial mosaic (3 columns x 4 rows) replicating the reference layout:
@@ -31,57 +33,137 @@ const TILE_POSITIONS = [
   "col-start-1 row-start-4", // slot 5
 ]
 
-export function OnWearGallery({ productId }: OnWearGalleryProps) {
-  const [images, setImages] = useState<OnWearImage[]>([])
+export function OnWearGallery({ productId, brand }: OnWearGalleryProps) {
+  const [tiles, setTiles] = useState<RecommendedTile[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    const fetchOnWearImages = async () => {
+    if (!brand) {
+      setIsLoading(false)
+      return
+    }
+
+    let isActive = true
+    setIsLoading(true)
+
+    // The "brand" column stores inconsistent variants for the same brand (e.g. "Hermès" vs "Hermes"),
+    // matching the pattern already used by the brand landing pages. Match against both the accented
+    // form and its ASCII-normalized equivalent so recommendations aren't dropped by a diacritic mismatch.
+    const normalizedBrand = brand.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    const brandVariants = Array.from(new Set([brand, normalizedBrand]))
+
+    const fetchBrandRecommendations = async () => {
       const supabase = createBrowserClient()
 
       try {
-        const { data, error } = await supabase
-          .from("product_images_cf")
-          .select("id, cf_image_id, alt_text, sort_order")
-          .eq("product_id", productId)
-          .eq("on_wear", true)
-          .order("sort_order", { ascending: true })
-          .limit(6)
+        // Find other live products from the same brand.
+        const { data: brandProducts, error: productsError } = await supabase
+          .from("products")
+          .select("id, slug")
+          .in("brand", brandVariants)
+          .eq("status", "live")
+          .neq("id", productId)
+          .order("is_bestseller", { ascending: false })
+          .order("created_at", { ascending: false })
+          .limit(24)
 
-        if (error) {
-          console.error("[On-Wear Gallery] Error fetching images:", error)
+        if (productsError || !brandProducts || brandProducts.length === 0) {
+          if (isActive) setTiles([])
           return
         }
 
-        setImages(data || [])
+        const candidateIds = brandProducts.map((p) => p.id)
+
+        // Fetch every image for each candidate (both category/brand-designated and standard),
+        // same as the brand landing pages, so we can prefer the category image but fall back
+        // to the product's primary image when no category image has been set.
+        const { data: allImages, error: imagesError } = await supabase
+          .from("product_images_cf")
+          .select("product_id, cf_image_id, alt_text, sort_order, role, category_image")
+          .in("product_id", candidateIds)
+          .order("sort_order", { ascending: true })
+
+        if (imagesError || !allImages) {
+          if (isActive) setTiles([])
+          return
+        }
+
+        const imagesByProduct = new Map<string, typeof allImages>()
+        for (const image of allImages) {
+          const existing = imagesByProduct.get(image.product_id)
+          if (existing) {
+            existing.push(image)
+          } else {
+            imagesByProduct.set(image.product_id, [image])
+          }
+        }
+
+        const firstImageByProduct = new Map<string, { cf_image_id: string; alt_text: string | null }>()
+        for (const [productIdKey, images] of imagesByProduct) {
+          const categoryImage = images.find((img) => img.category_image)
+          const primaryImage = images.find((img) => !img.category_image && img.role === "primary")
+          const fallbackImage = images.find((img) => !img.category_image)
+          const chosen = categoryImage || primaryImage || fallbackImage
+          if (chosen) {
+            firstImageByProduct.set(productIdKey, {
+              cf_image_id: chosen.cf_image_id,
+              alt_text: chosen.alt_text,
+            })
+          }
+        }
+
+        const resolved: RecommendedTile[] = []
+        for (const candidate of brandProducts) {
+          const image = firstImageByProduct.get(candidate.id)
+          if (image) {
+            resolved.push({
+              productId: candidate.id,
+              slug: candidate.slug,
+              cf_image_id: image.cf_image_id,
+              alt_text: image.alt_text,
+            })
+          }
+          if (resolved.length === 6) break
+        }
+
+        if (isActive) setTiles(resolved)
       } catch (error) {
-        console.error("[On-Wear Gallery] Exception fetching images:", error)
+        console.error("[Brand Gallery] Exception fetching recommendations:", error)
+        if (isActive) setTiles([])
       } finally {
-        setIsLoading(false)
+        if (isActive) setIsLoading(false)
       }
     }
 
-    fetchOnWearImages()
-  }, [productId])
+    fetchBrandRecommendations()
 
-  if (isLoading || images.length === 0) {
+    return () => {
+      isActive = false
+    }
+  }, [productId, brand])
+
+  if (isLoading || tiles.length === 0) {
     return null
   }
 
   return (
-    <section aria-label="On-wear looks" className="w-full bg-white">
+    <section aria-label="More from this brand" className="w-full bg-white">
       <div className="mx-auto w-full lg:max-w-2xl">
         <div className="grid aspect-[3/5] grid-cols-3 grid-rows-4 gap-0.5">
-          {images.slice(0, 6).map((image, index) => (
-            <div key={image.id} className={`relative overflow-hidden bg-[#f5f5f5] ${TILE_POSITIONS[index]}`}>
+          {tiles.slice(0, 6).map((tile, index) => (
+            <Link
+              key={tile.productId}
+              href={`/products/${tile.slug}`}
+              className={`relative overflow-hidden bg-[#f5f5f5] ${TILE_POSITIONS[index]}`}
+            >
               <Image
-                src={buildCfUrl(image.cf_image_id, "pdp") || "/placeholder.svg"}
-                alt={image.alt_text || "On-wear look"}
+                src={buildCfUrl(tile.cf_image_id, "pdp") || "/placeholder.svg"}
+                alt={tile.alt_text || "Recommended product from this brand"}
                 fill
                 sizes="(min-width: 1024px) 512px, 100vw"
                 className="object-cover"
               />
-            </div>
+            </Link>
           ))}
         </div>
       </div>
