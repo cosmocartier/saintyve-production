@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 import Link from "next/link"
 import gsap from "gsap"
+import { subscribeToNewsletter } from "@/app/actions/newsletter"
+import { useToast } from "@/hooks/use-toast"
 
 // Editorial index — Saint Yve currently deals exclusively in these two
 // houses. Keep this list short and deliberate; do not reintroduce a
@@ -39,12 +41,30 @@ const CLOSE_MS = 0.16
 export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
   const [isOpen, setIsOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [newsletterEmail, setNewsletterEmail] = useState("")
+  const [newsletterSubscribed, setNewsletterSubscribed] = useState(false)
+  const { toast } = useToast()
 
   const panelRef = useRef<HTMLDivElement>(null)
   const closeButtonRef = useRef<HTMLButtonElement>(null)
 
   const openMenu = () => setIsOpen(true)
   const closeMenu = () => setIsOpen(false)
+
+  const handleNewsletterSubscribe = async () => {
+    if (!newsletterEmail || newsletterSubscribed) return
+
+    const result = await subscribeToNewsletter(newsletterEmail)
+    if (result.success) {
+      setNewsletterSubscribed(true)
+    } else {
+      toast({
+        title: "Subscription Failed",
+        description: result.error || "Please try again.",
+        variant: "destructive",
+      })
+    }
+  }
 
   // Open / close animation.
   useEffect(() => {
@@ -112,41 +132,38 @@ export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
           role="dialog"
           aria-modal="true"
           aria-label="Site navigation"
-          className="md:hidden fixed inset-0 h-[100dvh] w-full bg-black z-[10000] flex flex-col pointer-events-none opacity-0 overscroll-none"
+          className="md:hidden fixed inset-0 h-[100dvh] w-full z-[10000] flex flex-col pointer-events-none opacity-0 overscroll-none bg-black/55 backdrop-blur-[28px]"
           style={{ willChange: "opacity" }}
         >
           {/* Close */}
-          <div className="flex items-center justify-end px-6 pt-[max(1.5rem,env(safe-area-inset-top))] pb-2 shrink-0">
+          <div className="flex items-center justify-start px-6 pt-[max(1.5rem,env(safe-area-inset-top))] pb-2 shrink-0">
             <button
               ref={closeButtonRef}
               onClick={closeMenu}
               aria-label="Close menu"
-              className="flex items-center justify-center h-11 w-11 -mr-3 cursor-pointer active:opacity-50 transition-opacity duration-150"
+              className="flex items-center justify-center h-11 w-11 -ml-3 cursor-pointer active:opacity-50 transition-opacity duration-150"
             >
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <line x1="1" y1="1" x2="13" y2="13" stroke="white" strokeWidth="1.25" />
-                <line x1="13" y1="1" x2="1" y2="13" stroke="white" strokeWidth="1.25" />
+              <svg width="16" height="16" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <line x1="1" y1="1" x2="13" y2="13" stroke="white" strokeWidth="1" />
+                <line x1="13" y1="1" x2="1" y2="13" stroke="white" strokeWidth="1" />
               </svg>
             </button>
           </div>
 
           {/* Editorial index */}
-          <nav
-            className="flex-1 min-h-0 overflow-y-auto overscroll-contain flex flex-col justify-center px-6 py-8"
-            aria-label="Product houses"
-          >
-            <div className="flex flex-col gap-14">
+          <nav className="shrink-0 overflow-y-auto overscroll-contain px-6 pt-10" aria-label="Product houses">
+            <div className="flex flex-col gap-10">
               {INDEX.map((entry) => (
                 <div key={entry.brand}>
                   <Link
                     href={entry.href}
                     onClick={closeMenu}
-                    className="inline-block font-sans font-bold text-[2.5rem] leading-none text-white active:opacity-50 transition-opacity duration-150"
+                    className="inline-block font-sans font-normal text-[2.25rem] leading-none text-white active:opacity-50 transition-opacity duration-150"
                   >
                     {entry.brand}
                   </Link>
 
-                  <div className="mt-5 flex flex-col gap-1">
+                  <div className="mt-4 flex flex-col gap-1">
                     {entry.items.map((item) =>
                       item.isMeta ? (
                         <Link
@@ -162,7 +179,7 @@ export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
                           key={item.label}
                           href={item.href}
                           onClick={closeMenu}
-                          className="block py-1.5 font-sans text-white/70 text-xs font-medium tracking-[0.18em] uppercase active:text-white active:opacity-70 transition-opacity duration-150"
+                          className="block py-1.5 font-sans text-white/60 text-xs font-medium tracking-[0.14em] uppercase active:text-white active:opacity-70 transition-opacity duration-150"
                         >
                           {item.label}
                         </Link>
@@ -174,9 +191,49 @@ export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
             </div>
           </nav>
 
-          {/* Footer */}
-          <div className="px-6 pt-4 pb-[max(2rem,env(safe-area-inset-bottom))] shrink-0">
-            <div className="font-sans text-white/25 text-[10px] tracking-wide">© 2026 Saint Yve</div>
+          {/* Negative space */}
+          <div className="flex-1 min-h-8" />
+
+          {/* Newsletter + footer, anchored to the bottom */}
+          <div className="px-6 pb-[max(1.75rem,env(safe-area-inset-bottom))] shrink-0">
+            <div className="flex items-center gap-3 border-b border-white/25 pb-2">
+              <input
+                type="email"
+                inputMode="email"
+                autoComplete="email"
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                placeholder={newsletterSubscribed ? "Thank you" : "Email"}
+                disabled={newsletterSubscribed}
+                className="flex-1 min-w-0 bg-transparent font-sans text-white text-sm placeholder:text-white/40 focus:outline-none disabled:opacity-70"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleNewsletterSubscribe()
+                  }
+                }}
+              />
+              {!newsletterSubscribed && (
+                <button
+                  onClick={handleNewsletterSubscribe}
+                  aria-label="Subscribe to newsletter"
+                  className="shrink-0 font-sans text-white/70 text-sm active:opacity-50 transition-opacity duration-150 py-2 -my-2"
+                >
+                  Subscribe
+                </button>
+              )}
+            </div>
+
+            <p className="mt-3 font-sans text-white/40 text-[11px] leading-relaxed">
+              By providing your email address, you agree to our{" "}
+              <Link href="/privacy-policy" onClick={closeMenu} className="underline underline-offset-2 text-white/50">
+                Privacy Policy
+              </Link>
+              .
+            </p>
+
+            <div className="mt-5 font-sans text-white/25 text-[10px] tracking-wide">
+              © {new Date().getFullYear()} Saint Yve
+            </div>
           </div>
         </div>,
         document.body,
