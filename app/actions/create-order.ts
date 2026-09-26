@@ -153,6 +153,7 @@ export async function createOrderAction(payload: CreateOrderPayload): Promise<Cr
       supplier_status: payload.supplier_status,
       delivery_notes: payload.internal_notes,
       reserved_until: reservedUntil,
+      storefront: "saintyve.com",
     })
     .select()
     .single()

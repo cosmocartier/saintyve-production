@@ -20,6 +20,7 @@ type Order = {
   courier: string | null
   last_payment_reminder_at: string | null
   payment_reminder_count: number
+  storefront: string | null
   shipping_address: {
     street?: string
     city?: string
@@ -481,7 +482,7 @@ export default function AdminOrdersPage() {
                       className="w-3.5 h-3.5 rounded border-white/20 bg-white/5 cursor-pointer accent-white/60"
                     />
                   </th>
-                  {["Order ID", "Customer", "Date", "Order Status", "Fulfillment", "Payment", "Payment Status", "Total", "Items", "Profit", "Reminder"].map((h) => (
+                  {["Order ID", "Customer", "Date", "Storefront", "Order Status", "Fulfillment", "Payment", "Payment Status", "Total", "Items", "Profit", "Reminder"].map((h) => (
                     <th key={h} className={`px-5 py-3.5 font-sans text-[9px] font-medium tracking-[0.22em] uppercase text-white/25 ${h === "Total" ? "text-right" : "text-left"}`}>
                       {h}
                     </th>
@@ -491,13 +492,13 @@ export default function AdminOrdersPage() {
               <tbody className="divide-y divide-white/[0.04]">
                 {loading ? (
                   <tr>
-                    <td colSpan={12} className="px-5 py-12 text-center font-sans text-[10px] tracking-widest uppercase text-white/20">
+                    <td colSpan={13} className="px-5 py-12 text-center font-sans text-[10px] tracking-widest uppercase text-white/20">
                       Loading orders...
                     </td>
                   </tr>
                 ) : filteredOrders.length === 0 ? (
                   <tr>
-                    <td colSpan={12} className="px-5 py-12 text-center font-sans text-[10px] tracking-widest uppercase text-white/20">
+                    <td colSpan={13} className="px-5 py-12 text-center font-sans text-[10px] tracking-widest uppercase text-white/20">
                       No orders found
                     </td>
                   </tr>
@@ -534,6 +535,12 @@ export default function AdminOrdersPage() {
                         onClick={() => handleViewOrder(order.id, order.total, order.shipping_address)}
                       >
                         {new Date(order.created_at).toLocaleDateString()}
+                      </td>
+                      <td
+                        className="px-5 py-4 font-sans text-[11px] text-white/45 cursor-pointer"
+                        onClick={() => handleViewOrder(order.id, order.total, order.shipping_address)}
+                      >
+                        {order.storefront || "—"}
                       </td>
                       <td className="px-5 py-4" onClick={(e) => e.stopPropagation()}>
                         <select
