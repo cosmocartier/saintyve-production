@@ -1,11 +1,11 @@
 import { createClient } from "@/lib/supabase/server"
 import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 
-// Fetches all live Chanel Bag products and optimizes their images the same way
-// the main /brands/chanel page does (curated category images first, then the
-// default title/second-image fallback). Shared by the Chanel sub-pages so they
+// Fetches all live Hermès Bag products and optimizes their images the same way
+// the main /brands/hermes page does (curated category images first, then the
+// default title/second-image fallback). Shared by the Hermès sub-pages so they
 // all render identical product cards.
-export async function getChanelProducts() {
+export async function getHermesProducts() {
   const supabase = await createClient()
 
   const { data: productsData, error: productsError } = await supabase
@@ -26,13 +26,13 @@ export async function getChanelProducts() {
         category_image
       )
     `)
-    .eq("brand", "Chanel")
+    .in("brand", ["Hermès", "Hermes"])
     .eq("status", "live")
     .eq("category", "Bag")
     .order("created_at", { ascending: false })
 
   if (productsError) {
-    console.error("Error fetching Chanel products:", productsError)
+    console.error("Error fetching Hermès products:", productsError)
   }
 
   // Count color variants per model group (siblings sharing parent_product_name
