@@ -26,8 +26,8 @@ const INDEX = [
     brand: "HERMÈS",
     href: "/brands/hermes",
     items: [
-      { label: "Birkin", href: "/brands/hermes" },
-      { label: "Kelly", href: "/brands/hermes" },
+      { label: "Birkin", href: "/brands/hermes/birkin" },
+      { label: "Kelly", href: "/brands/hermes/kelly" },
     ],
   },
 ]
