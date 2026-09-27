@@ -330,10 +330,10 @@ export async function sendOrderProcessingEmail({
                 Need Assistance?
               </div>
               <a
-                href="mailto:support@designerdrip.store"
+                href="mailto:contact@saintyve.com"
                 style="font-size:13px; color:#111111; text-decoration:underline;"
               >
-                support@designerdrip.store
+                contact@saintyve.com
               </a>
             </td>
           </tr>

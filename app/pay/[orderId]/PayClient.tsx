@@ -440,10 +440,10 @@ export default function PayClient({
           <p className="text-center text-xs text-zinc-400">
             Need help?{" "}
             <a
-              href="mailto:support@designerdrip.store"
+              href="mailto:contact@saintyve.com"
               className="text-zinc-600 underline underline-offset-2 hover:text-black transition-colors"
             >
-              Contact us at support@designerdrip.store
+              Contact us at contact@saintyve.com
             </a>
           </p>
         </div>

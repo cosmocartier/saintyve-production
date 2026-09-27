@@ -142,8 +142,8 @@ export async function POST(req: NextRequest) {
             <tr>
               <td style="padding-top:18px;font-size:12px;line-height:1.6;color:#777;">
                 Questions or changes? Just reply to this email or contact
-                <a href="mailto:support@designerdrip.store" style="color:#000;text-decoration:none;">
-                  support@designerdrip.store
+                <a href="mailto:contact@saintyve.com" style="color:#000;text-decoration:none;">
+                  contact@saintyve.com
                 </a>.
               </td>
             </tr>

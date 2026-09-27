@@ -456,10 +456,10 @@ export default function OrderConfirmationPage() {
           <div className={`text-center ${isPaid ? "pt-14" : "pt-8 border-t border-zinc-200"}`}>
             <p className="text-[10px] text-zinc-400 tracking-[0.22em] uppercase mb-2.5">Need Assistance?</p>
             <a
-              href="mailto:support@designerdrip.store"
+              href="mailto:contact@saintyve.com"
               className="text-[13px] text-black underline decoration-zinc-300 hover:decoration-black underline-offset-4 transition-colors break-all"
             >
-              support@designerdrip.store
+              contact@saintyve.com
             </a>
           </div>
         </div>

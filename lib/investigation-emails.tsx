@@ -133,7 +133,7 @@ export async function sendItemUnavailableEmail({
             <tr>
               <td style="padding: 16px 24px; border-top: 1px solid #f0f0f0; text-align: center;">
                 <p style="margin: 0 0 6px; font-size: 12px; line-height: 1.6; color: #888888;">
-                  Questions? Contact us at <a href="mailto:support@designerdrip.store" style="color: #555555; text-decoration: underline;">support@designerdrip.store</a>
+                  Questions? Contact us at <a href="mailto:contact@saintyve.com" style="color: #555555; text-decoration: underline;">contact@saintyve.com</a>
                 </p>
                 <p style="margin: 6px 0 0; font-size: 11px; line-height: 1.5; color: #aaaaaa;">
                   © ${new Date().getFullYear()} SAINT YVE. All rights reserved.
@@ -257,7 +257,7 @@ export async function sendAlternativeConfirmedEmail({
             <tr>
               <td style="padding: 16px 24px; border-top: 1px solid #f0f0f0; text-align: center;">
                 <p style="margin: 0 0 6px; font-size: 12px; line-height: 1.6; color: #888888;">
-                  Questions? Contact us at <a href="mailto:support@designerdrip.store" style="color: #555555; text-decoration: underline;">support@designerdrip.store</a>
+                  Questions? Contact us at <a href="mailto:contact@saintyve.com" style="color: #555555; text-decoration: underline;">contact@saintyve.com</a>
                 </p>
                 <p style="margin: 6px 0 0; font-size: 11px; line-height: 1.5; color: #aaaaaa;">
                   © ${new Date().getFullYear()} SAINT YVE. All rights reserved.

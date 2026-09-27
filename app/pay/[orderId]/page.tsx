@@ -16,7 +16,7 @@ const PAYPAL_DETAILS = {
 }
 
 const WHATSAPP_NUMBER = process.env.WHATSAPP_NUMBER || "971528079266"
-const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || "support@designerdrip.store"
+const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || "contact@saintyve.com"
 
 export default async function PayPage({ params }: { params: { orderId: string } }) {
   const supabase = await createClient()

@@ -818,13 +818,13 @@ export async function sendOrderConfirmationEmail({
               >
                 Questions about your order?
                 <a
-                  href="mailto:support@designerdrip.store"
+                  href="mailto:contact@saintyve.com"
                   style="
                     color:#333333;
                     text-decoration:underline;
                   "
                 >
-                  support@designerdrip.store
+                  contact@saintyve.com
                 </a>
               </p>
 

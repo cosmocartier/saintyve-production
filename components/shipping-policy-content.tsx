@@ -230,8 +230,8 @@ export function ShippingPolicyContent() {
               <div className="space-y-4 text-[14px] font-mono text-gray-700 leading-relaxed">
                 <p>For shipping or return inquiries:</p>
                 <p>
-                  <a href="mailto:support@designerdrip.store" className="underline hover:text-black transition-colors">
-                    support@designerdrip.store
+                  <a href="mailto:contact@saintyve.com" className="underline hover:text-black transition-colors">
+                    contact@saintyve.com
                   </a>
                 </p>
                 <p>Response time: 24–48 business hours.</p>

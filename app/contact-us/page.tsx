@@ -48,10 +48,10 @@ export default function ContactUsPage() {
               <div className="bg-gray-50 border border-gray-100 p-6">
                 <h3 className="text-[11px] font-mono uppercase tracking-[0.15em] text-black mb-3">Email</h3>
                 <a
-                  href="mailto:support@designerdrip.store"
+                  href="mailto:contact@saintyve.com"
                   className="text-[13px] font-mono text-black hover:text-gray-600 transition-colors underline"
                 >
-                  support@designerdrip.store
+                  contact@saintyve.com
                 </a>
               </div>
 
