@@ -288,10 +288,10 @@ export function CookiePolicyContent() {
                   <p>
                     Email:{" "}
                     <a
-                      href="mailto:support@designerdrip.store"
+                      href="mailto:contact@saintyve.com"
                       className="underline hover:text-black transition-colors"
                     >
-                      support@designerdrip.store
+                      contact@saintyve.com
                     </a>
                   </p>
                   <p>

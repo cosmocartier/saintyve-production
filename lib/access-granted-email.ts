@@ -162,7 +162,7 @@ export async function sendAccessGrantedEmail({
               <td style="text-align: center;">
                 <p style="margin: 0; font-size: 11px; line-height: 1.7; color: #2e2e2e; letter-spacing: 0.04em;">
                   © ${new Date().getFullYear()} Saint Yve · All rights reserved<br/>
-                  Questions? <a href="mailto:support@designerdrip.store" style="color: #444240; text-decoration: none;">support@designerdrip.store</a>
+                  Questions? <a href="mailto:contact@saintyve.com" style="color: #444240; text-decoration: none;">contact@saintyve.com</a>
                 </p>
               </td>
             </tr>

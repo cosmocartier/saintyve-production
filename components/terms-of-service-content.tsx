@@ -115,8 +115,8 @@ export function TermsOfServiceContent() {
                 </p>
                 <p>
                   Notify us immediately at{" "}
-                  <a href="mailto:support@designerdrip.store" className="underline hover:text-black transition-colors">
-                    support@designerdrip.store
+                  <a href="mailto:contact@saintyve.com" className="underline hover:text-black transition-colors">
+                    contact@saintyve.com
                   </a>{" "}
                   if you suspect unauthorized access to your account.
                 </p>
@@ -192,8 +192,8 @@ export function TermsOfServiceContent() {
                 </p>
                 <p>
                   To initiate a return, contact{" "}
-                  <a href="mailto:support@designerdrip.store" className="underline hover:text-black transition-colors">
-                    support@designerdrip.store
+                  <a href="mailto:contact@saintyve.com" className="underline hover:text-black transition-colors">
+                    contact@saintyve.com
                   </a>{" "}
                   with your order number and reason for return. We will provide return instructions.
                 </p>
@@ -274,8 +274,8 @@ export function TermsOfServiceContent() {
                 </p>
                 <p>
                   Before pursuing legal action, we encourage you to contact us at{" "}
-                  <a href="mailto:support@designerdrip.store" className="underline hover:text-black transition-colors">
-                    support@designerdrip.store
+                  <a href="mailto:contact@saintyve.com" className="underline hover:text-black transition-colors">
+                    contact@saintyve.com
                   </a>{" "}
                   to resolve any issues amicably.
                 </p>
@@ -306,10 +306,10 @@ export function TermsOfServiceContent() {
                   <p>
                     Email:{" "}
                     <a
-                      href="mailto:support@designerdrip.store"
+                      href="mailto:contact@saintyve.com"
                       className="underline hover:text-black transition-colors"
                     >
-                      support@designerdrip.store
+                      contact@saintyve.com
                     </a>
                   </p>
                   <p>Address: Saint Yve, Dubai Silicon Oasis, UAE</p>

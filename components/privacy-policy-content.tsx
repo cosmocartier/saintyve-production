@@ -88,8 +88,8 @@ export function PrivacyPolicyContent() {
                   </p>
                   <p>
                     Contact:{" "}
-                    <a href="mailto:support@designerdrip.store" className="underline hover:text-black transition-colors">
-                      support@designerdrip.store
+                    <a href="mailto:contact@saintyve.com" className="underline hover:text-black transition-colors">
+                      contact@saintyve.com
                     </a>
                   </p>
                 </div>
@@ -176,8 +176,8 @@ export function PrivacyPolicyContent() {
                 </ul>
                 <p>
                   To exercise your rights, contact us at{" "}
-                  <a href="mailto:support@designerdrip.store" className="underline hover:text-black transition-colors">
-                    support@designerdrip.store
+                  <a href="mailto:contact@saintyve.com" className="underline hover:text-black transition-colors">
+                    contact@saintyve.com
                   </a>
                   .
                 </p>
@@ -223,8 +223,8 @@ export function PrivacyPolicyContent() {
               <div className="space-y-4 text-[14px] font-mono text-gray-700 leading-relaxed">
                 <p>
                   If you have any questions about this Privacy Policy or how we handle your data, please contact us at{" "}
-                  <a href="mailto:support@designerdrip.store" className="underline hover:text-black transition-colors">
-                    support@designerdrip.store
+                  <a href="mailto:contact@saintyve.com" className="underline hover:text-black transition-colors">
+                    contact@saintyve.com
                   </a>
                   .
                 </p>

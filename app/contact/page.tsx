@@ -36,10 +36,10 @@ export default function ContactPage() {
                   General Inquiries
                 </h2>
                 <a
-                  href="mailto:support@designerdrip.store"
+                  href="mailto:contact@saintyve.com"
                   className="text-[15px] font-sans text-black underline decoration-zinc-300 hover:decoration-black transition-colors break-all"
                 >
-                  support@designerdrip.store
+                  contact@saintyve.com
                 </a>
               </div>
 

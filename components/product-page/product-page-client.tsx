@@ -486,8 +486,8 @@ export function ProductPageClient({
                   </a>
                 </p>
                 <p>
-                  <a href="mailto:support@designerdrip.com" className="hover:underline">
-                    support@designerdrip.com
+                  <a href="mailto:contact@saintyve.com" className="hover:underline">
+                    contact@saintyve.com
                   </a>
                 </p>
               </div>

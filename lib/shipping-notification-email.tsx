@@ -383,9 +383,9 @@ export async function sendShippingNotificationEmail({
                 >
                   Questions about your order? Contact us at
                   <a
-                    href="mailto:support@designerdrip.store"
+                    href="mailto:contact@saintyve.com"
                     style="color: #111111; text-decoration: underline;"
-                    >support@designerdrip.store</a
+                    >contact@saintyve.com</a
                   >
                 </p>
                 <p

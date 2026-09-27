@@ -370,7 +370,7 @@ async function generateInvoicePDF(order: any, orderItems: any[]): Promise<Buffer
     "SAINT YVE",
     "Premium Resale & Authentication Studio",
     "Dubai · Germany · Worldwide Shipping",
-    "support@designerdrip.com",
+    "contact@saintyve.com",
   ]
 
   let detailY = yPosition

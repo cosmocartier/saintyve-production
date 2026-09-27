@@ -24,7 +24,7 @@ USING (
   (auth.uid() IS NOT NULL AND user_id = auth.uid())
   OR
   -- Admin users can see all orders
-  (auth.uid() IN (SELECT id FROM auth.users WHERE email = 'support@designerdrip.store'))
+  (auth.uid() IN (SELECT id FROM auth.users WHERE email = 'contact@saintyve.com'))
   OR
   -- Allow viewing any order (needed for guest order confirmation page)
   true
@@ -40,5 +40,5 @@ USING (
   (auth.uid() IS NOT NULL AND user_id = auth.uid())
   OR
   -- Admin users can update all orders
-  (auth.uid() IN (SELECT id FROM auth.users WHERE email = 'support@designerdrip.store'))
+  (auth.uid() IN (SELECT id FROM auth.users WHERE email = 'contact@saintyve.com'))
 );
