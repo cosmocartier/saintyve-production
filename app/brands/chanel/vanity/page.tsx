@@ -19,7 +19,7 @@ export default async function ChanelVanityPage() {
       <CartSidebar />
       <StaticNavigation />
 
-      <div className="pt-20">
+      <div className="pt-12 md:pt-14 lg:pt-20">
         <ChanelCategoryClient initialProducts={filtered} title="Vanity" />
       </div>
 

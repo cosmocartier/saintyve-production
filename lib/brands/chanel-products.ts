@@ -35,6 +35,15 @@ export async function getChanelProducts() {
     console.error("Error fetching Chanel products:", productsError)
   }
 
+  // Count color variants per model group (siblings sharing parent_product_name
+  // with a defined color) — mirrors the color-swatch logic on the product detail page.
+  const colorCountByParent = new Map<string, number>()
+  productsData?.forEach((p: any) => {
+    if (p.parent_product_name && p.color) {
+      colorCountByParent.set(p.parent_product_name, (colorCountByParent.get(p.parent_product_name) || 0) + 1)
+    }
+  })
+
   const optimizedProducts =
     productsData?.map((product: any) => {
       const allImages = product.product_images_cf || []
@@ -79,6 +88,10 @@ export async function getChanelProducts() {
         ...product,
         product_images: displayImages,
         has_multiple_images: displayImages.length > 1,
+        colorVariantCount:
+          product.parent_product_name && product.color
+            ? colorCountByParent.get(product.parent_product_name) || 1
+            : 1,
       }
     }) || []
 

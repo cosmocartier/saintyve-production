@@ -19,7 +19,7 @@ export default async function ChanelTotePage() {
       <CartSidebar />
       <StaticNavigation />
 
-      <div className="pt-20">
+      <div className="pt-12 md:pt-14 lg:pt-20">
         <ChanelCategoryClient initialProducts={filtered} title="Tote" />
       </div>
 
