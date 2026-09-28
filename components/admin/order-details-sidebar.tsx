@@ -176,7 +176,7 @@ export function OrderDetailsSidebar({
         return
       }
 
-      console.log("[v0] Successfully saved tracking and synced with 17TRACK")
+      console.log("[v0] Successfully saved tracking")
 
       // Update local state
       setItems((prevItems) =>
@@ -187,7 +187,7 @@ export function OrderDetailsSidebar({
       setEditingItemId(null)
       setTrackingData({ number: "", courier: "DHL" })
 
-      alert("Tracking saved & synced to 17TRACK ✅")
+      alert("Tracking saved ✅")
     } catch (error) {
       console.error("[v0] Error saving tracking:", error)
       alert("Failed to save tracking number")
