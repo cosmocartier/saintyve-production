@@ -15,9 +15,13 @@ function getEstimatedDeliveryDate(orderDate: string): string {
 export async function sendOrderProcessingEmail({
   order,
   orderItems,
+  invoicePdf,
+  invoiceFilename,
 }: {
   order: any
   orderItems: any[]
+  invoicePdf?: Buffer | null
+  invoiceFilename?: string
 }) {
   try {
     if (!process.env.RESEND_API_KEY) {
@@ -367,10 +371,22 @@ export async function sendOrderProcessingEmail({
         Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "SAINT YVE <orders@designerdrip.store>",
+        from: "SAINT YVE <orders@saintyve.com>",
         to: order.customer_email,
         subject: `Order Confirmed \u2014 #${orderIdShort}`,
         html: emailHtml,
+        // Resend's REST API takes attachment bytes as base64. The invoice is optional —
+        // a failed PDF generation upstream must never block this, already-working email.
+        ...(invoicePdf
+          ? {
+              attachments: [
+                {
+                  filename: invoiceFilename || `SAINT-YVE-${orderIdShort}.pdf`,
+                  content: invoicePdf.toString("base64"),
+                },
+              ],
+            }
+          : {}),
       }),
     })
 

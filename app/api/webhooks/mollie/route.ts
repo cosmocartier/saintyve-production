@@ -3,6 +3,7 @@ import { createClient as createSupabaseClient } from "@supabase/supabase-js"
 import { getMollieClient } from "@/lib/mollie/client"
 import { sendOrderProcessingEmail } from "@/app/api/webhooks/order-processing/email-sender"
 import { resolveOrderItemImages } from "@/lib/products/resolve-order-item-images"
+import { generateInvoicePDF } from "@/app/api/webhooks/order-confirmation/pdf-generator"
 
 const FAILED_STATUSES = new Set(["canceled", "expired", "failed"])
 
@@ -131,21 +132,34 @@ export async function POST(request: NextRequest) {
           resolvedImage: resolvedImages.get(item.id),
         }))
 
+        // Generate the invoice PDF to attach to the confirmation email. A failure here
+        // must never block the (already working) confirmation email or reverse the
+        // successful Mollie payment — the order stays paid either way, and the invoice
+        // can always be regenerated later, so we just log and send without it.
+        let invoicePdf: Buffer | null = null
+        try {
+          invoicePdf = await generateInvoicePDF(fullOrder ?? order, orderItemsWithImages)
+        } catch (invoiceError) {
+          console.error(`[Invoice] Failed to generate invoice PDF for order ${orderId}:`, invoiceError)
+        }
+
         try {
           const emailSent = await sendOrderProcessingEmail({
             order: fullOrder ?? order,
             orderItems: orderItemsWithImages,
+            invoicePdf,
           })
-          console.log("[Email] Confirmation sent:", emailSent)
+          console.log("[Email] Confirmation sent:", emailSent, "with invoice:", Boolean(invoicePdf))
 
           if (emailSent) {
             // Idempotency marker: if Mollie redelivers this webhook, the compare-and-swap
             // update above already prevents a second run of this block, and this column
             // also lets other flows (e.g. /api/orders/confirm) know a confirmation went out.
-            await supabase
-              .from("orders")
-              .update({ confirmation_email_sent_at: new Date().toISOString() })
-              .eq("id", orderId)
+            const updatePayload: Record<string, string> = { confirmation_email_sent_at: new Date().toISOString() }
+            if (invoicePdf) {
+              updatePayload.invoice_generated_at = new Date().toISOString()
+            }
+            await supabase.from("orders").update(updatePayload).eq("id", orderId)
           }
         } catch (emailError) {
           console.error("[Email] Failed to send confirmation email:", emailError)
