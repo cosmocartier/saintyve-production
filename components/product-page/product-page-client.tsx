@@ -381,57 +381,55 @@ export function ProductPageClient({
       <Sheet open={isProductDetailsOpen} onOpenChange={setIsProductDetailsOpen}>
         <SheetContent
           side="bottom"
-          className="h-auto max-h-[92vh] w-full rounded-t-2xl border-0 p-0 overflow-y-auto [&>button]:hidden"
+          className="h-auto max-h-[88vh] w-full sm:max-w-[640px] sm:mx-auto rounded-t-[30px] border-0 p-0 overflow-y-auto bg-white [&>button]:hidden duration-[380ms] data-[state=open]:duration-[380ms] data-[state=closed]:duration-300 data-[state=open]:ease-[cubic-bezier(0.22,1,0.36,1)] data-[state=closed]:ease-[cubic-bezier(0.4,0,0.2,1)]"
         >
           <SheetHeader className="sr-only">
             <SheetTitle>Product details</SheetTitle>
           </SheetHeader>
 
           {/* Drag handle */}
-          <div className="flex justify-center pt-3 pb-1">
-            <div className="w-9 h-1 rounded-full bg-zinc-300" />
+          <div className="flex justify-center pt-[22px] pb-3">
+            <div className="w-12 h-1 rounded-full bg-[#E6E6E6]" />
           </div>
 
-          <div className="px-6 pb-10 pt-4">
+          <div className="px-6 sm:px-7 pb-10">
             {/* Brand / Model / Price */}
-            <div className="text-center mb-8">
+            <div className="text-center mb-9">
               {brandName && (
-                <p className="text-[11px] tracking-[0.25em] uppercase text-black mb-3">{brandName}</p>
+                <p className="text-[12px] tracking-[0.28em] uppercase text-[#6F7075] mb-3">{brandName}</p>
               )}
-              <h2 className="text-2xl font-medium tracking-[0.06em] uppercase text-black text-balance mb-4">
+              <h2 className="text-[34px] leading-[1.1] font-medium tracking-[0.02em] uppercase text-black text-balance mb-3">
                 {modelName}
               </h2>
-              <p className="text-base tracking-wide font-normal">EUR {formatPrice(displayPrice)}</p>
+              <p className="text-[19px] tracking-wide font-normal text-black">EUR {formatPrice(displayPrice)}</p>
             </div>
 
-            {/* Chat + wishlist icons */}
-            <div className="flex items-center justify-center gap-1.5 mb-10">
+            {/* Message + Save actions */}
+            <div className="flex items-stretch gap-2.5 mb-10">
               <a
                 href="https://wa.me/yourwhatsappnumber"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-[52px] h-[52px] flex-shrink-0 flex items-center justify-center border border-zinc-200 transition-all active:scale-[0.98]"
-                aria-label="Chat with us"
+                className="flex-1 h-[50px] flex items-center justify-center gap-2 border border-[#E5E5E5] text-[11px] tracking-[0.2em] uppercase text-black transition-colors active:bg-[#FAFAFA]"
+                aria-label="Message us about this product"
               >
-                <img src="/images/chat-icon.png" alt="Chat" className="w-4 h-4 object-contain" draggable="false" />
+                <MessageIcon />
+                <span>Message</span>
               </a>
 
-              {(
-                <button
-                  onClick={handleToggleWishlist}
-                  className="w-[52px] h-[52px] flex-shrink-0 flex items-center justify-center border border-zinc-200 transition-all active:scale-[0.98]"
-                  aria-label={isLiked(product.id) ? "Remove from wishlist" : "Add to wishlist"}
-                >
-                  <img src="/images/star.png" alt="" className="w-5 h-5 object-contain" draggable="false" />
-                </button>
-              )}
+              <button
+                onClick={handleToggleWishlist}
+                className="flex-1 h-[50px] flex items-center justify-center gap-2 border border-[#E5E5E5] text-[11px] tracking-[0.2em] uppercase text-black transition-colors active:bg-[#FAFAFA]"
+                aria-label={isLiked(product.id) ? "Remove from wishlist" : "Add to wishlist"}
+              >
+                <SaveIcon filled={isLiked(product.id)} />
+                <span>Save</span>
+              </button>
             </div>
 
             {/* Details table */}
-            <div className="space-y-5">
-              {product.material && (
-                <DetailRow label="Material" value={product.material} />
-              )}
+            <div className="space-y-6">
+              {product.material && <DetailRow label="Material" value={product.material} />}
               {displayDetailColorName && <DetailRow label="Colours" value={displayDetailColorName} />}
               {hasDimensions && (
                 <DetailRow
@@ -442,7 +440,7 @@ export function ProductPageClient({
                       <button
                         type="button"
                         onClick={() => setUseImperialUnits((prev) => !prev)}
-                        className="underline hover:no-underline"
+                        className="underline hover:no-underline text-[#6F7075]"
                       >
                         {useImperialUnits ? "cm" : "in"}
                       </button>
@@ -504,10 +502,39 @@ export function ProductPageClient({
 
 function DetailRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
-    <div className="grid grid-cols-[100px_1fr] gap-x-4 items-baseline">
-      <span className="text-[11px] tracking-[0.15em] uppercase text-zinc-500">{label}</span>
-      <span className="text-base text-black tracking-wide">{value}</span>
+    <div className="grid grid-cols-[32%_1fr] gap-x-4 items-baseline">
+      <span className="text-[11px] tracking-[0.16em] uppercase text-[#6F7075]">{label}</span>
+      <span className="text-[17px] text-black tracking-wide leading-relaxed">{value}</span>
     </div>
+  )
+}
+
+function MessageIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" aria-hidden="true">
+      <path
+        d="M4 5.5h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H8l-4.2 3.3a.5.5 0 0 1-.8-.4V6.5a1 1 0 0 1 1-1Z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+function SaveIcon({ filled }: { filled: boolean }) {
+  return (
+    <svg
+      width="14"
+      height="16"
+      viewBox="0 0 24 28"
+      fill={filled ? "currentColor" : "none"}
+      stroke="currentColor"
+      strokeWidth="1.25"
+      aria-hidden="true"
+      className="transition-colors"
+    >
+      <path d="M5 2.5h14a1 1 0 0 1 1 1v22l-8-5.5-8 5.5v-22a1 1 0 0 1 1-1Z" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   )
 }
 
