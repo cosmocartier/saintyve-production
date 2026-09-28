@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { createBrowserClient } from "@/lib/supabase/client"
 import { AdminSidebar } from "@/components/admin/admin-sidebar"
 import { AdminMobileSidebarSheet } from "@/components/admin/admin-mobile-sidebar-sheet"
-import { OrderDetailsSidebar } from "@/components/admin/order-details-sidebar"
+import { OrderDetailsSidebar, type OrderItem } from "@/components/admin/order-details-sidebar"
 import { CreateOrderModal } from "@/components/admin/create-order-modal"
 import { Search, Plus } from "lucide-react"
 import Link from "next/link"
@@ -45,27 +45,6 @@ type Order = {
   discount_amount?: number
 }
 
-type OrderItem = {
-  id: string
-  quantity: number
-  price: number
-  variant_id: string
-  products: {
-    id: string
-    name: string
-    slug: string
-    product_images: Array<{
-      url: string
-      color_name: string | null
-      display_order: number
-    }>
-  } | null
-  product_variants: {
-    size: string
-    color?: string
-  } | null
-}
-
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([])
   const [loading, setLoading] = useState(true)
@@ -90,6 +69,8 @@ export default function AdminOrdersPage() {
   const [selectedOrderCredits, setSelectedOrderCredits] = useState<number>(0)
   const [selectedOrderCoupon, setSelectedOrderCoupon] = useState<string | null>(null)
   const [selectedOrderDiscount, setSelectedOrderDiscount] = useState<number>(0)
+  const [selectedOrderStatus, setSelectedOrderStatus] = useState<string>("")
+  const [selectedOrderPaymentMethod, setSelectedOrderPaymentMethod] = useState<string | null>(null)
   const [userEmail, setUserEmail] = useState<string>("")
   const supabase = createBrowserClient()
 
@@ -148,9 +129,15 @@ export default function AdminOrdersPage() {
     setLoading(false)
   }
 
-  const handleViewOrder = async (orderId: string, orderTotal: number, shippingAddress: any) => {
+  const handleViewOrder = async (order: Order) => {
+    const orderId = order.id
+    const orderTotal = order.total
+    const shippingAddress = order.shipping_address
     console.log("[v0] Opening order sidebar for ID:", orderId)
     console.log("[v0] Order total:", orderTotal, "Shipping address:", shippingAddress)
+
+    setSelectedOrderStatus(order.status)
+    setSelectedOrderPaymentMethod(order.payment_method)
 
     const { data: orderData, error: orderError } = await supabase
       .from("orders")
@@ -182,7 +169,8 @@ export default function AdminOrdersPage() {
         products (
           id,
           name,
-          slug
+          slug,
+          use_cloudflare_images
         ),
         product_variants!order_items_variant_id_fkey (
           size,
@@ -195,20 +183,38 @@ export default function AdminOrdersPage() {
     console.log("[v0] Order items query result:", { error, data, count: data?.length })
 
     if (!error && data) {
-      const productIds = data.map((item) => item.products?.id).filter(Boolean)
-      const { data: imagesData } = await supabase
-        .from("product_images")
-        .select("product_id, url, color_name, display_order")
-        .in("product_id", productIds)
-        .order("display_order", { ascending: true })
+      const items = data as any[]
+      const productIds = items.map((item) => item.products?.id).filter(Boolean)
 
-      const itemsWithImages = data.map((item) => {
+      const cfProductIds = items
+        .filter((item) => item.products?.use_cloudflare_images && item.products?.id)
+        .map((item) => item.products.id)
+
+      const [{ data: imagesData }, { data: cfImagesData }] = await Promise.all([
+        supabase
+          .from("product_images")
+          .select("product_id, url, color_name, display_order")
+          .in("product_id", productIds)
+          .order("display_order", { ascending: true }),
+        cfProductIds.length > 0
+          ? supabase
+              .from("product_images_cf")
+              .select("product_id, cf_image_id, sort_order, title_image, role")
+              .in("product_id", cfProductIds)
+              .not("role", "in", "(category,onwear)")
+              .order("sort_order", { ascending: true })
+          : Promise.resolve({ data: [] as any[] }),
+      ])
+
+      const itemsWithImages = items.map((item) => {
         const productImages = imagesData?.filter((img) => img.product_id === item.products?.id) || []
+        const cfImages = cfImagesData?.filter((img) => img.product_id === item.products?.id) || []
         return {
           ...item,
           products: {
             ...item.products,
             product_images: productImages,
+            product_images_cf: cfImages,
           },
         }
       })
@@ -516,7 +522,7 @@ export default function AdminOrdersPage() {
                         />
                         <button
                           type="button"
-                          onClick={() => handleViewOrder(order.id, order.total, order.shipping_address)}
+                          onClick={() => handleViewOrder(order)}
                           className="text-left"
                         >
                           <p className="font-mono text-[11px] text-white/60">#{order.id.slice(0, 8)}</p>
@@ -638,13 +644,13 @@ export default function AdminOrdersPage() {
                       </td>
                       <td
                         className="px-5 py-4 font-mono text-[11px] text-white/40 cursor-pointer hover:text-white/70 transition-colors"
-                        onClick={() => handleViewOrder(order.id, order.total, order.shipping_address)}
+                        onClick={() => handleViewOrder(order)}
                       >
                         #{order.id.slice(0, 8)}
                       </td>
                       <td
                         className="px-5 py-4 cursor-pointer"
-                        onClick={() => handleViewOrder(order.id, order.total, order.shipping_address)}
+                        onClick={() => handleViewOrder(order)}
                       >
                         <p className="font-sans text-[11px] font-medium text-white/80">
                           {order.profiles?.full_name || (order.shipping_address as any)?.fullName || "Guest Order"}
@@ -655,13 +661,13 @@ export default function AdminOrdersPage() {
                       </td>
                       <td
                         className="px-5 py-4 font-sans text-[11px] text-white/30 cursor-pointer"
-                        onClick={() => handleViewOrder(order.id, order.total, order.shipping_address)}
+                        onClick={() => handleViewOrder(order)}
                       >
                         {new Date(order.created_at).toLocaleDateString()}
                       </td>
                       <td
                         className="px-5 py-4 font-sans text-[11px] text-white/45 cursor-pointer"
-                        onClick={() => handleViewOrder(order.id, order.total, order.shipping_address)}
+                        onClick={() => handleViewOrder(order)}
                       >
                         {order.storefront || "—"}
                       </td>
@@ -705,11 +711,11 @@ export default function AdminOrdersPage() {
                       </td>
                       <td
                         className="px-5 py-4 font-sans text-[11px] text-white/45 cursor-pointer"
-                        onClick={() => handleViewOrder(order.id, order.total, order.shipping_address)}
+                        onClick={() => handleViewOrder(order)}
                       >
                         {order.payment_method === "paypal" ? "PayPal" : order.payment_method === "bank_transfer" ? "Bank Transfer" : order.payment_method === "mollie" ? "Mollie" : "—"}
                       </td>
-                      <td className="px-5 py-4 cursor-pointer" onClick={() => handleViewOrder(order.id, order.total, order.shipping_address)}>
+                      <td className="px-5 py-4 cursor-pointer" onClick={() => handleViewOrder(order)}>
                         {(() => {
                           const { label, color } = getPaymentStatusInfo(order)
                           return (
@@ -723,25 +729,25 @@ export default function AdminOrdersPage() {
                       </td>
                       <td
                         className="px-5 py-4 font-sans text-[11px] font-medium text-white/80 text-right cursor-pointer"
-                        onClick={() => handleViewOrder(order.id, order.total, order.shipping_address)}
+                        onClick={() => handleViewOrder(order)}
                       >
                         EUR {Number(order.total).toFixed(2)}
                       </td>
                       <td
                         className="px-5 py-4 font-sans text-[11px] text-white/45 cursor-pointer"
-                        onClick={() => handleViewOrder(order.id, order.total, order.shipping_address)}
+                        onClick={() => handleViewOrder(order)}
                       >
                         {order.order_items?.length || 0}
                       </td>
                       <td
                         className="px-5 py-4 font-sans text-[11px] text-white/20 cursor-pointer"
-                        onClick={() => handleViewOrder(order.id, order.total, order.shipping_address)}
+                        onClick={() => handleViewOrder(order)}
                       >
                         —
                       </td>
                       <td
                         className="px-5 py-4 cursor-pointer"
-                        onClick={() => handleViewOrder(order.id, order.total, order.shipping_address)}
+                        onClick={() => handleViewOrder(order)}
                       >
                         {order.last_payment_reminder_at ? (
                           <div>
@@ -778,6 +784,8 @@ export default function AdminOrdersPage() {
         creditsApplied={selectedOrderCredits}
         couponCode={selectedOrderCoupon}
         discountAmount={selectedOrderDiscount}
+        orderStatus={selectedOrderStatus}
+        paymentMethod={selectedOrderPaymentMethod}
       />
 
       <CreateOrderModal
