@@ -85,7 +85,7 @@ export async function generateInvoicePDF(order: any, orderItems: any[]): Promise
     color: rgb(0, 0, 0),
   })
 
-  const invoiceNum = `#DD-2025-${order.id.slice(0, 6).toUpperCase()}`
+  const invoiceNum = `#SY-${order.id.slice(0, 8).toUpperCase()}`
   page.drawText(invoiceNum, {
     x: margin,
     y: yPosition - 20,
@@ -393,7 +393,7 @@ export async function generateInvoicePDF(order: any, orderItems: any[]): Promise
   const footerLines = [
     "Saint Yve® — Premium Resale & Authentication Studio",
     "Dubai · Germany · Worldwide Shipping",
-    "www.designerdrip.store",
+    "www.saintyve.com",
   ]
 
   let footerY = 70
