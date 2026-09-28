@@ -6,8 +6,9 @@ import { Copy } from "lucide-react"
 import { createBrowserClient } from "@/lib/supabase/client"
 import { updateOrderItemTrackingAction } from "@/app/actions/tracking"
 import { markOrderAsShippedAction } from "@/app/actions/mark-shipped"
+import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 
-type OrderItem = {
+export type OrderItem = {
   id: string
   quantity: number
   price: number
@@ -17,10 +18,17 @@ type OrderItem = {
     id?: string
     name: string
     slug?: string // Added slug for product URL
+    use_cloudflare_images?: boolean | null
     product_images: Array<{
       url: string
       color_name: string | null
       display_order: number
+    }>
+    product_images_cf?: Array<{
+      cf_image_id: string
+      sort_order: number
+      title_image: boolean
+      role: string
     }>
   } | null
   product_variants: {
@@ -53,6 +61,7 @@ type OrderDetailsSidebarProps = {
   creditsApplied?: number
   couponCode?: string | null
   discountAmount?: number
+  paymentMethod?: string | null
 }
 
 export function OrderDetailsSidebar({
@@ -67,6 +76,7 @@ export function OrderDetailsSidebar({
   creditsApplied = 0,
   couponCode = null,
   discountAmount = 0,
+  paymentMethod = null,
 }: OrderDetailsSidebarProps) {
   const sidebarRef = useRef<HTMLDivElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
@@ -234,6 +244,14 @@ ${shippingAddress?.phone ? "Phone: " + shippingAddress.phone : ""}`
   }
 
   const getProductImage = (item: OrderItem) => {
+    // Cloudflare-hosted products: use the title image (or first by sort order) via
+    // the same buildCfUrl resolution used by the Cart Drawer and Order Confirmation page.
+    if (item.products?.use_cloudflare_images && item.products.product_images_cf?.length) {
+      const cfImages = item.products.product_images_cf
+      const titleImage = cfImages.find((img) => img.title_image) || [...cfImages].sort((a, b) => a.sort_order - b.sort_order)[0]
+      if (titleImage) return buildCfUrl(titleImage.cf_image_id, "pdp")
+    }
+
     if (item.products?.product_images && item.products.product_images.length > 0) {
       const variantColor = item.product_variants?.color
 
@@ -413,7 +431,15 @@ ${shippingAddress?.phone ? "Phone: " + shippingAddress.phone : ""}`
               <div className="space-y-2 font-sans text-[11px]">
                 <div className="flex justify-between">
                   <span className="text-white/30">Payment Method</span>
-                  <span className="text-white/70 font-medium">{orderStatus === "pending" ? "Bank Transfer" : "PayPal"}</span>
+                  <span className="text-white/70 font-medium">
+                    {paymentMethod === "paypal"
+                      ? "PayPal"
+                      : paymentMethod === "bank_transfer"
+                        ? "Bank Transfer"
+                        : paymentMethod === "mollie"
+                          ? "Mollie"
+                          : "—"}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-white/30">Status</span>
