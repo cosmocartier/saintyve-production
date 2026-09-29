@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { COLLECTIONS_BRANDS, COLLECTIONS_GENDER } from '@/lib/collections-constants'
 
 interface FilterParams {
   categoryId: string
@@ -51,6 +52,47 @@ export async function getFilteredProductCount(params: FilterParams): Promise<num
   // The count may be slightly higher than actual if color filters are applied
   // This is acceptable for the "View X Products" button
   
+  const { count } = await query
+
+  return count || 0
+}
+
+interface CollectionsFilterParams {
+  brands?: string[]
+  subcategories?: string[]
+  colors?: string[]
+  styles?: string[]
+}
+
+/**
+ * Gets the count of /collections products matching the given filters.
+ * Mirrors getFilteredProductCount, but scoped by brand + gender directly on
+ * the products table instead of a category junction table.
+ */
+export async function getFilteredCollectionsCount(params: CollectionsFilterParams): Promise<number> {
+  const supabase = await createClient()
+  const { brands, subcategories, styles } = params
+
+  let query = supabase
+    .from('products')
+    .select('id', { count: 'exact', head: true })
+    .in('brand', COLLECTIONS_BRANDS)
+    .eq('gender', COLLECTIONS_GENDER)
+    .eq('status', 'live')
+
+  if (brands && brands.length > 0) {
+    query = query.in('brand', brands)
+  }
+
+  if (subcategories && subcategories.length > 0) {
+    query = query.in('sub_category', subcategories)
+  }
+
+  if (styles && styles.length > 0) {
+    query = query.in('style_type', styles)
+  }
+
+  // Note: Color filtering is not applied here since it requires checking product_images table.
   const { count } = await query
 
   return count || 0
