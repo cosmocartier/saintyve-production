@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { COLLECTIONS_BRANDS, COLLECTIONS_GENDER } from '@/lib/collections-constants'
+import { COLLECTIONS_BRANDS, COLLECTIONS_GENDER, COLLECTIONS_CATEGORY } from '@/lib/collections-constants'
 
 interface FilterParams {
   categoryId: string
@@ -78,6 +78,7 @@ export async function getFilteredCollectionsCount(params: CollectionsFilterParam
     .select('id', { count: 'exact', head: true })
     .in('brand', COLLECTIONS_BRANDS)
     .eq('gender', COLLECTIONS_GENDER)
+    .eq('category', COLLECTIONS_CATEGORY)
     .eq('status', 'live')
 
   if (brands && brands.length > 0) {

@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { COLLECTIONS_BRANDS, COLLECTIONS_GENDER } from '@/lib/collections-constants'
+import { COLLECTIONS_BRANDS, COLLECTIONS_GENDER, COLLECTIONS_CATEGORY } from '@/lib/collections-constants'
 
 export interface FilterOptions {
   subcategories: string[]
@@ -123,6 +123,7 @@ export async function getFilterOptionsForCollections(): Promise<FilterOptions> {
     .select('id, brand, sub_category, style_type, color_filter, status')
     .in('brand', COLLECTIONS_BRANDS)
     .eq('gender', COLLECTIONS_GENDER)
+    .eq('category', COLLECTIONS_CATEGORY)
     .eq('status', 'live')
 
   if (error) {
