@@ -82,7 +82,7 @@ function HeroSlide() {
           </div>
           <div className="mt-6 flex flex-col items-center gap-0.5 text-center">
             <Link
-              href="/new-arrivals"
+              href="/collections"
               className="text-[13px] font-bold uppercase text-foreground transition-opacity hover:opacity-80"
               style={{ letterSpacing: "0.12em" }}
             >
@@ -103,7 +103,7 @@ function HeroSlide() {
           </div>
           <div className="mt-6 flex flex-col items-center gap-0.5 text-center">
             <Link
-              href="/new-arrivals"
+              href="/collections"
               className="text-[13px] font-bold uppercase text-foreground transition-opacity hover:opacity-80"
               style={{ letterSpacing: "0.12em" }}
             >

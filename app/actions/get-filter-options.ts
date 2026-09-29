@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { COLLECTIONS_BRANDS, COLLECTIONS_GENDER } from '@/lib/collections-constants'
 
 export interface FilterOptions {
   subcategories: string[]
@@ -100,6 +101,55 @@ export async function getFilterOptionsForCategory(categorySlug: string): Promise
   })
 
   // Return sorted arrays
+  return {
+    subcategories: Array.from(subcategoriesSet).sort(),
+    brands: Array.from(brandsSet).sort(),
+    colors: Array.from(colorsSet).sort(),
+    styleTypes: Array.from(styleTypesSet).sort(),
+  }
+}
+
+/**
+ * Fetches all available filter options for the /collections page.
+ * Unlike getFilterOptionsForCategory, this isn't scoped to a category via the
+ * product_categories junction table — it queries the products table directly
+ * for the brand + gender set that defines the collections page.
+ */
+export async function getFilterOptionsForCollections(): Promise<FilterOptions> {
+  const supabase = await createClient()
+
+  const { data: products, error } = await supabase
+    .from('products')
+    .select('id, brand, sub_category, style_type, color_filter, status')
+    .in('brand', COLLECTIONS_BRANDS)
+    .eq('gender', COLLECTIONS_GENDER)
+    .eq('status', 'live')
+
+  if (error) {
+    console.error("[v0] Error fetching collections filter options:", error)
+  }
+
+  if (!products || products.length === 0) {
+    return {
+      subcategories: [],
+      brands: [],
+      colors: [],
+      styleTypes: [],
+    }
+  }
+
+  const subcategoriesSet = new Set<string>()
+  const brandsSet = new Set<string>()
+  const styleTypesSet = new Set<string>()
+  const colorsSet = new Set<string>()
+
+  products.forEach((product: any) => {
+    if (product.sub_category) subcategoriesSet.add(product.sub_category)
+    if (product.brand) brandsSet.add(product.brand)
+    if (product.style_type) styleTypesSet.add(product.style_type)
+    if (product.color_filter) colorsSet.add(product.color_filter)
+  })
+
   return {
     subcategories: Array.from(subcategoriesSet).sort(),
     brands: Array.from(brandsSet).sort(),
