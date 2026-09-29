@@ -63,3 +63,23 @@ export function optimizeCollectionsProductImages(product: any) {
     has_multiple_images: displayImages.length > 1,
   }
 }
+
+// Mirrors the color-variant counting logic in lib/brands/chanel-products.ts:
+// siblings sharing the same parent_product_name (with a defined color) are
+// counted as color variants of one model, exactly like the Chanel sub-pages.
+// This must run over the full fetched batch (not one product at a time) so
+// siblings in the same batch are correctly grouped before optimizing images.
+export function optimizeCollectionsProducts(productsData: any[]) {
+  const colorCountByParent = new Map<string, number>()
+  productsData.forEach((p: any) => {
+    if (p.parent_product_name && p.color) {
+      colorCountByParent.set(p.parent_product_name, (colorCountByParent.get(p.parent_product_name) || 0) + 1)
+    }
+  })
+
+  return productsData.map((product: any) => ({
+    ...optimizeCollectionsProductImages(product),
+    colorVariantCount:
+      product.parent_product_name && product.color ? colorCountByParent.get(product.parent_product_name) || 1 : 1,
+  }))
+}

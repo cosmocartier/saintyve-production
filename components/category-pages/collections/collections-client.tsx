@@ -10,7 +10,7 @@ import { GridView } from "@/components/category-pages/grid-view"
 import type { FilterOptions } from "@/app/actions/get-filter-options"
 import { getFilteredCollectionsCount } from "@/app/actions/get-filtered-count"
 import { COLLECTIONS_BRANDS, COLLECTIONS_GENDER, COLLECTIONS_CATEGORY } from "@/lib/collections-constants"
-import { optimizeCollectionsProductImages } from "@/lib/collections-products"
+import { optimizeCollectionsProducts } from "@/lib/collections-products"
 
 // The product query joins product_variants / product_images and the image
 // optimization step adds a few derived fields — extend the base Product type
@@ -127,7 +127,7 @@ export function CollectionsClient({
               .range(0, targetCount - 1)
 
             if (!error && productsData && productsData.length > 0) {
-              const optimizedProducts = productsData.map((product: any) => optimizeCollectionsProductImages(product))
+              const optimizedProducts = optimizeCollectionsProducts(productsData)
 
               setProducts(optimizedProducts)
               setCurrentOffset(productsData.length)
@@ -345,7 +345,7 @@ export function CollectionsClient({
       }
 
       if (productsData && productsData.length > 0) {
-        const optimizedProducts = productsData.map((product: any) => optimizeCollectionsProductImages(product))
+        const optimizedProducts = optimizeCollectionsProducts(productsData)
 
         const existingIds = new Set(products.map((p) => p.id))
         const uniqueNewProducts = optimizedProducts.filter((p) => !existingIds.has(p.id))
