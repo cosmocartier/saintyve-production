@@ -32,7 +32,15 @@ export function Footer() {
   return (
     <footer className="bg-black text-white">
       {/* Mobile */}
-      <div className="lg:hidden flex flex-col items-center gap-16 px-6 py-20">
+      <div className="lg:hidden flex flex-col items-center gap-10 px-6 py-20">
+        <div className="flex flex-col items-center gap-2 text-center">
+          <p className="text-xs font-medium uppercase tracking-tight text-white">
+            Authentic Pre-Owned Luxury
+          </p>
+          <p className="text-xs leading-relaxed text-white/50 max-w-[260px]">
+            Every Chanel and Hermès piece is carefully authenticated before being offered by Saint Yve.
+          </p>
+        </div>
         <nav className="flex flex-col items-center gap-1">
           {footerNavItems.map((item) => (
             <FooterNavLink key={item.label} {...item} />
@@ -45,9 +53,19 @@ export function Footer() {
 
       {/* Desktop */}
       <div className="hidden lg:flex items-center justify-between px-12 py-10">
-        <p className="text-xs font-medium uppercase tracking-tight text-white">
-          Saint Yve &copy; {year}
-        </p>
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-1.5">
+            <p className="text-xs font-medium uppercase tracking-tight text-white">
+              Authentic Pre-Owned Luxury
+            </p>
+            <p className="text-xs leading-relaxed text-white/50 max-w-sm">
+              Every Chanel and Hermès piece is carefully authenticated before being offered by Saint Yve.
+            </p>
+          </div>
+          <p className="text-xs font-medium uppercase tracking-tight text-white">
+            Saint Yve &copy; {year}
+          </p>
+        </div>
         <nav className="flex items-center gap-10">
           {footerNavItems.map((item) => (
             <FooterNavLink key={item.label} {...item} />
