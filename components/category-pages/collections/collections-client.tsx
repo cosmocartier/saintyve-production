@@ -4,13 +4,13 @@ import { useState, useEffect, useRef } from "react"
 import { ProductCard } from "@/components/products/product-card"
 import type { Product } from "@/lib/types/product"
 import { createBrowserClient } from "@/lib/supabase/client"
-import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 import Link from "next/link"
 import { FilterSort } from "@/components/category-pages/filter-sort"
 import { GridView } from "@/components/category-pages/grid-view"
 import type { FilterOptions } from "@/app/actions/get-filter-options"
 import { getFilteredCollectionsCount } from "@/app/actions/get-filtered-count"
-import { COLLECTIONS_BRANDS, COLLECTIONS_GENDER } from "@/lib/collections-constants"
+import { COLLECTIONS_BRANDS, COLLECTIONS_GENDER, COLLECTIONS_CATEGORY } from "@/lib/collections-constants"
+import { optimizeCollectionsProductImages } from "@/lib/collections-products"
 
 // The product query joins product_variants / product_images and the image
 // optimization step adds a few derived fields — extend the base Product type
@@ -109,50 +109,25 @@ export function CollectionsClient({
                   display_order,
                   color_name,
                   color_hex
+                ),
+                product_images_cf (
+                  id,
+                  cf_image_id,
+                  alt_text,
+                  sort_order,
+                  role,
+                  category_image
                 )
               `)
               .in("brand", COLLECTIONS_BRANDS)
               .eq("gender", COLLECTIONS_GENDER)
+              .eq("category", COLLECTIONS_CATEGORY)
               .eq("status", "live")
               .order("created_at", { ascending: false })
               .range(0, targetCount - 1)
 
             if (!error && productsData && productsData.length > 0) {
-              const productsWithCf = productsData.filter((p: any) => p.use_cloudflare_images)
-              const cfProductIds = productsWithCf.map((p: any) => p.id)
-
-              const cfImagesMap = new Map<string, any[]>()
-
-              if (cfProductIds.length > 0) {
-                const { data: cfImages } = await supabase
-                  .from("product_images_cf")
-                  .select("*")
-                  .in("product_id", cfProductIds)
-                  .order("sort_order", { ascending: true })
-
-                if (cfImages) {
-                  cfImages.forEach((img: any) => {
-                    if (!cfImagesMap.has(img.product_id)) {
-                      cfImagesMap.set(img.product_id, [])
-                    }
-                    cfImagesMap.get(img.product_id)!.push({
-                      id: img.id,
-                      url: buildCfUrl(img.cf_image_id, "grid"),
-                      alt_text: img.alt_text,
-                      display_order: img.sort_order,
-                      color_name: img.color_name,
-                      color_hex: img.color_hex,
-                    })
-                  })
-                }
-              }
-
-              const optimizedProducts = productsData.map((product: any) => ({
-                ...product,
-                product_images: product.use_cloudflare_images
-                  ? cfImagesMap.get(product.id) || []
-                  : product.product_images || [],
-              }))
+              const optimizedProducts = productsData.map((product: any) => optimizeCollectionsProductImages(product))
 
               setProducts(optimizedProducts)
               setCurrentOffset(productsData.length)
@@ -317,10 +292,19 @@ export function CollectionsClient({
             display_order,
             color_name,
             color_hex
+          ),
+          product_images_cf (
+            id,
+            cf_image_id,
+            alt_text,
+            sort_order,
+            role,
+            category_image
           )
         `)
         .in("brand", COLLECTIONS_BRANDS)
         .eq("gender", COLLECTIONS_GENDER)
+        .eq("category", COLLECTIONS_CATEGORY)
         .eq("status", "live")
 
       // Apply the same filters that are active in the UI
@@ -361,41 +345,7 @@ export function CollectionsClient({
       }
 
       if (productsData && productsData.length > 0) {
-        const productsWithCf = productsData.filter((p: any) => p.use_cloudflare_images)
-        const cfProductIds = productsWithCf.map((p: any) => p.id)
-
-        const cfImagesMap = new Map<string, any[]>()
-
-        if (cfProductIds.length > 0) {
-          const { data: cfImages } = await supabase
-            .from("product_images_cf")
-            .select("*")
-            .in("product_id", cfProductIds)
-            .order("sort_order", { ascending: true })
-
-          if (cfImages) {
-            cfImages.forEach((img: any) => {
-              if (!cfImagesMap.has(img.product_id)) {
-                cfImagesMap.set(img.product_id, [])
-              }
-              cfImagesMap.get(img.product_id)!.push({
-                id: img.id,
-                url: buildCfUrl(img.cf_image_id, "grid"),
-                alt_text: img.alt_text,
-                display_order: img.sort_order,
-                color_name: img.color_name,
-                color_hex: img.color_hex,
-              })
-            })
-          }
-        }
-
-        const optimizedProducts = productsData.map((product: any) => ({
-          ...product,
-          product_images: product.use_cloudflare_images
-            ? cfImagesMap.get(product.id) || []
-            : product.product_images || [],
-        }))
+        const optimizedProducts = productsData.map((product: any) => optimizeCollectionsProductImages(product))
 
         const existingIds = new Set(products.map((p) => p.id))
         const uniqueNewProducts = optimizedProducts.filter((p) => !existingIds.has(p.id))
@@ -415,8 +365,18 @@ export function CollectionsClient({
   return (
     <div className="py-8">
       <div className="max-w-[1920px] mx-auto">
-        <div className="mb-7 px-4">
-          <h1 className="text-[15px] font-normal tracking-[0.15em] mb-6 text-[#111111] uppercase">COLLECTIONS</h1>
+        <div className="mb-10 px-4 max-w-2xl">
+          <h1 className="text-[32px] md:text-[40px] font-semibold tracking-[-0.01em] mb-4 text-[#111111] uppercase leading-[1.05]">
+            Collections
+          </h1>
+          <p className="text-[13px] md:text-sm leading-relaxed text-[#6F7075] font-normal">
+            Every Hermès and Chanel piece in this selection is carefully authenticated before being offered by Saint
+            Yve.{" "}
+            <Link href="/authenticity" className="text-[#111111] underline underline-offset-2 hover:text-[#6F7075]">
+              Learn about our authentication process
+            </Link>
+            .
+          </p>
         </div>
 
         {/* Filter & Grid View Toggles - Mobile Only */}

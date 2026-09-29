@@ -4,9 +4,9 @@ import { StaticNavigation } from "@/components/static-navigation"
 import { CollectionsClient } from "@/components/category-pages/collections/collections-client"
 import { CartSidebar } from "@/components/cart-sidebar"
 import { Footer } from "@/components/footer"
-import { buildCfUrl } from "@/lib/cloudflare/cloudflare-images"
 import { getFilterOptionsForCollections } from "@/app/actions/get-filter-options"
-import { COLLECTIONS_BRANDS, COLLECTIONS_GENDER } from "@/lib/collections-constants"
+import { COLLECTIONS_BRANDS, COLLECTIONS_GENDER, COLLECTIONS_CATEGORY } from "@/lib/collections-constants"
+import { optimizeCollectionsProductImages } from "@/lib/collections-products"
 
 const INITIAL_LOAD_LIMIT = 20
 
@@ -27,11 +27,11 @@ export async function generateMetadata({
   return {
     title: "Collections | Saint Yve",
     description:
-      "Explore the Saint Yve Collections — curated women's pre-owned pieces from Hermès, Chanel and Maison Margiela.",
+      "Explore the Saint Yve Collections — curated women's pre-owned bags from Hermès and Chanel, authenticated before they are ever offered.",
     openGraph: {
       title: "Collections | Saint Yve",
       description:
-        "Explore the Saint Yve Collections — curated women's pre-owned pieces from Hermès, Chanel and Maison Margiela.",
+        "Explore the Saint Yve Collections — curated women's pre-owned bags from Hermès and Chanel, authenticated before they are ever offered.",
       type: "website",
       url: "https://designerdrip.com/collections",
     },
@@ -39,7 +39,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: "Collections | Saint Yve",
       description:
-        "Explore the Saint Yve Collections — curated women's pre-owned pieces from Hermès, Chanel and Maison Margiela.",
+        "Explore the Saint Yve Collections — curated women's pre-owned bags from Hermès and Chanel, authenticated before they are ever offered.",
     },
     alternates: {
       canonical: "https://designerdrip.com/collections",
@@ -75,10 +75,19 @@ export default async function CollectionsPage({
         display_order,
         color_name,
         color_hex
+      ),
+      product_images_cf (
+        id,
+        cf_image_id,
+        alt_text,
+        sort_order,
+        role,
+        category_image
       )
     `)
     .in("brand", COLLECTIONS_BRANDS)
     .eq("gender", COLLECTIONS_GENDER)
+    .eq("category", COLLECTIONS_CATEGORY)
     .eq("status", "live")
 
   // Apply filters from URL params
@@ -118,41 +127,7 @@ export default async function CollectionsPage({
     console.error("Error fetching collections products:", error)
   }
 
-  const productsUsingCf = (productsData || []).filter((p: any) => p.use_cloudflare_images)
-  const cfProductIds = productsUsingCf.map((p: any) => p.id)
-
-  const cfImagesMap = new Map()
-  if (cfProductIds.length > 0) {
-    const { data: cfImages } = await supabase
-      .from("product_images_cf")
-      .select("*")
-      .in("product_id", cfProductIds)
-      .order("sort_order", { ascending: true })
-
-    if (cfImages) {
-      cfImages.forEach((img: any) => {
-        if (!cfImagesMap.has(img.product_id)) {
-          cfImagesMap.set(img.product_id, [])
-        }
-        cfImagesMap.get(img.product_id).push({
-          id: img.id,
-          url: buildCfUrl(img.cf_image_id, "grid"),
-          alt_text: img.alt_text,
-          display_order: img.sort_order,
-          color_name: img.color_name,
-          color_hex: img.color_hex,
-        })
-      })
-    }
-  }
-
-  const optimizedProducts =
-    (productsData || []).map((product: any) => ({
-      ...product,
-      product_images: product.use_cloudflare_images
-        ? cfImagesMap.get(product.id) || []
-        : product.product_images?.sort((a: any, b: any) => a.display_order - b.display_order) || [],
-    })) || []
+  const optimizedProducts = (productsData || []).map((product: any) => optimizeCollectionsProductImages(product))
 
   // Get total count with same filters applied
   let countQuery = supabase
@@ -160,6 +135,7 @@ export default async function CollectionsPage({
     .select("id", { count: "exact", head: true })
     .in("brand", COLLECTIONS_BRANDS)
     .eq("gender", COLLECTIONS_GENDER)
+    .eq("category", COLLECTIONS_CATEGORY)
     .eq("status", "live")
 
   if (resolvedSearchParams.brand) {
