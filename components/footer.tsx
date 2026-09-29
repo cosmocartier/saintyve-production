@@ -1,68 +1,78 @@
-// Footer navigation links.
-// To activate a link, add an `href` (e.g. "/stockists", "/contact", "/legal").
-// Items without an `href` render as static (non-clickable) text.
-interface FooterNavItem {
+"use client"
+
+import { useEffect, useRef, useState } from "react"
+import { ChevronDown } from "lucide-react"
+
+// Footer dropdown links.
+// To activate a link, add an `href` (e.g. "/authenticity", "/legal", "/contact").
+interface FooterMenuItem {
   label: string
-  href?: string
+  href: string
 }
 
-const footerNavItems: FooterNavItem[] = [
-  { label: "Stores", href: "/stores" },
-  { label: "Contact" },
-  { label: "Legal" },
+const footerMenuItems: FooterMenuItem[] = [
+  { label: "Authenticity", href: "/authenticity" },
+  { label: "Legal", href: "/legal" },
+  { label: "Contact Us", href: "/contact" },
 ]
-
-function FooterNavLink({ label, href }: FooterNavItem) {
-  const className = "text-xl font-bold uppercase tracking-tight text-white hover:text-white/70 transition-colors"
-
-  if (href) {
-    return (
-      <a href={href} className={className}>
-        {label}
-      </a>
-    )
-  }
-
-  return <span className={className}>{label}</span>
-}
 
 export function Footer() {
   const year = new Date().getFullYear()
+  const [open, setOpen] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handlePointerDown(event: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handlePointerDown)
+    return () => document.removeEventListener("mousedown", handlePointerDown)
+  }, [])
 
   return (
     <footer className="bg-black text-white">
-      {/* Mobile */}
-      <div className="lg:hidden flex flex-col items-center justify-between gap-16 px-6 py-16 min-h-[60vh]">
-        <div className="flex flex-col items-center gap-2 text-center">
-          <p className="text-xs font-bold uppercase tracking-tight text-white">
-            Saint Yve &copy; {year}
-          </p>
-          <p className="text-xs font-medium uppercase tracking-tight text-white">
-            Authentic Pre-Owned Luxury
-          </p>
-        </div>
-        <nav className="flex items-center justify-between w-full">
-          {footerNavItems.map((item) => (
-            <FooterNavLink key={item.label} {...item} />
-          ))}
-        </nav>
-      </div>
+      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-3 px-6 py-16 text-center">
+        <p className="text-xs font-bold uppercase tracking-tight text-white">
+          Saint Yve &copy; {year}
+        </p>
+        <p className="text-xs font-medium uppercase tracking-tight text-white">
+          Authentic Pre-Owned Luxury
+        </p>
 
-      {/* Desktop */}
-      <div className="hidden lg:flex items-center justify-between px-12 py-10">
-        <div className="flex flex-col gap-2">
-          <p className="text-xs font-bold uppercase tracking-tight text-white">
-            Saint Yve &copy; {year}
-          </p>
-          <p className="text-xs font-medium uppercase tracking-tight text-white">
-            Authentic Pre-Owned Luxury
-          </p>
+        <div ref={containerRef} className="relative mt-3">
+          <button
+            type="button"
+            onClick={() => setOpen((prev) => !prev)}
+            aria-expanded={open}
+            aria-haspopup="true"
+            className="flex items-center gap-1.5 text-xl font-bold uppercase tracking-tight text-white transition-colors hover:text-white/70"
+          >
+            Legal
+            <ChevronDown
+              className={`h-4 w-4 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+              aria-hidden="true"
+            />
+          </button>
+
+          {open && (
+            <nav
+              aria-label="Footer"
+              className="absolute top-full left-1/2 z-10 mt-5 flex -translate-x-1/2 flex-col items-center gap-4 whitespace-nowrap"
+            >
+              {footerMenuItems.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className="text-xs font-medium uppercase tracking-[0.15em] text-white/70 transition-colors hover:text-white"
+                >
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+          )}
         </div>
-        <nav className="flex items-center gap-10">
-          {footerNavItems.map((item) => (
-            <FooterNavLink key={item.label} {...item} />
-          ))}
-        </nav>
       </div>
     </footer>
   )
