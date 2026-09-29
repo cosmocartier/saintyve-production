@@ -6,7 +6,7 @@ import { CartSidebar } from "@/components/cart-sidebar"
 import { Footer } from "@/components/footer"
 import { getFilterOptionsForCollections } from "@/app/actions/get-filter-options"
 import { COLLECTIONS_BRANDS, COLLECTIONS_GENDER, COLLECTIONS_CATEGORY } from "@/lib/collections-constants"
-import { optimizeCollectionsProductImages } from "@/lib/collections-products"
+import { optimizeCollectionsProducts } from "@/lib/collections-products"
 
 const INITIAL_LOAD_LIMIT = 20
 
@@ -127,7 +127,7 @@ export default async function CollectionsPage({
     console.error("Error fetching collections products:", error)
   }
 
-  const optimizedProducts = (productsData || []).map((product: any) => optimizeCollectionsProductImages(product))
+  const optimizedProducts = optimizeCollectionsProducts(productsData || [])
 
   // Get total count with same filters applied
   let countQuery = supabase
