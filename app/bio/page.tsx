@@ -73,7 +73,7 @@ export default function BioPage() {
         {/* Logo */}
         <div className="mb-8 md:mb-12 animate-fade-in">
           <img
-            src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/d95b976d-3f64-4156-7179-1f7245754900/w=800"
+            src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/d6924b89-3eda-4299-a970-276fa5bc1f00/w=800"
             alt="SAINT YVE"
             className="h-5 md:h-6 w-auto brightness-0 invert"
           />
