@@ -40,7 +40,7 @@ export function AccessPageClient() {
       {/* ── Minimal Header ── */}
       <header className="flex items-center justify-center py-8 px-6">
         <img
-          src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/40e2a72c-f418-4037-7c46-a1c3aacb4200/w=800"
+          src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/d95b976d-3f64-4156-7179-1f7245754900/w=800"
           alt="SAINT YVE"
           className="h-4 w-auto"
         />
@@ -212,7 +212,7 @@ export function AccessPageClient() {
       <footer className="border-t border-[#E2E0DC] py-8 px-6">
         <div className="flex flex-col items-center gap-3">
           <img
-            src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/40e2a72c-f418-4037-7c46-a1c3aacb4200/w=800"
+            src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/d95b976d-3f64-4156-7179-1f7245754900/w=800"
             alt="SAINT YVE"
             className="h-3.5 w-auto opacity-40"
           />
