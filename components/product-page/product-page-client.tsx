@@ -398,7 +398,7 @@ export function ProductPageClient({
               {brandName && (
                 <p className="text-[12px] tracking-[0.28em] uppercase text-[#6F7075] mb-3">{brandName}</p>
               )}
-              <h2 className="text-[34px] leading-[1.1] font-bold tracking-[-0.1em] uppercase text-black text-balance mb-3">
+              <h2 className="text-[34px] leading-[1.1] font-semibold tracking-[-0.04em] uppercase text-black text-balance mb-3">
                 {modelName}
               </h2>
               <p className="text-[19px] tracking-wide font-normal text-black">EUR {formatPrice(displayPrice)}</p>
