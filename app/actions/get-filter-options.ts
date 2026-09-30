@@ -158,3 +158,51 @@ export async function getFilterOptionsForCollections(): Promise<FilterOptions> {
     styleTypes: Array.from(styleTypesSet).sort(),
   }
 }
+
+/**
+ * Fetches all available filter options for a single-brand product listing
+ * page (e.g. /brands/chanel, /brands/hermes). Mirrors
+ * getFilterOptionsForCollections, but scoped to the given brand(s) instead
+ * of the fixed collections brand set. The brand filter itself is omitted
+ * (always empty) since these pages are already scoped to one brand.
+ */
+export async function getFilterOptionsForBrand(brands: string[], category = 'Bag'): Promise<FilterOptions> {
+  const supabase = await createClient()
+
+  const { data: products, error } = await supabase
+    .from('products')
+    .select('id, sub_category, style_type, color_filter, status')
+    .in('brand', brands)
+    .eq('category', category)
+    .eq('status', 'live')
+
+  if (error) {
+    console.error('[v0] Error fetching brand filter options:', error)
+  }
+
+  if (!products || products.length === 0) {
+    return {
+      subcategories: [],
+      brands: [],
+      colors: [],
+      styleTypes: [],
+    }
+  }
+
+  const subcategoriesSet = new Set<string>()
+  const styleTypesSet = new Set<string>()
+  const colorsSet = new Set<string>()
+
+  products.forEach((product: any) => {
+    if (product.sub_category) subcategoriesSet.add(product.sub_category)
+    if (product.style_type) styleTypesSet.add(product.style_type)
+    if (product.color_filter) colorsSet.add(product.color_filter)
+  })
+
+  return {
+    subcategories: Array.from(subcategoriesSet).sort(),
+    brands: [],
+    colors: Array.from(colorsSet).sort(),
+    styleTypes: Array.from(styleTypesSet).sort(),
+  }
+}
