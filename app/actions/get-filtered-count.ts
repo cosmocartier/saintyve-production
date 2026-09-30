@@ -98,3 +98,42 @@ export async function getFilteredCollectionsCount(params: CollectionsFilterParam
 
   return count || 0
 }
+
+interface BrandFilterParams {
+  brands: string[]
+  category?: string
+  subcategories?: string[]
+  colors?: string[]
+  styles?: string[]
+}
+
+/**
+ * Gets the count of products matching the given filters for a single-brand
+ * product listing page (e.g. /brands/chanel, /brands/hermes). Mirrors
+ * getFilteredCollectionsCount, scoped to the given brand(s) instead of the
+ * fixed collections brand set.
+ */
+export async function getFilteredBrandCount(params: BrandFilterParams): Promise<number> {
+  const supabase = await createClient()
+  const { brands, category = 'Bag', subcategories, styles } = params
+
+  let query = supabase
+    .from('products')
+    .select('id', { count: 'exact', head: true })
+    .in('brand', brands)
+    .eq('category', category)
+    .eq('status', 'live')
+
+  if (subcategories && subcategories.length > 0) {
+    query = query.in('sub_category', subcategories)
+  }
+
+  if (styles && styles.length > 0) {
+    query = query.in('style_type', styles)
+  }
+
+  // Note: Color filtering is not applied here since it requires checking product_images table.
+  const { count } = await query
+
+  return count || 0
+}
