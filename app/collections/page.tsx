@@ -4,6 +4,7 @@ import { StaticNavigation } from "@/components/static-navigation"
 import { CollectionsClient } from "@/components/category-pages/collections/collections-client"
 import { CartSidebar } from "@/components/cart-sidebar"
 import { Footer } from "@/components/footer"
+import { ShopWithYve } from "@/components/shop-with-yve/shop-with-yve"
 import { getFilterOptionsForCollections } from "@/app/actions/get-filter-options"
 import { COLLECTIONS_BRANDS, COLLECTIONS_GENDER, COLLECTIONS_CATEGORY } from "@/lib/collections-constants"
 import { optimizeCollectionsProducts } from "@/lib/collections-products"
@@ -181,6 +182,8 @@ export default async function CollectionsPage({
       </div>
 
       <Footer />
+
+      <ShopWithYve />
 
       {/* Structured Data */}
       <script
