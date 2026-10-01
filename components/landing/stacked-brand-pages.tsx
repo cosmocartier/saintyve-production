@@ -43,9 +43,12 @@ function useIsDesktop() {
   return isDesktop
 }
 
-function BrandColumn({ panel }: { panel: BrandPanelData }) {
+function BrandColumn({ panel, className }: { panel: BrandPanelData; className?: string }) {
   return (
-    <Link href={panel.href} className="group flex w-full max-w-[300px] flex-col items-center lg:max-w-[480px]">
+    <Link
+      href={panel.href}
+      className={`group flex w-full max-w-[300px] flex-col items-center ${className ?? "lg:max-w-[480px]"}`}
+    >
       <div className="relative w-full aspect-[4/5] overflow-hidden bg-muted">
         <img
           src={panel.image || "/placeholder.svg"}
@@ -126,9 +129,11 @@ function BrandSlide({ panel }: { panel: BrandPanelData }) {
 
 function DesktopBrandsSlide() {
   return (
-    <div className="relative flex h-[100dvh] w-full items-center justify-center gap-24 bg-background px-16">
-      <BrandColumn panel={brandPanels[0]} />
-      <BrandColumn panel={brandPanels[1]} />
+    <div className="relative flex h-[100dvh] w-full items-center justify-center bg-background px-6">
+      <div className="flex w-full max-w-[1100px] items-center justify-center gap-16">
+        <BrandColumn panel={brandPanels[0]} className="lg:max-w-none lg:flex-1" />
+        <BrandColumn panel={brandPanels[1]} className="lg:max-w-none lg:flex-1" />
+      </div>
     </div>
   )
 }
