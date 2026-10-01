@@ -93,10 +93,10 @@ function HeroSlide() {
       </div>
 
       <div className="hidden lg:flex h-[100dvh] w-full flex-col items-center justify-center bg-background px-6">
-        <div className="flex w-full max-w-[900px] flex-col items-center">
+        <div className="flex w-full max-w-[1100px] flex-col items-center">
           <div className="relative w-full aspect-[16/9] overflow-hidden bg-muted">
             <img
-              src="https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/39a98d13-b0b2-42bf-47fe-1327b1fd4000/w=1600"
+              src="/images/hero-desktop.png"
               alt="Designer Fashion Hero"
               className="absolute inset-0 h-full w-full object-cover"
             />
