@@ -166,15 +166,25 @@ export async function getFilterOptionsForCollections(): Promise<FilterOptions> {
  * of the fixed collections brand set. The brand filter itself is omitted
  * (always empty) since these pages are already scoped to one brand.
  */
-export async function getFilterOptionsForBrand(brands: string[], category = 'Bag'): Promise<FilterOptions> {
+export async function getFilterOptionsForBrand(
+  brands: string[],
+  category = 'Bag',
+  modelPattern?: string,
+): Promise<FilterOptions> {
   const supabase = await createClient()
 
-  const { data: products, error } = await supabase
+  let optionsQuery = supabase
     .from('products')
     .select('id, sub_category, style_type, color_filter, status')
     .in('brand', brands)
     .eq('category', category)
     .eq('status', 'live')
+
+  if (modelPattern) {
+    optionsQuery = optionsQuery.filter('model', 'imatch', modelPattern)
+  }
+
+  const { data: products, error } = await optionsQuery
 
   if (error) {
     console.error('[v0] Error fetching brand filter options:', error)

@@ -54,6 +54,10 @@ interface BrandCollectionClientProps {
   pageTitle: string
   /** Prefix used for sessionStorage scroll-restoration keys, kept unique per brand page. */
   storageKeyPrefix: string
+  /** Brand name used in the subheader copy, e.g. "Chanel" or "Hermès". */
+  brandLabel: string
+  /** Case-insensitive POSIX regex matched against `model`, used by model sub-pages. */
+  modelPattern?: string
 }
 
 const LOAD_MORE_DESKTOP = 20
@@ -72,6 +76,8 @@ export function BrandCollectionClient({
   basePath,
   pageTitle,
   storageKeyPrefix,
+  brandLabel,
+  modelPattern,
 }: BrandCollectionClientProps) {
   const [products, setProducts] = useState<BrandProduct[]>(initialProducts)
   const [isLoading, setIsLoading] = useState(false)
@@ -107,7 +113,7 @@ export function BrandCollectionClient({
           const supabase = createBrowserClient()
 
           try {
-            const { data: productsData, error } = await supabase
+            let restoreQuery = supabase
               .from("products")
               .select(`
                 *,
@@ -136,6 +142,12 @@ export function BrandCollectionClient({
               .in("brand", brands)
               .eq("category", category)
               .eq("status", "live")
+
+            if (modelPattern) {
+              restoreQuery = restoreQuery.filter("model", "imatch", modelPattern)
+            }
+
+            const { data: productsData, error } = await restoreQuery
               .order("created_at", { ascending: false })
               .range(0, targetCount - 1)
 
@@ -192,6 +204,7 @@ export function BrandCollectionClient({
         subcategories: selectedSubcategories.length > 0 ? selectedSubcategories : undefined,
         colors: selectedColors.length > 0 ? selectedColors : undefined,
         styles: selectedStyleTypes.length > 0 ? selectedStyleTypes : undefined,
+        modelPattern,
       })
       setFilteredCount(count)
     }
@@ -318,6 +331,10 @@ export function BrandCollectionClient({
         .eq("category", category)
         .eq("status", "live")
 
+      if (modelPattern) {
+        query = query.filter("model", "imatch", modelPattern)
+      }
+
       // Apply the same filters that are active in the UI
       if (selectedSubcategories.length > 0) {
         query = query.in("sub_category", selectedSubcategories)
@@ -377,8 +394,7 @@ export function BrandCollectionClient({
             {pageTitle}
           </h1>
           <p className="text-[13px] md:text-sm leading-relaxed text-[#6F7075] font-normal">
-            Every Hermès and Chanel piece in this selection is carefully authenticated before being offered by Saint
-            Yve.{" "}
+            Every {brandLabel} item in this selection is carefully authenticated before being offered by Saint Yve.{" "}
             <Link href="/authenticity" className="text-[#111111] underline underline-offset-2 hover:text-[#6F7075]">
               Learn about our authentication process
             </Link>

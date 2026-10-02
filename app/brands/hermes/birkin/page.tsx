@@ -1,29 +1,28 @@
-import { StaticNavigation } from "@/components/static-navigation"
-import { ChanelCategoryClient } from "@/components/brands/chanel-category-client"
-import { CartSidebar } from "@/components/cart-sidebar"
-import { Footer } from "@/components/footer"
-import { getHermesProducts } from "@/lib/brands/hermes-products"
 import type { Metadata } from "next"
+import {
+  BrandCollectionPage,
+  type BrandPageSearchParams,
+} from "@/components/category-pages/brand-collection/brand-collection-page"
 
 export const metadata: Metadata = {
   title: "Birkin | Saint Yve",
   description: "Discover the Hermès Birkin collection at Saint Yve.",
 }
 
-export default async function HermesBirkinPage() {
-  const products = await getHermesProducts()
-  const filtered = products.filter((product: any) => /\bbirkin\b/i.test(product.model || ""))
-
+export default async function HermesBirkinPage({ searchParams }: { searchParams: Promise<BrandPageSearchParams> }) {
   return (
-    <div className="min-h-screen bg-white text-black font-mono">
-      <CartSidebar />
-      <StaticNavigation />
-
-      <div className="pt-12 md:pt-14 lg:pt-20">
-        <ChanelCategoryClient initialProducts={filtered} title="Birkin" />
-      </div>
-
-      <Footer />
-    </div>
+    <BrandCollectionPage
+      searchParams={await searchParams}
+      brands={["Hermès", "Hermes"]}
+      brandLabel="Hermès"
+      pageTitle="Birkin"
+      basePath="/brands/hermes/birkin"
+      storageKeyPrefix="hermesBirkin"
+      modelPattern="\mbirkin\M"
+      breadcrumbs={[
+        { name: "Hermès", path: "/brands/hermes" },
+        { name: "Birkin", path: "/brands/hermes/birkin" },
+      ]}
+    />
   )
 }
