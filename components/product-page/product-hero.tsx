@@ -64,8 +64,8 @@ export function ProductHero({
   return (
     <div className="w-full">
       {/* Hero image — mobile: full-bleed square. Desktop: not full width, height fills the viewport */}
-      <div className="lg:flex lg:justify-center lg:bg-[#F5F5F5]">
-        <div className="relative w-full aspect-square lg:w-auto lg:aspect-auto lg:h-screen bg-[#F5F5F5] overflow-hidden">
+      <div className="lg:flex lg:justify-center lg:bg-white">
+        <div className="relative w-full aspect-square lg:w-auto lg:aspect-auto lg:h-screen bg-white overflow-hidden">
           {allMedia.length > 0 &&
             renderMedia(0, "w-full h-full object-cover lg:w-auto lg:h-full", true, "w-full h-auto object-cover lg:w-auto lg:h-full")}
         </div>
@@ -113,7 +113,7 @@ export function ProductHero({
             {allMedia.slice(1).map((_, i) => {
               const index = i + 1
               return (
-                <div key={index} className="w-full aspect-square bg-[#F5F5F5] overflow-hidden">
+                <div key={index} className="w-full aspect-square bg-white overflow-hidden">
                   {renderMedia(index, "w-full h-full object-cover")}
                 </div>
               )
@@ -125,7 +125,7 @@ export function ProductHero({
             {allMedia.slice(1).map((_, i) => {
               const index = i + 1
               return (
-                <div key={index} className="w-full aspect-square bg-[#F5F5F5] overflow-hidden">
+                <div key={index} className="w-full aspect-square bg-white overflow-hidden">
                   {renderMedia(index, "w-full h-full object-cover")}
                 </div>
               )
