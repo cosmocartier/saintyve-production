@@ -122,6 +122,11 @@
     @apply border-border outline-ring/50;
   }
 
+  ::selection {
+    background-color: oklch(0 0 0);
+    color: oklch(1 0 0);
+  }
+
   /* Apply TT Commons Pro Expanded globally with optimized rendering */
   body {
     font-family: var(--font-sans);
