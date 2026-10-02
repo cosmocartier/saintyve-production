@@ -1,29 +1,28 @@
-import { StaticNavigation } from "@/components/static-navigation"
-import { ChanelCategoryClient } from "@/components/brands/chanel-category-client"
-import { CartSidebar } from "@/components/cart-sidebar"
-import { Footer } from "@/components/footer"
-import { getChanelProducts } from "@/lib/brands/chanel-products"
 import type { Metadata } from "next"
+import {
+  BrandCollectionPage,
+  type BrandPageSearchParams,
+} from "@/components/category-pages/brand-collection/brand-collection-page"
 
 export const metadata: Metadata = {
   title: "Chanel Shopper | Saint Yve",
   description: "Discover the Chanel Shopper collection at Saint Yve.",
 }
 
-export default async function ChanelShopperPage() {
-  const products = await getChanelProducts()
-  const filtered = products.filter((product: any) => /\bshopper\b/i.test(product.model || ""))
-
+export default async function ChanelShopperPage({ searchParams }: { searchParams: Promise<BrandPageSearchParams> }) {
   return (
-    <div className="min-h-screen bg-white text-black font-mono">
-      <CartSidebar />
-      <StaticNavigation />
-
-      <div className="pt-12 md:pt-14 lg:pt-20">
-        <ChanelCategoryClient initialProducts={filtered} title="Shopper" />
-      </div>
-
-      <Footer />
-    </div>
+    <BrandCollectionPage
+      searchParams={await searchParams}
+      brands={["Chanel"]}
+      brandLabel="Chanel"
+      pageTitle="Shopper"
+      basePath="/brands/chanel/shopper"
+      storageKeyPrefix="chanelShopper"
+      modelPattern="\mshopper\M"
+      breadcrumbs={[
+        { name: "Chanel", path: "/brands/chanel" },
+        { name: "Shopper", path: "/brands/chanel/shopper" },
+      ]}
+    />
   )
 }

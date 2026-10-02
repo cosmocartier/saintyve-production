@@ -105,6 +105,8 @@ interface BrandFilterParams {
   subcategories?: string[]
   colors?: string[]
   styles?: string[]
+  /** Case-insensitive POSIX regex matched against `model`, used by model sub-pages. */
+  modelPattern?: string
 }
 
 /**
@@ -115,7 +117,7 @@ interface BrandFilterParams {
  */
 export async function getFilteredBrandCount(params: BrandFilterParams): Promise<number> {
   const supabase = await createClient()
-  const { brands, category = 'Bag', subcategories, styles } = params
+  const { brands, category = 'Bag', subcategories, styles, modelPattern } = params
 
   let query = supabase
     .from('products')
@@ -123,6 +125,10 @@ export async function getFilteredBrandCount(params: BrandFilterParams): Promise<
     .in('brand', brands)
     .eq('category', category)
     .eq('status', 'live')
+
+  if (modelPattern) {
+    query = query.filter('model', 'imatch', modelPattern)
+  }
 
   if (subcategories && subcategories.length > 0) {
     query = query.in('sub_category', subcategories)
