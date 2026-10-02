@@ -72,7 +72,7 @@ export function ShopWithYvePanel({
             key="shop-with-yve-desktop"
             role="dialog"
             aria-label="Shop With Yve, personal shopping"
-            className="fixed bottom-[58px] right-6 z-50 flex w-[420px] max-w-[90vw] flex-col border border-black/10 bg-white"
+            className="fixed bottom-[68px] right-6 z-50 flex w-[420px] max-w-[90vw] flex-col border border-black/10 bg-white"
             style={{ height: "min(580px, calc(100dvh - 100px))" }}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
