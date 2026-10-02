@@ -37,7 +37,7 @@ export function ProductHero({
 }: ProductHeroProps) {
   const modelName = product.model?.trim() || product.name
   const displayColorName = colorName || product.color?.trim() || null
-  const renderMedia = (index: number, className: string, priority = false) => {
+  const renderMedia = (index: number, className: string, priority = false, imgClassName?: string) => {
     const mediaUrl = allMedia[index]
     const isVideo = index < videoCount
 
@@ -54,19 +54,21 @@ export function ProductHero({
         src={mediaUrl || "/placeholder.svg"}
         alt={alt}
         className={className}
+        imgClassName={imgClassName}
         priority={priority}
         onClick={() => onImageClick(index)}
       />
     )
   }
 
-  const restMedia = allMedia.slice(2)
-
   return (
     <div className="w-full">
-      {/* Hero image — dominant, full-bleed square */}
-      <div className="relative w-full aspect-square bg-[#F5F5F5] overflow-hidden">
-        {allMedia.length > 0 && renderMedia(0, "w-full h-full object-cover", true)}
+      {/* Hero image — mobile: full-bleed square. Desktop: not full width, height fills the viewport */}
+      <div className="lg:flex lg:justify-center lg:bg-[#F5F5F5]">
+        <div className="relative w-full aspect-square lg:w-auto lg:aspect-auto lg:h-screen bg-[#F5F5F5] overflow-hidden">
+          {allMedia.length > 0 &&
+            renderMedia(0, "w-full h-full object-cover lg:w-auto lg:h-full", true, "w-full h-auto object-cover lg:w-auto lg:h-full")}
+        </div>
       </div>
 
       {/* Title / Details / Price */}
@@ -75,7 +77,7 @@ export function ProductHero({
           <p className="text-[11px] tracking-[0.25em] uppercase text-black mb-3">{brandName}</p>
         )}
 
-        <h1 className="text-4xl lg:text-4xl font-medium tracking-[0.1em] uppercase text-black text-balance">
+        <h1 className="text-4xl lg:text-4xl font-semibold tracking-[-0.04em] uppercase text-black text-balance">
           {modelName}
         </h1>
 
@@ -118,24 +120,16 @@ export function ProductHero({
             })}
           </div>
 
-          {/* Desktop: large second image + 2-col grid for the rest */}
-          <div className="hidden lg:flex lg:flex-col gap-px">
-            <div className="w-full aspect-[16/9] bg-[#F5F5F5] overflow-hidden">
-              {renderMedia(1, "w-full h-full object-cover")}
-            </div>
-
-            {restMedia.length > 0 && (
-              <div className="grid grid-cols-2 gap-px">
-                {restMedia.map((_, i) => {
-                  const index = i + 2
-                  return (
-                    <div key={index} className="w-full aspect-square bg-[#F5F5F5] overflow-hidden">
-                      {renderMedia(index, "w-full h-full object-cover")}
-                    </div>
-                  )
-                })}
-              </div>
-            )}
+          {/* Desktop: every remaining image in a 1:1 two-column grid */}
+          <div className="hidden lg:grid lg:grid-cols-2 gap-px">
+            {allMedia.slice(1).map((_, i) => {
+              const index = i + 1
+              return (
+                <div key={index} className="w-full aspect-square bg-[#F5F5F5] overflow-hidden">
+                  {renderMedia(index, "w-full h-full object-cover")}
+                </div>
+              )
+            })}
           </div>
         </>
       )}

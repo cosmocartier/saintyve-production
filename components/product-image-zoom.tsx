@@ -7,11 +7,12 @@ interface ProductImageZoomProps {
   src: string
   alt: string
   className?: string
+  imgClassName?: string
   priority?: boolean
   onClick?: () => void
 }
 
-export function ProductImageZoom({ src, alt, className, priority, onClick }: ProductImageZoomProps) {
+export function ProductImageZoom({ src, alt, className, imgClassName, priority, onClick }: ProductImageZoomProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [hasError, setHasError] = useState(false)
 
@@ -22,7 +23,8 @@ export function ProductImageZoom({ src, alt, className, priority, onClick }: Pro
         src={src || "/placeholder.svg"}
         alt={alt}
         className={cn(
-          "w-full h-auto object-cover transition-opacity duration-500 ease-out",
+          imgClassName || "w-full h-auto object-cover",
+          "transition-opacity duration-500 ease-out",
           isLoading ? "opacity-0" : "opacity-100",
           hasError && "hidden",
         )}
