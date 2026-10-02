@@ -142,7 +142,7 @@ async function getProduct(slug: string): Promise<{
         .filter((img) => !img.title_image) // Exclude the Title Image from the gallery
         .map((img, index) => ({
           id: img.id,
-          url: buildCfUrl(img.cf_image_id, "pdp"), // Keep for backwards compatibility
+          url: buildCfUrl(img.cf_image_id, "zoom"), // Highest quality variant for PDP gallery/hero
           cf_image_id: img.cf_image_id, // Include the ID for lightbox
           alt_text: img.alt_text,
           display_order: img.sort_order,
