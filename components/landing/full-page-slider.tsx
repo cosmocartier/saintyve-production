@@ -41,7 +41,16 @@ export function FullPageSlider({ children, onIndexChange, className = "" }: Full
       if (clamped === indexRef.current || animatingRef.current) return
       animatingRef.current = true
       indexRef.current = clamped
+
+      // Reporting the index change before the animation starts (rather than
+      // after it completes) means the footer's z-index flip takes effect at
+      // the start of the transition, not at the end. That makes the footer
+      // rise up and progressively cover the fixed header as it slides into
+      // place, instead of staying hidden behind it until the very last
+      // instant. Leaving the footer slide works the same way in reverse: the
+      // header is already back on top as the footer slides down and away.
       onIndexChange?.(clamped)
+
       gsap.to(track, {
         y: -clamped * getSlideHeight(),
         duration: 0.65,
