@@ -42,6 +42,7 @@ interface ProductCardProps {
   aspectRatio?: "1/1" | "3/4" | "4/5"
   hideColorInTitle?: boolean
   showVariantDetails?: boolean
+  soldOut?: boolean
 }
 
 export function ProductCard({
@@ -54,6 +55,7 @@ export function ProductCard({
   aspectRatio = "3/4",
   hideColorInTitle = false,
   showVariantDetails = false,
+  soldOut = false,
 }: ProductCardProps) {
   const { addItem } = useCart()
   const { toggleLike, isLiked } = useWishlist()
@@ -348,7 +350,19 @@ export function ProductCard({
           </div>
         </button>
 
-        {(product.is_bestseller || product.is_new_in) && (
+        {soldOut && (
+          <>
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 z-10 bg-white/25 backdrop-blur-[1.5px] backdrop-saturate-[0.85]"
+            />
+            <span className="absolute top-3 left-3 z-20 bg-white/70 px-1.5 py-1 text-[9px] font-medium uppercase leading-none tracking-[0.22em] text-black backdrop-blur-sm lg:text-[10px]">
+              Sold
+            </span>
+          </>
+        )}
+
+        {!soldOut && (product.is_bestseller || product.is_new_in) && (
           <div className="absolute top-3 left-3 z-10">
             {product.is_bestseller && (
               <div className="bg-black text-white text-[10px] font-mono font-normal uppercase tracking-wider px-1 py-1 mb-2">

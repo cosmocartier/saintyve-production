@@ -444,6 +444,7 @@ export function BrandCollectionClient({
                   aspectRatio="4/5"
                   hideColorInTitle
                   showVariantDetails
+                  soldOut={(product as any).soldOut}
                 />
               ))}
             </div>
@@ -463,6 +464,7 @@ export function BrandCollectionClient({
                       aspectRatio="4/5"
                       hideColorInTitle
                       showVariantDetails
+                  soldOut={(product as any).soldOut}
                     />
                   ))}
                 </div>
@@ -481,6 +483,7 @@ export function BrandCollectionClient({
                       aspectRatio="4/5"
                       hideColorInTitle
                       showVariantDetails
+                  soldOut={(product as any).soldOut}
                     />
                   ))}
                 </div>
@@ -509,6 +512,17 @@ export function BrandCollectionClient({
                           loading="lazy"
                           decoding="async"
                         />
+                        {(product as any).soldOut && (
+                          <>
+                            <div
+                              aria-hidden="true"
+                              className="pointer-events-none absolute inset-0 bg-white/25 backdrop-blur-[1.5px] backdrop-saturate-[0.85]"
+                            />
+                            <span className="absolute top-2 left-2 bg-white/70 px-1 py-0.5 text-[8px] font-medium uppercase leading-none tracking-[0.22em] text-black backdrop-blur-sm">
+                              Sold
+                            </span>
+                          </>
+                        )}
                       </Link>
                     )
                   })}
