@@ -69,6 +69,13 @@ export function optimizeCollectionsProductImages(product: any) {
 // counted as color variants of one model, exactly like the Chanel sub-pages.
 // This must run over the full fetched batch (not one product at a time) so
 // siblings in the same batch are correctly grouped before optimizing images.
+// A product is sold out only when it has variants and every one of them has no stock.
+// Products without variant rows are treated as available (stock unknown).
+export function isProductSoldOut(product: { product_variants?: Array<{ stock_quantity?: number | null }> | null }) {
+  const variants = product.product_variants || []
+  return variants.length > 0 && variants.every((v) => (v.stock_quantity ?? 0) <= 0)
+}
+
 export function optimizeCollectionsProducts(productsData: any[]) {
   const colorCountByParent = new Map<string, number>()
   productsData.forEach((p: any) => {
@@ -79,6 +86,7 @@ export function optimizeCollectionsProducts(productsData: any[]) {
 
   return productsData.map((product: any) => ({
     ...optimizeCollectionsProductImages(product),
+    soldOut: isProductSoldOut(product),
     colorVariantCount:
       product.parent_product_name && product.color ? colorCountByParent.get(product.parent_product_name) || 1 : 1,
   }))

@@ -23,6 +23,7 @@ import { ProductInfo } from "@/components/product-page/product-info"
 import { BuildQualityBadge } from "@/components/build-quality-badge"
 import { usePriceMode } from "@/contexts/price-mode-context"
 import { useWishlist } from "@/contexts/wishlist-context"
+import { isProductSoldOut } from "@/lib/collections-products"
 
 function formatPrice(value: number): string {
   return value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
@@ -225,8 +226,11 @@ export function ProductPageClient({
     }
   }
 
+  const soldOut = isProductSoldOut({ product_variants: variants })
+
   const canAddToCart =
-    filteredVariants.length === 0 || !hasMultipleSizes || (selectedVariant && selectedVariant.stock_quantity > 0)
+    !soldOut &&
+    (filteredVariants.length === 0 || !hasMultipleSizes || (selectedVariant && selectedVariant.stock_quantity > 0))
 
   // Stock quantity for the currently resolved variant, sourced directly from product_variants.stock_quantity.
   // When the product has multiple sizes, only show a number once a specific size has been selected.
@@ -369,7 +373,8 @@ export function ProductPageClient({
           filteredVariants={filteredVariants}
           handleSizeSelect={handleSizeSelect}
           handleAddToCart={handleAddToCart}
-          canAddToCart={canAddToCart}
+                canAddToCart={canAddToCart}
+                soldOut={soldOut}
           isAddingToCart={isAddingToCart}
           setIsShippingOpen={setIsShippingOpen}
           isInWishlist={isLiked(product.id)}

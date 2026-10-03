@@ -39,6 +39,7 @@ interface ProductInfoProps {
   handleSizeSelect: (variant: ProductVariant) => void
   handleAddToCart: () => void
   canAddToCart: boolean
+  soldOut?: boolean
   isAddingToCart: boolean
   setIsShippingOpen: (open: boolean) => void
   isInWishlist?: boolean
@@ -63,6 +64,7 @@ export function ProductInfo({
   handleSizeSelect,
   handleAddToCart,
   canAddToCart,
+  soldOut = false,
   isAddingToCart,
   setIsShippingOpen,
   isInWishlist = false,
@@ -251,7 +253,9 @@ export function ProductInfo({
             className="flex-1 h-[52px] flex items-center justify-center px-6 rounded-none bg-[#111111] text-white cursor-pointer hover:bg-black/80 transition-colors active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <span className="text-[11px] font-medium tracking-[0.18em] uppercase">
-              {isAddingToCart
+              {soldOut
+                ? "SOLD"
+                : isAddingToCart
                 ? "ADDING..."
                 : !selectedVariant && hasMultipleSizes
                   ? "SELECT SIZE FIRST"
