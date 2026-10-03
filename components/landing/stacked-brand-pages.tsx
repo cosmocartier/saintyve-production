@@ -53,7 +53,7 @@ function BrandColumn({ panel, className }: { panel: BrandPanelData; className?: 
         <img
           src={panel.image || "/placeholder.svg"}
           alt={panel.alt}
-          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-101"
         />
       </div>
       <div className="mt-6 flex flex-col items-center gap-0.5 text-center">
