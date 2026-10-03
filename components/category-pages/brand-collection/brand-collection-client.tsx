@@ -516,10 +516,13 @@ export function BrandCollectionClient({
                           <>
                             <div
                               aria-hidden="true"
-                              className="pointer-events-none absolute inset-0 bg-white/25 backdrop-blur-[1.5px] backdrop-saturate-[0.85]"
+                              className="pointer-events-none absolute inset-0 bg-white/[0.12] backdrop-blur-[0.75px] backdrop-saturate-[0.92]"
                             />
-                            <span className="absolute top-2 left-2 bg-white/70 px-1 py-0.5 text-[8px] font-medium uppercase leading-none tracking-[0.22em] text-black backdrop-blur-sm">
-                              Sold
+                            <span className="absolute top-2 left-2 flex flex-col gap-0.5 border border-white/50 bg-white/40 px-1.5 pt-1 pb-0.5 backdrop-blur-md">
+                              <span className="text-[8px] font-medium uppercase leading-none tracking-[0.3em] text-black">
+                                Sold
+                              </span>
+                              <span aria-hidden="true" className="h-px w-full bg-black/70" />
                             </span>
                           </>
                         )}

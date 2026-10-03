@@ -354,10 +354,13 @@ export function ProductCard({
           <>
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute inset-0 z-10 bg-white/25 backdrop-blur-[1.5px] backdrop-saturate-[0.85]"
+              className="pointer-events-none absolute inset-0 z-10 bg-white/[0.12] backdrop-blur-[0.75px] backdrop-saturate-[0.92]"
             />
-            <span className="absolute top-3 left-3 z-20 bg-white/70 px-1.5 py-1 text-[9px] font-medium uppercase leading-none tracking-[0.22em] text-black backdrop-blur-sm lg:text-[10px]">
-              Sold
+            <span className="absolute top-3 left-3 z-20 flex flex-col gap-1 border border-white/50 bg-white/40 px-2 pt-1.5 pb-1 backdrop-blur-md">
+              <span className="text-[9px] font-medium uppercase leading-none tracking-[0.32em] text-black lg:text-[10px]">
+                Sold
+              </span>
+              <span aria-hidden="true" className="h-px w-full bg-black/70" />
             </span>
           </>
         )}
