@@ -16,7 +16,7 @@ const brandPanels: BrandPanelData[] = [
   {
     href: "/brands/chanel",
     label: "Chanel",
-    image: "https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/281daa67-db5b-490f-9446-72dd98ef8c00/w=800",
+    image: "https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/4085f201-8389-4166-c0d1-c57a96a99f00/pdp",
     alt: "Chanel Collection",
   },
   {
