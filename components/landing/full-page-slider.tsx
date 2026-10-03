@@ -41,12 +41,27 @@ export function FullPageSlider({ children, onIndexChange, className = "" }: Full
       if (clamped === indexRef.current || animatingRef.current) return
       animatingRef.current = true
       indexRef.current = clamped
-      onIndexChange?.(clamped)
+
+      // Entering the final (footer) slide is the one transition where a
+      // z-index flip changes what covers the fixed header. Deferring that
+      // notification until the slide has actually finished arriving means
+      // the header stays visible while the footer rises into place, instead
+      // of vanishing the instant the scroll starts. Leaving the footer still
+      // reports immediately, so the header is already on top as the footer
+      // slides back down and out of the way.
+      const entersFooterSlide = clamped === slideCount - 1
+      if (!entersFooterSlide) {
+        onIndexChange?.(clamped)
+      }
+
       gsap.to(track, {
         y: -clamped * getSlideHeight(),
         duration: 0.65,
         ease: "power2.inOut",
         onComplete: () => {
+          if (entersFooterSlide) {
+            onIndexChange?.(clamped)
+          }
           window.setTimeout(() => {
             animatingRef.current = false
           }, 150)
