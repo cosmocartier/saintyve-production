@@ -17,7 +17,7 @@ export function ProductImageZoom({ src, alt, className, imgClassName, priority, 
   const [hasError, setHasError] = useState(false)
 
   return (
-    <div className={cn("relative overflow-hidden bg-[#F5F5F5] cursor-pointer", className)} onClick={onClick}>
+    <div className={cn("relative overflow-hidden bg-white cursor-pointer", className)} onClick={onClick}>
       {/* Main image - invisible preloader, seamless fade-in, no zoom */}
       <img
         src={src || "/placeholder.svg"}
@@ -38,7 +38,7 @@ export function ProductImageZoom({ src, alt, className, imgClassName, priority, 
 
       {/* Error fallback */}
       {hasError && (
-        <div className="absolute inset-0 flex items-center justify-center bg-[#F5F5F5] text-zinc-400 text-xs tracking-wide uppercase">
+        <div className="absolute inset-0 flex items-center justify-center bg-white text-zinc-400 text-xs tracking-wide uppercase">
           Image unavailable
         </div>
       )}
