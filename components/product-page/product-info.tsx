@@ -297,7 +297,7 @@ export function ProductInfo({
           <button
             type="button"
             onClick={onReserve}
-            className="w-full h-[42px] flex items-center justify-center bg-zinc-100 text-[10px] font-medium tracking-[0.2em] uppercase text-zinc-600 hover:bg-zinc-200 hover:text-black transition-colors active:scale-[0.99]"
+            className="w-full h-[42px] flex items-center justify-center bg-zinc-100 text-[10px] font-medium tracking-[0.2em] uppercase text-black hover:bg-zinc-200 hover:text-black transition-colors active:scale-[0.99]"
           >
             Reserve for 24 Hours
           </button>
