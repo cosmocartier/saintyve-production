@@ -20,6 +20,7 @@ import { buildImageObject } from "@/lib/cloudflare/cloudflare-images"
 import { ProductImageLightbox } from "@/components/product-page/product-image-lightbox"
 import { ProductHero } from "@/components/product-page/product-hero"
 import { ProductInfo } from "@/components/product-page/product-info"
+import { ReservationModal } from "@/components/product-page/reservation-modal"
 import { BuildQualityBadge } from "@/components/build-quality-badge"
 import { usePriceMode } from "@/contexts/price-mode-context"
 import { useWishlist } from "@/contexts/wishlist-context"
@@ -73,6 +74,7 @@ export function ProductPageClient({
   const [isSizeDropdownOpen, setIsSizeDropdownOpen] = useState(false)
   const [isLightboxOpen, setIsLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
+  const [isReservationOpen, setIsReservationOpen] = useState(false)
   const [useImperialUnits, setUseImperialUnits] = useState(false)
   const { useRetailPrice } = usePriceMode()
 
@@ -380,8 +382,18 @@ export function ProductPageClient({
           isInWishlist={isLiked(product.id)}
           onToggleWishlist={handleToggleWishlist}
           stockQuantity={stockQuantity}
+          onReserve={() => setIsReservationOpen(true)}
         />
       </div>
+
+      <ReservationModal
+        open={isReservationOpen}
+        onOpenChange={setIsReservationOpen}
+        productId={product.id}
+        productName={product.name}
+        productBrand={brandName}
+        productUrl={typeof window !== "undefined" ? window.location.href : `/products/${product.slug}`}
+      />
 
       <Sheet open={isProductDetailsOpen} onOpenChange={setIsProductDetailsOpen}>
         <SheetContent
