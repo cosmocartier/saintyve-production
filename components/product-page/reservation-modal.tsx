@@ -148,8 +148,8 @@ export function ReservationModal({
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Name"
                     autoComplete="name"
-                    className={`w-full h-[48px] px-4 border bg-white text-sm tracking-wide text-black placeholder:text-zinc-400 focus:outline-none focus:border-black transition-colors ${
-                      errors.name ? "border-red-500" : "border-zinc-200"
+                    className={`w-full h-12 px-0 border-0 border-b rounded-none text-[14px] text-black placeholder:text-zinc-400 focus:outline-none transition-colors bg-transparent font-sans ${
+                      errors.name ? "border-red-500" : "border-zinc-300 focus:border-black"
                     }`}
                   />
                   {errors.name && <p className="mt-1.5 text-xs text-red-500">{errors.name}</p>}
@@ -166,8 +166,8 @@ export function ReservationModal({
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email"
                     autoComplete="email"
-                    className={`w-full h-[48px] px-4 border bg-white text-sm tracking-wide text-black placeholder:text-zinc-400 focus:outline-none focus:border-black transition-colors ${
-                      errors.email ? "border-red-500" : "border-zinc-200"
+                    className={`w-full h-12 px-0 border-0 border-b rounded-none text-[14px] text-black placeholder:text-zinc-400 focus:outline-none transition-colors bg-transparent font-sans ${
+                      errors.email ? "border-red-500" : "border-zinc-300 focus:border-black"
                     }`}
                   />
                   {errors.email && <p className="mt-1.5 text-xs text-red-500">{errors.email}</p>}
@@ -184,8 +184,8 @@ export function ReservationModal({
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="Phone Number"
                     autoComplete="tel"
-                    className={`w-full h-[48px] px-4 border bg-white text-sm tracking-wide text-black placeholder:text-zinc-400 focus:outline-none focus:border-black transition-colors ${
-                      errors.phone ? "border-red-500" : "border-zinc-200"
+                    className={`w-full h-12 px-0 border-0 border-b rounded-none text-[14px] text-black placeholder:text-zinc-400 focus:outline-none transition-colors bg-transparent font-sans ${
+                      errors.phone ? "border-red-500" : "border-zinc-300 focus:border-black"
                     }`}
                   />
                   {errors.phone && <p className="mt-1.5 text-xs text-red-500">{errors.phone}</p>}
