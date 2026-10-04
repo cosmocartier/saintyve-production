@@ -45,6 +45,7 @@ interface ProductInfoProps {
   isInWishlist?: boolean
   onToggleWishlist?: () => void
   stockQuantity?: number | null
+  onReserve?: () => void
 }
 
 export function ProductInfo({
@@ -70,6 +71,7 @@ export function ProductInfo({
   isInWishlist = false,
   onToggleWishlist,
   stockQuantity = null,
+  onReserve,
 }: ProductInfoProps) {
   const router = useRouter()
   const [isWishlistAnimating, setIsWishlistAnimating] = useState(false)
@@ -291,14 +293,14 @@ export function ProductInfo({
           )}
         </div>
 
-        {stockQuantity !== null && (
-          <p className="text-center text-[10px] font-medium tracking-[0.2em] uppercase text-zinc-500">
-            {stockQuantity === 0
-              ? "Currently Unavailable"
-              : stockQuantity === 1
-                ? "1 Piece Available"
-                : `${stockQuantity} Pieces Available`}
-          </p>
+        {onReserve && !soldOut && (
+          <button
+            type="button"
+            onClick={onReserve}
+            className="w-full h-[42px] flex items-center justify-center border border-zinc-300 text-[10px] font-medium tracking-[0.2em] uppercase text-zinc-600 hover:border-black hover:text-black transition-colors active:scale-[0.99]"
+          >
+            Reserve for 24 Hours
+          </button>
         )}
       </div>
     </div>
