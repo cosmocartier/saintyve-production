@@ -4,7 +4,8 @@ import Script from "next/script"
 import { Analytics } from "@vercel/analytics/next"
 import { CartProvider } from "@/contexts/cart-context"
 import { WishlistProvider } from "@/contexts/wishlist-context"
-import { PriceModeProvider } from "@/contexts/price-mode-context"
+import { SiteConfigProvider } from "@/contexts/site-config-context"
+import { getSiteConfig } from "@/app/actions/site-config"
 import { WishlistSidebar } from "@/components/wishlist-sidebar"
 import { PinterestTag } from "@/components/pinterest-tag"
 import "./globals.css"
@@ -62,11 +63,13 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const siteConfig = await getSiteConfig()
+
   return (
     <html lang="en" className={ttCommonsProExpanded.variable}>
       <body className="font-sans antialiased">
@@ -76,14 +79,14 @@ export default function RootLayout({
           strategy="afterInteractive"
         />
         <PinterestTag />
-        <PriceModeProvider>
+        <SiteConfigProvider initialConfig={siteConfig}>
           <WishlistProvider>
             <CartProvider>
               <WishlistSidebar />
               {children}
             </CartProvider>
           </WishlistProvider>
-        </PriceModeProvider>
+        </SiteConfigProvider>
         <Analytics />
       </body>
     </html>

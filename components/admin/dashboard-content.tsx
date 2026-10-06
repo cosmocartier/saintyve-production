@@ -1,7 +1,8 @@
 "use client"
 
 import { Package, DollarSign, Clock, CreditCard, Building2, AlertTriangle } from "lucide-react"
-import { usePriceMode } from "@/contexts/price-mode-context"
+import { useSiteConfig } from "@/contexts/site-config-context"
+import { SITE_CONFIG_DEFINITIONS, type SiteConfigField } from "@/lib/site-config"
 import { Separator } from "@/components/ui/separator"
 
 interface DashboardContentProps {
@@ -37,8 +38,27 @@ function SectionLabel({ index, label }: { index: string; label: string }) {
   )
 }
 
+function ToggleSwitch({ checked, onToggle }: { checked: boolean; onToggle: () => void }) {
+  return (
+    <button
+      onClick={onToggle}
+      className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full border transition-colors ${
+        checked ? "border-white/30 bg-white/20" : "border-white/10 bg-white/5"
+      }`}
+      role="switch"
+      aria-checked={checked}
+    >
+      <span
+        className={`inline-block h-4 w-4 transform rounded-full bg-white/80 transition-transform ${
+          checked ? "translate-x-6" : "translate-x-1"
+        }`}
+      />
+    </button>
+  )
+}
+
 export function DashboardContent({ orders, recentOrders }: DashboardContentProps) {
-  const { useRetailPrice, togglePriceMode } = usePriceMode()
+  const { config, isMasterOn, toggleConfig, toggleMaster } = useSiteConfig()
 
   const processedOrders = orders.filter((o) => o.status === "processing" || o.status === "processed")
   const pendingOrders = orders.filter((o) => o.status === "pending")
@@ -69,34 +89,50 @@ export function DashboardContent({ orders, recentOrders }: DashboardContentProps
             Overview
           </span>
         </div>
-        <div className="flex items-start justify-between gap-4">
-          <div className="space-y-2">
-            <h1 className="font-sans text-[26px] font-light uppercase tracking-[0.1em] text-white sm:text-[32px]">
-              Admin Dashboard
-            </h1>
-            <p className="font-sans text-[13px] font-light tracking-wide text-white/40">
-              Real-time overview of your store performance.
-            </p>
-          </div>
-          <button
-            onClick={togglePriceMode}
-            className={`relative mt-1 inline-flex h-6 w-11 shrink-0 items-center rounded-full border transition-colors ${
-              useRetailPrice ? "border-white/30 bg-white/20" : "border-white/10 bg-white/5"
-            }`}
-            role="switch"
-            aria-checked={useRetailPrice}
-          >
-            <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white/80 transition-transform ${
-                useRetailPrice ? "translate-x-6" : "translate-x-1"
-              }`}
-            />
-          </button>
+        <div className="space-y-2">
+          <h1 className="font-sans text-[26px] font-light uppercase tracking-[0.1em] text-white sm:text-[32px]">
+            Admin Dashboard
+          </h1>
+          <p className="font-sans text-[13px] font-light tracking-wide text-white/40">
+            Real-time overview of your store performance.
+          </p>
         </div>
         <p className="font-sans text-[9px] font-medium uppercase tracking-[0.22em] text-white/20">
           Restricted access. Admin data.
         </p>
       </div>
+
+      {/* Site Configuration: master toggle + independent section toggles. */}
+      <section aria-labelledby="config-heading">
+        <h2 id="config-heading" className="sr-only">
+          Site Configuration
+        </h2>
+        <div className="space-y-4">
+          <SectionLabel index="—" label="Site Configuration" />
+          <DashCard className="space-y-0 p-0">
+            <div className="flex items-center justify-between gap-4 px-6 py-4">
+              <p className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-white/70">
+                Master Toggle
+              </p>
+              <ToggleSwitch checked={isMasterOn} onToggle={toggleMaster} />
+            </div>
+            <Separator className="bg-white/5" />
+            {SITE_CONFIG_DEFINITIONS.map((definition) => (
+              <div key={definition.key}>
+                <div className="flex items-center justify-between gap-4 px-6 py-4 pl-10">
+                  <p className="font-sans text-[10px] font-medium uppercase tracking-[0.18em] text-white/35">
+                    {definition.label}
+                  </p>
+                  <ToggleSwitch
+                    checked={config[definition.field as SiteConfigField]}
+                    onToggle={() => toggleConfig(definition.key)}
+                  />
+                </div>
+              </div>
+            ))}
+          </DashCard>
+        </div>
+      </section>
 
       {/* Section A: Operational Snapshot */}
       <section aria-labelledby="snapshot-heading">
