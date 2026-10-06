@@ -30,12 +30,12 @@ export function Footer() {
         </p>
         <p className="text-xs font-medium uppercase tracking-tight text-white">{tagline}</p>
 
-        <nav aria-label="Footer" className="mt-4 flex flex-col items-center gap-4">
+        <nav aria-label="Footer" className="flex flex-col items-center gap-3">
           {footerMenuItems.map((item) => (
             <a
               key={item.label}
               href={item.href}
-              className="text-xs font-medium uppercase tracking-[0.15em] text-white/70 transition-colors hover:text-white"
+              className="text-xs font-medium uppercase tracking-tight text-white transition-colors hover:text-white"
             >
               {item.label}
             </a>
