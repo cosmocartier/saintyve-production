@@ -4,6 +4,7 @@ import { useEffect, useState, type ReactNode } from "react"
 import Link from "next/link"
 import { FullPageSlider } from "@/components/landing/full-page-slider"
 import { Footer } from "@/components/footer"
+import { useSiteConfig } from "@/contexts/site-config-context"
 
 interface BrandPanelData {
   href: string
@@ -12,7 +13,8 @@ interface BrandPanelData {
   alt: string
 }
 
-const brandPanels: BrandPanelData[] = [
+// Default (Landing Page configuration OFF) — existing category names and images.
+const defaultBrandPanels: BrandPanelData[] = [
   {
     href: "/brands/chanel",
     label: "Chanel",
@@ -24,6 +26,24 @@ const brandPanels: BrandPanelData[] = [
     label: "Hermes",
     image: "https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/5e3e0b6f-6e79-4b82-2446-235ec65b6c00/w=800",
     alt: "Hermes Collection",
+  },
+]
+
+// Landing Page configuration ON — category names and images swapped per spec.
+// Hrefs are intentionally unchanged: only the two relevant category entries'
+// display label/image change, nothing about navigation or shop functionality.
+const landingPageBrandPanels: BrandPanelData[] = [
+  {
+    href: "/brands/chanel",
+    label: "Handbags",
+    image: "https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/25482107-0d90-40a9-9406-275b8ae4e200/w=800",
+    alt: "Handbags Collection",
+  },
+  {
+    href: "/brands/hermes",
+    label: "Leather Jackets",
+    image: "https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/252704fb-18a6-4ee1-dbfb-17921879fa00/w=800",
+    alt: "Leather Jackets Collection",
   },
 ]
 
@@ -127,12 +147,12 @@ function BrandSlide({ panel }: { panel: BrandPanelData }) {
   )
 }
 
-function DesktopBrandsSlide() {
+function DesktopBrandsSlide({ panels }: { panels: BrandPanelData[] }) {
   return (
     <div className="relative flex h-[100dvh] w-full items-center justify-center bg-background px-6">
       <div className="flex w-full max-w-[1100px] items-center justify-center gap-16">
-        <BrandColumn panel={brandPanels[0]} className="lg:max-w-none lg:flex-1" />
-        <BrandColumn panel={brandPanels[1]} className="lg:max-w-none lg:flex-1" />
+        <BrandColumn panel={panels[0]} className="lg:max-w-none lg:flex-1" />
+        <BrandColumn panel={panels[1]} className="lg:max-w-none lg:flex-1" />
       </div>
     </div>
   )
@@ -156,17 +176,19 @@ function FooterSlide() {
 export function StackedBrandPages() {
   const isDesktop = useIsDesktop()
   const [activeIndex, setActiveIndex] = useState(0)
+  const { config } = useSiteConfig()
+  const panels = config.landingPage ? landingPageBrandPanels : defaultBrandPanels
 
   if (isDesktop === null) {
     return <div className="fixed inset-0 h-[100dvh] w-full bg-background" />
   }
 
   const slides: ReactNode[] = isDesktop
-    ? [<HeroSlide key="hero" />, <DesktopBrandsSlide key="brands" />, <FooterSlide key="footer" />]
+    ? [<HeroSlide key="hero" />, <DesktopBrandsSlide key="brands" panels={panels} />, <FooterSlide key="footer" />]
     : [
         <HeroSlide key="hero" />,
-        <BrandSlide key="chanel" panel={brandPanels[0]} />,
-        <BrandSlide key="hermes" panel={brandPanels[1]} />,
+        <BrandSlide key={panels[0].href} panel={panels[0]} />,
+        <BrandSlide key={panels[1].href} panel={panels[1]} />,
         <FooterSlide key="footer" />,
       ]
 
