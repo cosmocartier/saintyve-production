@@ -30,8 +30,6 @@ const defaultBrandPanels: BrandPanelData[] = [
 ]
 
 // Landing Page configuration ON — category names and images swapped per spec.
-// Hrefs are intentionally unchanged: only the two relevant category entries'
-// display label/image change, nothing about navigation or shop functionality.
 const landingPageBrandPanels: BrandPanelData[] = [
   {
     href: "/saintyve-handbags",
@@ -40,7 +38,7 @@ const landingPageBrandPanels: BrandPanelData[] = [
     alt: "Handbags Collection",
   },
   {
-    href: "/brands/hermes",
+    href: "/saintyve-shoes",
     label: "Shoes",
     image: "/images/saintyve-shoes.jpg",
     alt: "Shoes Collection",
