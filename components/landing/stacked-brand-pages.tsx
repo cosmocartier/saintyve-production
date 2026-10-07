@@ -34,9 +34,9 @@ const defaultBrandPanels: BrandPanelData[] = [
 // display label/image change, nothing about navigation or shop functionality.
 const landingPageBrandPanels: BrandPanelData[] = [
   {
-    href: "/brands/chanel",
+    href: "/saintyve-handbags",
     label: "Handbags",
-    image: "https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/25482107-0d90-40a9-9406-275b8ae4e200/w=800",
+    image: "/images/saintyve-handbags.jpg",
     alt: "Handbags Collection",
   },
   {
