@@ -41,9 +41,9 @@ const landingPageBrandPanels: BrandPanelData[] = [
   },
   {
     href: "/brands/hermes",
-    label: "Leather Jackets",
-    image: "https://imagedelivery.net/JEnxpBxUTK5Xr6qf5ykeBg/252704fb-18a6-4ee1-dbfb-17921879fa00/w=800",
-    alt: "Leather Jackets Collection",
+    label: "Shoes",
+    image: "/images/saintyve-shoes.jpg",
+    alt: "Shoes Collection",
   },
 ]
 
