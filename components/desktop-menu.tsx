@@ -10,8 +10,11 @@ import { useRouter } from "next/navigation"
 import { ChevronRight, Plus } from "lucide-react"
 import Image from "next/image"
 import { subscribeToNewsletter } from "@/app/actions/newsletter"
+import { useSiteConfig } from "@/contexts/site-config-context"
+import { MenuCategories } from "@/components/menu-categories"
 
 export function DesktopMenu({ hasScrolled }: { hasScrolled: boolean }) {
+  const { config } = useSiteConfig()
   const [isOpen, setIsOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [user, setUser] = useState<any>(null)
@@ -843,6 +846,11 @@ export function DesktopMenu({ hasScrolled }: { hasScrolled: boolean }) {
       </div>
 
               <div className="flex-1 flex flex-col justify-between overflow-hidden">
+                {config.menu ? (
+                  <nav className="px-6 pt-10 overflow-y-auto" aria-label="Saint Yve categories">
+                    <MenuCategories onNavigate={closeMenu} />
+                  </nav>
+                ) : (
                 <nav className="flex flex-col p-[1em] overflow-y-auto">
                   <Link
                     href="/new-arrivals"
@@ -892,6 +900,7 @@ export function DesktopMenu({ hasScrolled }: { hasScrolled: boolean }) {
                     <ChevronRight className="w-4 h-4" />
                   </button>
                 </nav>
+                )}
 
                 <div className="flex flex-col p-[1em] border-t border-transparent">
                   {/* Newsletter Input */}
