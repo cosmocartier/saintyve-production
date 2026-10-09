@@ -11,25 +11,9 @@ import { useToast } from "@/hooks/use-toast"
 // houses. Keep this list short and deliberate; do not reintroduce a
 // generic multi-brand / multi-category structure here.
 const INDEX = [
-  {
-    brand: "CHANEL",
-    href: "/brands/chanel",
-    items: [
-      { label: "25", href: "/brands/chanel/25", isMeta: true },
-      { label: "Flap Bags", href: "/brands/chanel/flap-bags" },
-      { label: "Shopper", href: "/brands/chanel/shopper" },
-      { label: "Vanity", href: "/brands/chanel/vanity" },
-      { label: "Tote", href: "/brands/chanel/tote" },
-    ],
-  },
-  {
-    brand: "HERMÈS",
-    href: "/brands/hermes",
-    items: [
-      { label: "Birkin", href: "/brands/hermes/birkin" },
-      { label: "Kelly", href: "/brands/hermes/kelly" },
-    ],
-  },
+  { brand: "OUR COLLECTION", href: "/saintyve-our-collection" },
+  { brand: "HANDBAGS", href: "/saintyve-handbags" },
+  { brand: "SHOES", href: "/saintyve-shoes" },
 ]
 
 // Fast, precise easing — the drawer should feel instant, never sluggish.
@@ -153,40 +137,16 @@ export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
           {/* Editorial index */}
           <nav className="shrink-0 overflow-y-auto overscroll-contain px-6 pt-10" aria-label="Product houses">
             <div className="flex flex-col gap-10">
-              {INDEX.map((entry) => (
-                <div key={entry.brand}>
-                  <Link
-                    href={entry.href}
-                    onClick={closeMenu}
-                    className="inline-block font-sans font-normal text-[2.25rem] leading-none text-white active:opacity-50 transition-opacity duration-150"
-                  >
-                    {entry.brand}
-                  </Link>
-
-                  <div className="mt-4 flex flex-col gap-1">
-                    {entry.items.map((item) =>
-                      item.isMeta ? (
-                        <Link
-                          key={item.label}
-                          href={item.href}
-                          onClick={closeMenu}
-                          className="block py-1.5 font-sans text-white/40 text-[11px] tracking-normal active:opacity-50 transition-opacity duration-150"
-                        >
-                          {`N\u00B0 ${item.label}`}
-                        </Link>
-                      ) : (
-                        <Link
-                          key={item.label}
-                          href={item.href}
-                          onClick={closeMenu}
-                          className="block py-1.5 font-sans text-white/60 text-xs font-medium tracking-[0.14em] uppercase active:text-white active:opacity-70 transition-opacity duration-150"
-                        >
-                          {item.label}
-                        </Link>
-                      ),
-                    )}
-                  </div>
-                </div>
+              {INDEX.map((entry, index) => (
+                <Link
+                  key={entry.brand}
+                  href={entry.href}
+                  onClick={closeMenu}
+                  className="group flex items-end justify-between border-b border-white/20 pb-5 font-sans text-[2.25rem] font-normal leading-none tracking-[-0.04em] text-white transition-colors duration-150 active:text-white/60"
+                >
+                  <span>{entry.brand}</span>
+                  <span className="pb-1 font-mono text-[10px] tracking-[0.2em] text-white/40">0{index + 1}</span>
+                </Link>
               ))}
             </div>
           </nav>

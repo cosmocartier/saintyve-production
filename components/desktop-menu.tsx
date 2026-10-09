@@ -844,53 +844,21 @@ export function DesktopMenu({ hasScrolled }: { hasScrolled: boolean }) {
 
               <div className="flex-1 flex flex-col justify-between overflow-hidden">
                 <nav className="flex flex-col p-[1em] overflow-y-auto">
-                  <Link
-                    href="/new-arrivals"
-                    className="text-white hover:text-white/70 text-sm font-medium tracking-widest uppercase transition-colors py-5 border-b border-transparent"
-                    onClick={closeMenu}
-                  >
-                    NEW IN
-                  </Link>
-
-                  <Link
-                    href="/best-sellers"
-                    className="text-white hover:text-white/70 text-sm font-medium tracking-widest uppercase transition-colors py-5 border-b border-transparent"
-                    onClick={closeMenu}
-                  >
-                    BEST SELLERS
-                  </Link>
-
-                  <button
-                    onClick={handleShopAllClick}
-                    className="flex items-center justify-between text-white hover:text-white/70 text-sm font-medium tracking-widest uppercase transition-colors py-5 border-b border-transparent text-left"
-                  >
-                    SHOP ALL
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-
-                  <button
-                    onClick={handleBrandsClick}
-                    className="flex items-center justify-between text-white hover:text-white/70 text-sm font-medium tracking-widest uppercase transition-colors py-5 border-b border-transparent text-left"
-                  >
-                    BRANDS
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-
-                  <button
-                    onClick={handleMenClick}
-                    className="flex items-center justify-between text-white hover:text-white/70 text-sm font-medium tracking-widest uppercase transition-colors py-5 border-b border-transparent text-left"
-                  >
-                    MEN
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-
-                  <button
-                    onClick={handleWomenClick}
-                    className="flex items-center justify-between text-white hover:text-white/70 text-sm font-medium tracking-widest uppercase transition-colors py-5 border-b border-transparent text-left"
-                  >
-                    WOMEN
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
+                  {[
+                    { label: "OUR COLLECTION", href: "/saintyve-our-collection" },
+                    { label: "HANDBAGS", href: "/saintyve-handbags" },
+                    { label: "SHOES", href: "/saintyve-shoes" },
+                  ].map((item, index) => (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      onClick={closeMenu}
+                      className="group flex items-center justify-between border-b border-white/15 py-6 text-white transition-colors hover:text-white/60"
+                    >
+                      <span className="text-[1.35rem] font-normal tracking-[-0.03em]">{item.label}</span>
+                      <span className="font-mono text-[10px] tracking-[0.2em] text-white/35">0{index + 1}</span>
+                    </Link>
+                  ))}
                 </nav>
 
                 <div className="flex flex-col p-[1em] border-t border-transparent">
