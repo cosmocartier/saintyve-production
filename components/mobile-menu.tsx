@@ -6,6 +6,8 @@ import Link from "next/link"
 import gsap from "gsap"
 import { subscribeToNewsletter } from "@/app/actions/newsletter"
 import { useToast } from "@/hooks/use-toast"
+import { useSiteConfig } from "@/contexts/site-config-context"
+import { MenuCategories } from "@/components/menu-categories"
 
 // Editorial index — Saint Yve currently deals exclusively in these two
 // houses. Keep this list short and deliberate; do not reintroduce a
@@ -44,6 +46,7 @@ export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
   const [newsletterEmail, setNewsletterEmail] = useState("")
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false)
   const { toast } = useToast()
+  const { config } = useSiteConfig()
 
   const panelRef = useRef<HTMLDivElement>(null)
   const closeButtonRef = useRef<HTMLButtonElement>(null)
@@ -152,6 +155,9 @@ export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
 
           {/* Editorial index */}
           <nav className="shrink-0 overflow-y-auto overscroll-contain px-6 pt-10" aria-label="Product houses">
+            {config.menu ? (
+              <MenuCategories onNavigate={closeMenu} />
+            ) : (
             <div className="flex flex-col gap-10">
               {INDEX.map((entry) => (
                 <div key={entry.brand}>
@@ -189,6 +195,7 @@ export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
                 </div>
               ))}
             </div>
+            )}
           </nav>
 
           {/* Negative space */}
