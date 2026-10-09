@@ -18,9 +18,9 @@ export function Footer() {
   const year = new Date().getFullYear()
   const { config } = useSiteConfig()
 
-  // Landing Page configuration swaps the tagline only; everything else in
-  // the footer is unaffected by this toggle.
-  const tagline = config.landingPage ? "AVANT GARDE FASHION" : "Authentic Pre-Owned Luxury"
+  // Landing Page configuration removes the tagline entirely so the footer
+  // goes straight from the copyright line to the links.
+  const tagline = config.landingPage ? null : "Authentic Pre-Owned Luxury"
 
   return (
     <footer className="bg-black text-white">
@@ -28,7 +28,9 @@ export function Footer() {
         <p className="text-xs font-bold uppercase tracking-tight text-white">
           Saint Yve &copy; {year}
         </p>
-        <p className="text-xs font-medium uppercase tracking-tight text-white">{tagline}</p>
+        {tagline && (
+          <p className="text-xs font-medium uppercase tracking-tight text-white">{tagline}</p>
+        )}
 
         <nav aria-label="Footer" className="flex flex-col items-center gap-3">
           {footerMenuItems.map((item) => (
