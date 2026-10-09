@@ -6,7 +6,6 @@
 export const SITE_CONFIG_DEFINITIONS = [
   { key: "retail_prices", field: "retailPrices", label: "Retail Prices" },
   { key: "landing_page", field: "landingPage", label: "Landing Page" },
-  { key: "menu", field: "menu", label: "Menu" },
 ] as const
 
 export type SiteConfigKey = (typeof SITE_CONFIG_DEFINITIONS)[number]["key"]

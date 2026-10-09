@@ -11,8 +11,7 @@ create table if not exists site_configurations (
 insert into site_configurations (key, label, enabled)
 values
   ('retail_prices', 'Retail Prices', false),
-  ('landing_page', 'Landing Page', false),
-  ('menu', 'Menu', false)
+  ('landing_page', 'Landing Page', false)
 on conflict (key) do nothing;
 
 -- Locked down: only the server (service role) reads/writes this table.
