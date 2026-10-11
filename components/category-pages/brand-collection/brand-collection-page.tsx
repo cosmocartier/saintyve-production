@@ -22,7 +22,10 @@ export function hasActiveBrandFilters(params: BrandPageSearchParams) {
 interface BrandCollectionPageProps {
   searchParams: BrandPageSearchParams
   brands: string[]
-  category?: string
+  /** Defaults to "Bag"; pass null to include every category. */
+  category?: string | null
+  /** Optional custom subheader copy that replaces the default authentication description. */
+  description?: string
   brandLabel: string
   pageTitle: string
   basePath: string
@@ -35,6 +38,7 @@ export async function BrandCollectionPage({
   searchParams,
   brands,
   category = "Bag",
+  description,
   brandLabel,
   pageTitle,
   basePath,
@@ -76,15 +80,18 @@ export async function BrandCollectionPage({
       )
     `)
     .in("brand", brands)
-    .eq("category", category)
     .eq("status", "live")
 
   let countQuery = supabase
     .from("products")
     .select("id", { count: "exact", head: true })
     .in("brand", brands)
-    .eq("category", category)
     .eq("status", "live")
+
+  if (category) {
+    query = query.eq("category", category)
+    countQuery = countQuery.eq("category", category)
+  }
 
   if (modelPattern) {
     query = query.filter("model", "imatch", modelPattern)
@@ -140,6 +147,7 @@ export async function BrandCollectionPage({
           currentFilters={{ subcategories, colors, styles, sort: sortParam }}
           brands={brands}
           category={category}
+          description={description}
           basePath={basePath}
           pageTitle={pageTitle}
           storageKeyPrefix={storageKeyPrefix}

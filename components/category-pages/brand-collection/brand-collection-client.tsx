@@ -46,8 +46,10 @@ interface BrandCollectionClientProps {
   }
   /** Brand value(s) to match in the `brand` column, e.g. ["Chanel"] or ["Hermès", "Hermes"]. */
   brands: string[]
-  /** Product category to scope this listing to. Defaults to "Bag". */
-  category?: string
+  /** Product category to scope this listing to. Defaults to "Bag"; pass null to include every category. */
+  category?: string | null
+  /** Optional custom subheader copy. Replaces the default authentication description when provided. */
+  description?: string
   /** Base path used to build filter URLs, e.g. "/brands/chanel". */
   basePath: string
   /** Heading shown at the top of the page, e.g. "Chanel". */
@@ -73,6 +75,7 @@ export function BrandCollectionClient({
   currentFilters,
   brands,
   category = "Bag",
+  description,
   basePath,
   pageTitle,
   storageKeyPrefix,
@@ -140,8 +143,11 @@ export function BrandCollectionClient({
                 )
               `)
               .in("brand", brands)
-              .eq("category", category)
               .eq("status", "live")
+
+            if (category) {
+              restoreQuery = restoreQuery.eq("category", category)
+            }
 
             if (modelPattern) {
               restoreQuery = restoreQuery.filter("model", "imatch", modelPattern)
@@ -328,8 +334,11 @@ export function BrandCollectionClient({
           )
         `)
         .in("brand", brands)
-        .eq("category", category)
         .eq("status", "live")
+
+      if (category) {
+        query = query.eq("category", category)
+      }
 
       if (modelPattern) {
         query = query.filter("model", "imatch", modelPattern)
@@ -393,13 +402,17 @@ export function BrandCollectionClient({
           <h1 className="text-[32px] md:text-[40px] font-semibold tracking-[-0.01em] mb-4 text-[#111111] uppercase leading-[1.05]">
             {pageTitle}
           </h1>
-          <p className="text-[13px] md:text-sm leading-relaxed text-[#6F7075] font-normal">
-            Every {brandLabel} item in this selection is carefully authenticated before being offered by Saint Yve.{" "}
-            <Link href="/authenticity" className="text-[#111111] underline underline-offset-2 hover:text-[#6F7075]">
-              Learn about our authentication process
-            </Link>
-            .
-          </p>
+  {description ? (
+  <p className="text-[13px] md:text-sm leading-relaxed text-[#6F7075] font-normal">{description}</p>
+  ) : (
+  <p className="text-[13px] md:text-sm leading-relaxed text-[#6F7075] font-normal">
+  Every {brandLabel} item in this selection is carefully authenticated before being offered by Saint Yve.{" "}
+  <Link href="/authenticity" className="text-[#111111] underline underline-offset-2 hover:text-[#6F7075]">
+  Learn about our authentication process
+  </Link>
+  .
+  </p>
+  )}
         </div>
 
         {/* Filter & Grid View Toggles - Mobile Only */}
