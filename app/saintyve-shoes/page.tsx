@@ -48,11 +48,11 @@ export default async function SaintYveShoesPage({
     <BrandCollectionPage
       searchParams={await searchParams}
       brands={["Saint Yve"]}
+      category="Shoe"
       brandLabel="Saint Yve"
       pageTitle="Saint Yve Shoes"
       basePath="/saintyve-shoes"
       storageKeyPrefix="saintyveShoes"
-      modelPattern="shoe|heel|mule|boot|loafer|slide|sneaker"
       breadcrumbs={[{ name: "Saint Yve Shoes", path: "/saintyve-shoes" }]}
     />
   )
