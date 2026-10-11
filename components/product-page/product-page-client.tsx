@@ -281,7 +281,7 @@ export function ProductPageClient({
     }
   }
 
-  const brandName = product.name?.split(" ")[0] || null
+  const brandName = product.brand?.trim() || product.name?.split(" ")[0] || null
   const modelName = product.model?.trim() || product.name
   const displayDetailColorName = selectedColor || availableColors[0]?.name || product.color?.trim() || null
 

@@ -168,7 +168,7 @@ export async function getFilterOptionsForCollections(): Promise<FilterOptions> {
  */
 export async function getFilterOptionsForBrand(
   brands: string[],
-  category = 'Bag',
+  category: string | null = 'Bag',
   modelPattern?: string,
 ): Promise<FilterOptions> {
   const supabase = await createClient()
@@ -177,8 +177,11 @@ export async function getFilterOptionsForBrand(
     .from('products')
     .select('id, sub_category, style_type, color_filter, status')
     .in('brand', brands)
-    .eq('category', category)
     .eq('status', 'live')
+
+  if (category) {
+    optionsQuery = optionsQuery.eq('category', category)
+  }
 
   if (modelPattern) {
     optionsQuery = optionsQuery.filter('model', 'imatch', modelPattern)

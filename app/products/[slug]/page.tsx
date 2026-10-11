@@ -210,8 +210,8 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   const { product, images } = data
   const firstImage = images[0]?.url || product.image
 
-  // Extract brand name from product name (assumes format: "Brand ProductName")
-  const brandName = product.name.split(" ")[0] || ""
+  // Prefer the full brand from the products table; multi-word brands (e.g. "Saint Yve") must not be truncated
+  const brandName = product.brand?.trim() || product.name.split(" ")[0] || ""
   const autoTitle = `${product.name} – Premium Quality & Fast Shipping | SAINT YVE`
 
   // Use custom meta_title if set, otherwise use auto-generated format

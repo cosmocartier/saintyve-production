@@ -6,7 +6,7 @@ import {
 } from "@/components/category-pages/brand-collection/brand-collection-page"
 
 const DESCRIPTION =
-  "Discover the full Saint Yve collection. Every Saint Yve item is carefully authenticated before being offered by Saint Yve."
+  "Designed with restraint and crafted to endure, every Saint Yve piece is a signature of quiet, enduring luxury."
 
 export async function generateMetadata({
   searchParams,
@@ -48,6 +48,7 @@ export default async function SaintYveOurCollectionPage({
     <BrandCollectionPage
       searchParams={await searchParams}
       brands={["Saint Yve"]}
+      description={DESCRIPTION}
       brandLabel="Saint Yve"
       pageTitle="Our Collection"
       basePath="/saintyve-our-collection"

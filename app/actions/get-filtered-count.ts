@@ -101,7 +101,8 @@ export async function getFilteredCollectionsCount(params: CollectionsFilterParam
 
 interface BrandFilterParams {
   brands: string[]
-  category?: string
+  /** Defaults to 'Bag'; pass null to include every category. */
+  category?: string | null
   subcategories?: string[]
   colors?: string[]
   styles?: string[]
@@ -123,8 +124,11 @@ export async function getFilteredBrandCount(params: BrandFilterParams): Promise<
     .from('products')
     .select('id', { count: 'exact', head: true })
     .in('brand', brands)
-    .eq('category', category)
     .eq('status', 'live')
+
+  if (category) {
+    query = query.eq('category', category)
+  }
 
   if (modelPattern) {
     query = query.filter('model', 'imatch', modelPattern)
