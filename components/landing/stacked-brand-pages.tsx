@@ -90,6 +90,9 @@ function BrandColumn({ panel, className }: { panel: BrandPanelData; className?: 
 }
 
 function HeroSlide() {
+  const { config } = useSiteConfig()
+  const shopCollectionHref = config.landingPage ? "/saintyve-collection" : "/collections"
+
   return (
     <section className="relative h-[100dvh] w-full">
       <div className="lg:hidden flex h-[100dvh] w-full flex-col items-center justify-center bg-background px-6">
@@ -103,7 +106,7 @@ function HeroSlide() {
           </div>
           <div className="mt-6 flex flex-col items-center gap-0.5 text-center">
             <Link
-              href="/collections"
+              href={shopCollectionHref}
               className="text-[13px] font-bold uppercase text-foreground transition-opacity hover:opacity-80"
               style={{ letterSpacing: "0.12em" }}
             >
@@ -124,7 +127,7 @@ function HeroSlide() {
           </div>
           <div className="mt-6 flex flex-col items-center gap-0.5 text-center">
             <Link
-              href="/collections"
+              href={shopCollectionHref}
               className="text-[13px] font-bold uppercase text-foreground transition-opacity hover:opacity-80"
               style={{ letterSpacing: "0.12em" }}
             >
