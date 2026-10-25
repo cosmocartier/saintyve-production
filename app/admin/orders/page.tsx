@@ -355,6 +355,8 @@ export default function AdminOrdersPage() {
       switch (status) {
         case "paid":
           return { label: "Paid", color: "bg-emerald-500/10 text-emerald-400" }
+        case "awaiting_confirmation":
+          return { label: "Awaiting Confirmation", color: "bg-amber-500/10 text-amber-400" }
         case "authorized":
           return { label: "Authorized", color: "bg-blue-500/10 text-blue-400" }
         case "pending":
