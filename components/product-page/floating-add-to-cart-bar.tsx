@@ -85,9 +85,7 @@ export function FloatingAddToCartBar({
 
         {/* Chat Button */}
         <a
-          href="https://wa.me/yourwhatsappnumber"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="mailto:contact@saintyve.com"
           className="w-[60px] h-[60px] flex-shrink-0 flex items-center justify-center border border-black transition-all active:scale-[0.98]"
           aria-label="Chat with us"
         >
