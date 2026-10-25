@@ -40,7 +40,7 @@ const EASE_IN = "cubic-bezier(0.7, 0, 0.84, 0)"
 const OPEN_MS = 0.2
 const CLOSE_MS = 0.16
 
-export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
+export function MobileMenu({ hasScrolled, desktop = false }: { hasScrolled: boolean; desktop?: boolean }) {
   const [isOpen, setIsOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [newsletterEmail, setNewsletterEmail] = useState("")
@@ -135,11 +135,11 @@ export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
           role="dialog"
           aria-modal="true"
           aria-label="Site navigation"
-          className="md:hidden fixed inset-0 h-[100dvh] w-full z-[10000] flex flex-col pointer-events-none opacity-0 overscroll-none bg-black/55 backdrop-blur-[28px]"
+          className={`${desktop ? "hidden md:flex" : "flex md:hidden"} fixed inset-0 h-[100dvh] w-full z-[10000] flex-col pointer-events-none opacity-0 overscroll-none bg-black/55 backdrop-blur-[28px]`}
           style={{ willChange: "opacity" }}
         >
           {/* Close */}
-          <div className="flex items-center justify-start px-6 pt-[max(1.5rem,env(safe-area-inset-top))] pb-2 shrink-0">
+          <div className="flex items-center justify-start px-6 md:px-7 pt-[max(1.5rem,env(safe-area-inset-top))] pb-2 shrink-0">
             <button
               ref={closeButtonRef}
               onClick={closeMenu}
@@ -154,7 +154,7 @@ export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
           </div>
 
           {/* Editorial index */}
-          <nav className="shrink-0 overflow-y-auto overscroll-contain px-6 pt-10" aria-label="Product houses">
+          <nav className="shrink-0 overflow-y-auto overscroll-contain px-6 md:px-7 pt-10" aria-label="Product houses">
             {config.menu ? (
               <MenuCategories onNavigate={closeMenu} />
             ) : (
@@ -202,7 +202,7 @@ export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
           <div className="flex-1 min-h-8" />
 
           {/* Newsletter + footer, anchored to the bottom */}
-          <div className="px-6 pb-[max(1.75rem,env(safe-area-inset-bottom))] shrink-0">
+          <div className="px-6 md:px-7 pb-[max(1.75rem,env(safe-area-inset-bottom))] shrink-0">
             <div className="flex items-center gap-3 border-b border-white/25 pb-2">
               <input
                 type="email"
@@ -251,7 +251,7 @@ export function MobileMenu({ hasScrolled }: { hasScrolled: boolean }) {
     <>
       <button
         onClick={openMenu}
-        className="md:hidden flex items-center justify-center h-11 w-11 -ml-3 cursor-pointer active:opacity-60 transition-opacity duration-150 relative z-10"
+        className={`${desktop ? "hidden md:flex" : "flex md:hidden"} items-center justify-center h-11 w-11 -ml-3 cursor-pointer active:opacity-60 hover:opacity-70 transition-opacity duration-150 relative z-10`}
         aria-label={isOpen ? "Close menu" : "Open menu"}
         aria-expanded={isOpen}
       >
