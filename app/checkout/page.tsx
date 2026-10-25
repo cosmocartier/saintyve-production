@@ -1,7 +1,9 @@
 "use client"
 import { useCart } from "@/contexts/cart-context"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import useSWR from "swr"
+import { getCheckoutModeAction, submitManualOrder } from "./actions"
 import { StaticNavigation } from "@/components/static-navigation"
 import { CartSidebar } from "@/components/cart-sidebar"
 import { Check, Edit2, CreditCard } from "lucide-react"
@@ -44,6 +46,8 @@ export default function CheckoutPage() {
   const [currentStep, setCurrentStep] = useState<CheckoutStep>(1)
   const paymentMethod: PaymentMethod = "mollie"
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const submittingRef = useRef(false)
+  const { data: checkoutMode } = useSWR("checkout-mode", getCheckoutModeAction, { revalidateOnFocus: false })
   const [appliedCoupon, setAppliedCoupon] = useState<Coupon | null>(null)
   const [creditsToApply, setCreditsToApply] = useState(0)
   const [availableCredits, setAvailableCredits] = useState(0)
@@ -261,7 +265,70 @@ export default function CheckoutPage() {
     }
   }
 
+  // Saves the order on the server and shows the Saint Yve confirmation page. No payment is started.
+  // Returns true once the customer is being redirected, so the caller keeps the submit lock.
+  const handleManualOrder = async (): Promise<boolean> => {
+    const result = await submitManualOrder({
+      items: items.map((item) => ({
+        id: item.id,
+        variantId: item.variantId || null,
+        quantity: item.quantity,
+        price: item.price,
+        rewardId: item.rewardId || null,
+      })),
+      customer: {
+        email: formData.email,
+        phone: formData.phone,
+        fullName: formData.fullName,
+        address: formData.address,
+        city: formData.city,
+        postalCode: formData.postalCode,
+        country: formData.country,
+      },
+      couponId: appliedCoupon?.id || null,
+      creditsToApply,
+    })
+
+    if (!result.success) {
+      toast({ title: "Error", description: result.error, variant: "destructive" })
+      setIsSubmitting(false)
+      return false
+    }
+
+    // The order is stored, so the cart is emptied: going back to /checkout cannot resubmit it.
+    clearCart()
+    window.location.replace(`/order-received/${result.orderId}`)
+    return true
+  }
+
   const handlePlaceOrder = async () => {
+    if (submittingRef.current) return
+    submittingRef.current = true
+    setIsSubmitting(true)
+
+    let redirecting = false
+    try {
+      const mode = await getCheckoutModeAction()
+      if (mode === "manual") {
+        redirecting = await handleManualOrder()
+        return
+      }
+      await handleMollieOrder()
+    } catch (error) {
+      console.error("[v0] Unexpected error placing order:", error)
+      toast({
+        title: "Error",
+        description: "We couldn't submit your order. Please try again.",
+        variant: "destructive",
+      })
+      setIsSubmitting(false)
+    } finally {
+      if (!redirecting) submittingRef.current = false
+    }
+  }
+
+  // Original Mollie flow: saves the order, then redirects to /pay/[orderId] for the Mollie checkout.
+  const handleMollieOrder = async () => {
     setIsSubmitting(true)
     try {
       console.log("[v0] Starting order creation with payment method:", paymentMethod)
@@ -804,29 +871,49 @@ export default function CheckoutPage() {
 
               {currentStep === 3 && (
                 <div className="pt-6 pb-10">
-                  <p className="text-[14px] text-zinc-500 leading-relaxed mb-6 max-w-md">Pay securely by card.</p>
+                  <p className="text-[14px] text-zinc-500 leading-relaxed mb-6 max-w-md">
+                    {checkoutMode === "mollie" ? "Pay securely by card." : "Submit your order request."}
+                  </p>
 
                   <div className="max-w-md">
-                    <div className="flex items-center justify-between border border-zinc-300 p-5">
-                      <div className="flex items-center gap-3">
-                        <CreditCard className="w-5 h-5 text-black" strokeWidth={1.5} />
-                        <div>
-                          <p className="text-[14px] font-medium text-black">Credit / Debit Card</p>
-                          <p className="text-[12px] text-zinc-500 mt-0.5">Secure payment via Mollie</p>
+                    {checkoutMode === "mollie" ? (
+                      <>
+                        <div className="flex items-center justify-between border border-zinc-300 p-5">
+                          <div className="flex items-center gap-3">
+                            <CreditCard className="w-5 h-5 text-black" strokeWidth={1.5} />
+                            <div>
+                              <p className="text-[14px] font-medium text-black">Credit / Debit Card</p>
+                              <p className="text-[12px] text-zinc-500 mt-0.5">Secure payment via Mollie</p>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
 
-                    <p className="text-[12px] text-zinc-500 leading-relaxed mt-4">
-                      Your payment is securely processed by Mollie.
-                    </p>
+                        <p className="text-[12px] text-zinc-500 leading-relaxed mt-4">
+                          Your payment is securely processed by Mollie.
+                        </p>
+                      </>
+                    ) : (
+                      <div className="border border-zinc-300 p-5">
+                        <p className="text-[14px] font-medium text-black">Confirmation before payment</p>
+                        <p className="text-[12px] text-zinc-500 leading-relaxed mt-1.5">
+                          No payment is taken today. We confirm availability first, then contact you via WhatsApp or
+                          email within 24 hours with the next steps.
+                        </p>
+                      </div>
+                    )}
 
                     <button
                       onClick={handlePlaceOrder}
-                      disabled={isSubmitting}
+                      disabled={isSubmitting || !checkoutMode}
                       className="w-full bg-black text-white h-12 rounded-none text-[12px] uppercase tracking-[0.15em] font-medium hover:bg-zinc-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-8"
                     >
-                      {isSubmitting ? "Redirecting to payment..." : `Pay EUR ${total.toFixed(2)}`}
+                      {isSubmitting
+                        ? checkoutMode === "mollie"
+                          ? "Redirecting to payment..."
+                          : "Submitting order..."
+                        : checkoutMode === "mollie"
+                          ? `Pay EUR ${total.toFixed(2)}`
+                          : `Place Order EUR ${total.toFixed(2)}`}
                     </button>
                   </div>
                 </div>
