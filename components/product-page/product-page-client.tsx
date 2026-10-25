@@ -26,6 +26,9 @@ import { usePriceMode } from "@/contexts/price-mode-context"
 import { useWishlist } from "@/contexts/wishlist-context"
 import { isProductSoldOut } from "@/lib/collections-products"
 
+// Temporarily hidden. Set to true to bring back the "Reserve for 24 Hours" button and modal.
+const RESERVATION_ENABLED = false
+
 function formatPrice(value: number): string {
   return value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 }
@@ -382,18 +385,20 @@ export function ProductPageClient({
           isInWishlist={isLiked(product.id)}
           onToggleWishlist={handleToggleWishlist}
           stockQuantity={stockQuantity}
-          onReserve={() => setIsReservationOpen(true)}
+          onReserve={RESERVATION_ENABLED ? () => setIsReservationOpen(true) : undefined}
         />
       </div>
 
-      <ReservationModal
-        open={isReservationOpen}
-        onOpenChange={setIsReservationOpen}
-        productId={product.id}
-        productName={product.name}
-        productBrand={brandName}
-        productUrl={typeof window !== "undefined" ? window.location.href : `/products/${product.slug}`}
-      />
+      {RESERVATION_ENABLED && (
+        <ReservationModal
+          open={isReservationOpen}
+          onOpenChange={setIsReservationOpen}
+          productId={product.id}
+          productName={product.name}
+          productBrand={brandName}
+          productUrl={typeof window !== "undefined" ? window.location.href : `/products/${product.slug}`}
+        />
+      )}
 
       <Sheet open={isProductDetailsOpen} onOpenChange={setIsProductDetailsOpen}>
         <SheetContent
