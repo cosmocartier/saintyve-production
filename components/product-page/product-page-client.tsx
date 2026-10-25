@@ -429,9 +429,7 @@ export function ProductPageClient({
             {/* Message + Save actions */}
             <div className="flex items-stretch gap-2.5 mb-10">
               <a
-                href="https://wa.me/yourwhatsappnumber"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="mailto:contact@saintyve.com"
                 className="flex-1 h-[50px] flex items-center justify-center gap-2 border border-[#E5E5E5] text-[11px] tracking-[0.2em] uppercase text-black transition-colors active:bg-[#FAFAFA]"
                 aria-label="Message us about this product"
               >
@@ -488,21 +486,15 @@ export function ProductPageClient({
             <div className="space-y-3">
               <p className="text-sm text-zinc-700 leading-relaxed">Free shipping on all orders.</p>
               <p className="text-sm text-zinc-700 leading-relaxed">14-day returns & exchanges.</p>
-              <p className="text-sm text-zinc-700 leading-relaxed">Support via WhatsApp & Email.</p>
+              <p className="text-sm text-zinc-700 leading-relaxed">Support via Email.</p>
             </div>
 
             <div className="border-t border-black/10 pt-6 space-y-3">
               <h3 className="text-sm font-medium tracking-wide">Contact us</h3>
               <div className="space-y-2 text-sm text-zinc-700">
                 <p>
-                  <a
-                    href="https://wa.me/yourwhatsappnumber"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:underline"
-                    aria-label="WhatsApp"
-                  >
-                    WhatsApp Support
+                  <a href="mailto:contact@saintyve.com" className="hover:underline" aria-label="Email support">
+                    Email Support
                   </a>
                 </p>
                 <p>

@@ -266,9 +266,7 @@ export function ProductInfo({
           </button>
 
           <a
-            href="https://wa.me/yourwhatsappnumber"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="mailto:contact@saintyve.com"
             className="w-[52px] h-[52px] flex-shrink-0 flex items-center justify-center border border-zinc-200 transition-all active:scale-[0.98]"
             aria-label="Chat with us"
           >
