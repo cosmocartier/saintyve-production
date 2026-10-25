@@ -54,7 +54,7 @@ const ttCommonsProExpanded = localFont({
 
 export const metadata: Metadata = {
   title: "Saint Yve Official Online Shop | SAINTYVE.COM",
-  description: "Shop designer sneakers, fashion, watches and accessories from a carefully selected catalog. Worldwide shipping available.",
+  description: "Discover iconic designer handbags at Saint Yve, featuring a curated selection of pre-owned Chanel and Hermès.",
   generator: "Saint Yve",
   applicationName: "Saint Yve",
   keywords: ["designer fashion", "luxury clothing", "premium apparel", "designer bags", "designer shoes"],
