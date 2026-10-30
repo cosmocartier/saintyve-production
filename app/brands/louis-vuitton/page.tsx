@@ -80,9 +80,9 @@ export default async function LouisVuittonPage({
 
   const sortParam = searchParams.sort || "newest"
   if (sortParam === "price-low") {
-    query = query.order("products(price)", { ascending: true })
+    query = query.order("products(saintyve_price)", { ascending: true })
   } else if (sortParam === "price-high") {
-    query = query.order("products(price)", { ascending: false })
+    query = query.order("products(saintyve_price)", { ascending: false })
   } else {
     query = query.order("sort_order", { ascending: true })
   }

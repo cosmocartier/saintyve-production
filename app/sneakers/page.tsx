@@ -113,9 +113,9 @@ export default async function SneakersPage({
   if (sortParam === "newest") {
     query = query.order("products(created_at)", { ascending: false })
   } else if (sortParam === "price-low") {
-    query = query.order("products(price)", { ascending: true })
+    query = query.order("products(saintyve_price)", { ascending: true })
   } else if (sortParam === "price-high") {
-    query = query.order("products(price)", { ascending: false })
+    query = query.order("products(saintyve_price)", { ascending: false })
   } else if (sortParam === "recommended") {
     // For recommended, we'll fetch more products and sort them algorithmically
     // No database ordering - we'll handle this in-memory after fetching
@@ -215,7 +215,7 @@ export default async function SneakersPage({
       const newInBoost = product.is_new_in ? 1 : 0
       
       // Price variety score (prefer mid-range items slightly)
-      const priceScore = product.price > 50 && product.price < 200 ? 0.5 : 0
+      const priceScore = product.saintyve_price > 50 && product.saintyve_price < 200 ? 0.5 : 0
       
       // Random element for freshness (small impact)
       const randomFactor = Math.random() * 1.5
@@ -273,7 +273,7 @@ export default async function SneakersPage({
         }
         
         // Penalize if price tier was recently shown
-        const priceTier = getPriceTier(product.price)
+        const priceTier = getPriceTier(product.saintyve_price)
         const priceTierRecency = recentPriceTiers.indexOf(priceTier)
         if (priceTierRecency === -1) {
           diversityScore += 1
@@ -301,7 +301,7 @@ export default async function SneakersPage({
       recentCategories.unshift(selectedProduct.sub_category || selectedProduct.category)
       if (recentCategories.length > 5) recentCategories.pop()
       
-      recentPriceTiers.unshift(getPriceTier(selectedProduct.price))
+      recentPriceTiers.unshift(getPriceTier(selectedProduct.saintyve_price))
       if (recentPriceTiers.length > 5) recentPriceTiers.pop()
     }
     

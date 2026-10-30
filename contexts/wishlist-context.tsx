@@ -80,7 +80,7 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
             products (
               id,
               name,
-              price,
+              saintyve_price,
               slug,
               product_images (
                 url,
@@ -105,11 +105,11 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
               const imageUrl = frontImage?.url || item.products.product_images?.[0]?.url || "/placeholder.svg"
 
               let formattedPrice = "EUR 0.00"
-              if (item.products.price !== null && item.products.price !== undefined) {
+              if (item.products.saintyve_price !== null && item.products.saintyve_price !== undefined) {
                 const priceValue =
-                  typeof item.products.price === "string"
-                    ? Number.parseFloat(item.products.price.replace(/[€$EUR,]/g, ""))
-                    : item.products.price
+                  typeof item.products.saintyve_price === "string"
+                    ? Number.parseFloat(item.products.saintyve_price.replace(/[€$EUR,]/g, ""))
+                    : item.products.saintyve_price
                 formattedPrice = `EUR ${priceValue.toFixed(2)}`
               }
 

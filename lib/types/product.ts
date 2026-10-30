@@ -11,6 +11,8 @@ export interface Product {
   dimension_depth_cm?: number | null
   description: string | null
   price: number
+  /** Storefront price. Catalog pages, cards and sorting read this instead of `price`. */
+  saintyve_price?: number | null
   /** Manufacturer suggested retail price shown crossed-out for price-mode toggle */
   retail_price?: number | null
   /**

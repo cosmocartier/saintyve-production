@@ -175,7 +175,7 @@ export async function getSmartSortedProducts(params: SmartSortParams) {
     const newInBoost = product.is_new_in ? 1 : 0
     
     // Price variety score
-    const priceScore = product.price > 50 && product.price < 200 ? 0.5 : 0
+    const priceScore = product.saintyve_price > 50 && product.saintyve_price < 200 ? 0.5 : 0
     
     // Random element for freshness
     const randomFactor = Math.random() * 1.5
@@ -228,7 +228,7 @@ export async function getSmartSortedProducts(params: SmartSortParams) {
         diversityScore -= categoryRecency * 0.5
       }
       
-      const priceTier = getPriceTier(product.price)
+      const priceTier = getPriceTier(product.saintyve_price)
       const priceTierRecency = recentPriceTiers.indexOf(priceTier)
       if (priceTierRecency === -1) {
         diversityScore += 1
@@ -253,7 +253,7 @@ export async function getSmartSortedProducts(params: SmartSortParams) {
     recentCategories.unshift(selectedProduct.sub_category || selectedProduct.category)
     if (recentCategories.length > 5) recentCategories.pop()
     
-    recentPriceTiers.unshift(getPriceTier(selectedProduct.price))
+    recentPriceTiers.unshift(getPriceTier(selectedProduct.saintyve_price))
     if (recentPriceTiers.length > 5) recentPriceTiers.pop()
   }
   

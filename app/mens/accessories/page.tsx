@@ -48,8 +48,8 @@ export default async function MensAccessoriesPage({
 
   const sortParam = searchParams.sort || "recommended"
   if (sortParam === "newest") query = query.order("products(created_at)", { ascending: false })
-  else if (sortParam === "price-low") query = query.order("products(price)", { ascending: true })
-  else if (sortParam === "price-high") query = query.order("products(price)", { ascending: false })
+  else if (sortParam === "price-low") query = query.order("products(saintyve_price)", { ascending: true })
+  else if (sortParam === "price-high") query = query.order("products(saintyve_price)", { ascending: false })
 
   const fetchLimit = sortParam === "recommended" ? INITIAL_LOAD_LIMIT * 3 : INITIAL_LOAD_LIMIT
   query = query.limit(fetchLimit)
@@ -128,7 +128,7 @@ export default async function MensAccessoriesPage({
         (days < 14 ? ((14 - days) / 14) * 5 : 0) +
         (p.is_bestseller ? 2 : 0) +
         (p.is_new_in ? 1 : 0) +
-        (p.price > 50 && p.price < 200 ? 0.5 : 0) +
+        (p.saintyve_price > 50 && p.saintyve_price < 200 ? 0.5 : 0) +
         Math.random() * 1.5
       return { ...p, _score: score }
     })
@@ -143,7 +143,7 @@ export default async function MensAccessoriesPage({
       let bestScore = -1
       for (let i = 0; i < Math.min(10, remaining.length); i++) {
         const p = remaining[i]
-        const tier = getPriceTier(p.price)
+        const tier = getPriceTier(p.saintyve_price)
         const d =
           (recentBrands.includes(p.brand) ? -recentBrands.indexOf(p.brand) : 3) +
           (recentCats.includes(p.sub_category) ? -recentCats.indexOf(p.sub_category) * 0.5 : 2) +
@@ -155,7 +155,7 @@ export default async function MensAccessoriesPage({
       diversified.push(sel)
       recentBrands.unshift(sel.brand); if (recentBrands.length > 5) recentBrands.pop()
       recentCats.unshift(sel.sub_category); if (recentCats.length > 5) recentCats.pop()
-      recentTiers.unshift(getPriceTier(sel.price)); if (recentTiers.length > 5) recentTiers.pop()
+      recentTiers.unshift(getPriceTier(sel.saintyve_price)); if (recentTiers.length > 5) recentTiers.pop()
     }
     optimizedProducts = diversified
   }

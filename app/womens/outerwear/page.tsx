@@ -77,9 +77,9 @@ export default async function WomensOuterwearPage({
   if (sortParam === "newest") {
     query = query.order("products(created_at)", { ascending: false })
   } else if (sortParam === "price-low") {
-    query = query.order("products(price)", { ascending: true })
+    query = query.order("products(saintyve_price)", { ascending: true })
   } else if (sortParam === "price-high") {
-    query = query.order("products(price)", { ascending: false })
+    query = query.order("products(saintyve_price)", { ascending: false })
   }
 
   const fetchLimit = sortParam === "recommended" ? INITIAL_LOAD_LIMIT * 3 : INITIAL_LOAD_LIMIT
@@ -179,7 +179,7 @@ export default async function WomensOuterwearPage({
       const salesScore = salesCount > 0 ? Math.log(salesCount + 1) * 3 : 0
       const bestsellerBoost = product.is_bestseller ? 2 : 0
       const newInBoost = product.is_new_in ? 1 : 0
-      const priceScore = product.price > 50 && product.price < 200 ? 0.5 : 0
+      const priceScore = product.saintyve_price > 50 && product.saintyve_price < 200 ? 0.5 : 0
       const randomFactor = Math.random() * 1.5
       const totalScore = salesScore + recencyBoost + bestsellerBoost + newInBoost + priceScore + randomFactor
       return { ...product, _discoveryScore: totalScore, _salesCount: salesCount }
@@ -213,7 +213,7 @@ export default async function WomensOuterwearPage({
         const categoryRecency = recentCategories.indexOf(product.sub_category || product.category)
         if (categoryRecency === -1) diversityScore += 2
         else diversityScore -= categoryRecency * 0.5
-        const priceTier = getPriceTier(product.price)
+        const priceTier = getPriceTier(product.saintyve_price)
         const priceTierRecency = recentPriceTiers.indexOf(priceTier)
         if (priceTierRecency === -1) diversityScore += 1
         else diversityScore -= priceTierRecency * 0.3
@@ -230,7 +230,7 @@ export default async function WomensOuterwearPage({
       if (recentBrands.length > 5) recentBrands.pop()
       recentCategories.unshift(selectedProduct.sub_category || selectedProduct.category)
       if (recentCategories.length > 5) recentCategories.pop()
-      recentPriceTiers.unshift(getPriceTier(selectedProduct.price))
+      recentPriceTiers.unshift(getPriceTier(selectedProduct.saintyve_price))
       if (recentPriceTiers.length > 5) recentPriceTiers.pop()
     }
 

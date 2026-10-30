@@ -114,9 +114,9 @@ export default async function NewArrivalsPage({
   if (sortParam === "newest") {
     query = query.order("products(created_at)", { ascending: false })
   } else if (sortParam === "price-low") {
-    query = query.order("products(price)", { ascending: true })
+    query = query.order("products(saintyve_price)", { ascending: true })
   } else if (sortParam === "price-high") {
-    query = query.order("products(price)", { ascending: false })
+    query = query.order("products(saintyve_price)", { ascending: false })
   } else {
     query = query.order("products(created_at)", { ascending: false })
   }

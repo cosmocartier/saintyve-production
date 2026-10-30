@@ -123,6 +123,7 @@ export default function NewProductForm({ preselectedCategoryId }: { preselectedC
           name: formData.name.trim(),
           description: formData.description.trim() || null,
           price: formData.price,
+          saintyve_price: formData.price,
           category: formData.category.trim(),
           sub_category: formData.sub_category.trim() || null,
           category_id: formData.category_id || null,
