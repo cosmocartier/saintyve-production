@@ -39,18 +39,21 @@ async function getProduct(slug: string): Promise<{
   const supabase = await createClient()
 
   // Fetch product by slug
-  const { data: product, error: productError } = await supabase.from("products").select("*").eq("slug", slug).single()
+  const { data: productRow, error: productError } = await supabase.from("products").select("*").eq("slug", slug).single()
 
-  if (productError || !product) {
+  if (productError || !productRow) {
     return null
   }
+
+  // The storefront price comes from saintyve_price; fall back to price so a missing value can never blank the page
+  const product = { ...productRow, price: productRow.saintyve_price ?? productRow.price }
 
   let groupProducts = []
   if (product.parent_product_name) {
     const { data, error: groupError } = await supabase
       .from("products")
       .select(
-        "id, name, slug, color, price, parent_product_name, use_cloudflare_images, product_images(url, display_order)",
+        "id, name, slug, color, price, saintyve_price, parent_product_name, use_cloudflare_images, product_images(url, display_order)",
       )
       .eq("parent_product_name", product.parent_product_name)
       .eq("status", "live")
@@ -105,7 +108,7 @@ async function getProduct(slug: string): Promise<{
           name: p.name,
           slug: p.slug,
           color: p.color,
-          price: p.price,
+          price: p.saintyve_price ?? p.price,
           primaryImage: primaryImageUrl,
           isCurrentProduct: p.id === product.id,
         }
