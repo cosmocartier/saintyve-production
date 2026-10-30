@@ -316,7 +316,7 @@ export function Navigation() {
                             <h3 className="text-[10px] font-medium uppercase tracking-wider text-black mb-1 line-clamp-2">
                               {product.name}
                             </h3>
-                            <p className="text-xs text-gray-600 font-mono">${product.price?.toFixed(2)}</p>
+                            <p className="text-xs text-gray-600 font-mono">${product.saintyve_price?.toFixed(2)}</p>
                           </div>
                         </Link>
                       ))}
@@ -345,7 +345,7 @@ export function Navigation() {
                           <h3 className="text-xs font-medium uppercase tracking-wider text-black mb-1 line-clamp-2">
                             {product.name}
                           </h3>
-                          <p className="text-xs text-gray-600 font-mono">${product.price?.toFixed(2)}</p>
+                          <p className="text-xs text-gray-600 font-mono">${product.saintyve_price?.toFixed(2)}</p>
                         </Link>
                       ))}
                     </div>

@@ -77,9 +77,9 @@ export default async function MensWatchesPage({
   if (sortParam === "newest") {
     query = query.order("products(created_at)", { ascending: false })
   } else if (sortParam === "price-low") {
-    query = query.order("products(price)", { ascending: true })
+    query = query.order("products(saintyve_price)", { ascending: true })
   } else if (sortParam === "price-high") {
-    query = query.order("products(price)", { ascending: false })
+    query = query.order("products(saintyve_price)", { ascending: false })
   }
 
   const fetchLimit = sortParam === "recommended" ? INITIAL_LOAD_LIMIT * 3 : INITIAL_LOAD_LIMIT
@@ -177,7 +177,7 @@ export default async function MensWatchesPage({
       const salesScore = salesCount > 0 ? Math.log(salesCount + 1) * 3 : 0
       const bestsellerBoost = product.is_bestseller ? 2 : 0
       const newInBoost = product.is_new_in ? 1 : 0
-      const priceScore = product.price > 50 && product.price < 200 ? 0.5 : 0
+      const priceScore = product.saintyve_price > 50 && product.saintyve_price < 200 ? 0.5 : 0
       const randomFactor = Math.random() * 1.5
       const totalScore = salesScore + recencyBoost + bestsellerBoost + newInBoost + priceScore + randomFactor
       return { ...product, _discoveryScore: totalScore, _salesCount: salesCount }
@@ -207,7 +207,7 @@ export default async function MensWatchesPage({
         diversityScore += brandRecency === -1 ? 3 : -brandRecency
         const categoryRecency = recentCategories.indexOf(product.sub_category || product.category)
         diversityScore += categoryRecency === -1 ? 2 : -categoryRecency * 0.5
-        const priceTierRecency = recentPriceTiers.indexOf(getPriceTier(product.price))
+        const priceTierRecency = recentPriceTiers.indexOf(getPriceTier(product.saintyve_price))
         diversityScore += priceTierRecency === -1 ? 1 : -priceTierRecency * 0.3
         const combinedScore = product._discoveryScore * 0.7 + diversityScore * 0.3
         if (combinedScore > bestDiversityScore) { bestDiversityScore = combinedScore; bestIndex = i }
@@ -218,7 +218,7 @@ export default async function MensWatchesPage({
       if (recentBrands.length > 5) recentBrands.pop()
       recentCategories.unshift(selected.sub_category || selected.category)
       if (recentCategories.length > 5) recentCategories.pop()
-      recentPriceTiers.unshift(getPriceTier(selected.price))
+      recentPriceTiers.unshift(getPriceTier(selected.saintyve_price))
       if (recentPriceTiers.length > 5) recentPriceTiers.pop()
     }
 

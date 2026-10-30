@@ -118,9 +118,9 @@ export default async function BestSellersPage({
   // Apply sorting - default to newest first for Best Sellers
   const sortParam = searchParams.sort || "newest"
   if (sortParam === "price-low") {
-    query = query.order("products(price)", { ascending: true })
+    query = query.order("products(saintyve_price)", { ascending: true })
   } else if (sortParam === "price-high") {
-    query = query.order("products(price)", { ascending: false })
+    query = query.order("products(saintyve_price)", { ascending: false })
   } else {
     // Sort by newest first (created_at desc)
     query = query.order("products(created_at)", { ascending: false })

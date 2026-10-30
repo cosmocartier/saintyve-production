@@ -87,7 +87,7 @@ export function ProductCard({
   const hasSecondImage = totalImages >= 2
 
   // Get the correct price based on the toggle state
-  const displayPrice = useRetailPrice ? (product.retail_price || product.price) : product.price
+  const displayPrice = useRetailPrice ? (product.retail_price || product.saintyve_price) : product.saintyve_price
 
   const handleDragStart = (clientX: number) => {
     if (totalImages <= 1) return

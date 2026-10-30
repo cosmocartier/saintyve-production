@@ -221,9 +221,9 @@ export function ClothingClient({ initialProducts, totalCount, initialLimit, cate
       case "newest":
         return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
       case "price-low":
-        return (a.price || 0) - (b.price || 0)
+        return (a.saintyve_price || 0) - (b.saintyve_price || 0)
       case "price-high":
-        return (b.price || 0) - (a.price || 0)
+        return (b.saintyve_price || 0) - (a.saintyve_price || 0)
       case "recommended":
       default:
         return 0 // Keep original order
@@ -315,9 +315,9 @@ export function ClothingClient({ initialProducts, totalCount, initialLimit, cate
       if (sortValue === "newest") {
         query = query.order("created_at", { ascending: false })
       } else if (sortValue === "price-low") {
-        query = query.order("price", { ascending: true })
+        query = query.order("saintyve_price", { ascending: true })
       } else if (sortValue === "price-high") {
-        query = query.order("price", { ascending: false })
+        query = query.order("saintyve_price", { ascending: false })
       } else {
         query = query.order("created_at", { ascending: false })
       }

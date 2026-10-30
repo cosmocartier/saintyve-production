@@ -188,8 +188,8 @@ export function MensShoesClient({
 
   const sortedProducts = [...products].sort((a: any, b: any) => {
     if (sortValue === "newest") return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-    if (sortValue === "price-low") return (a.price || 0) - (b.price || 0)
-    if (sortValue === "price-high") return (b.price || 0) - (a.price || 0)
+    if (sortValue === "price-low") return (a.saintyve_price || 0) - (b.saintyve_price || 0)
+    if (sortValue === "price-high") return (b.saintyve_price || 0) - (a.saintyve_price || 0)
     return 0
   })
 
@@ -249,8 +249,8 @@ export function MensShoesClient({
         if (selectedColors.length > 0) q = q.in("products.color_filter", selectedColors)
         if (selectedStyleTypes.length > 0) q = q.in("products.style_type", selectedStyleTypes)
         if (sortValue === "newest") q = q.order("products(created_at)", { ascending: false })
-        else if (sortValue === "price-low") q = q.order("products(price)", { ascending: true })
-        else if (sortValue === "price-high") q = q.order("products(price)", { ascending: false })
+        else if (sortValue === "price-low") q = q.order("products(saintyve_price)", { ascending: true })
+        else if (sortValue === "price-high") q = q.order("products(saintyve_price)", { ascending: false })
         else q = q.order("sort_order", { ascending: true })
         q = q.range(currentOffset, currentOffset + batchSize - 1)
         const { data: productCategories, error } = await q

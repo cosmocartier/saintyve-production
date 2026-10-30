@@ -113,9 +113,9 @@ export default async function CollectionsPage({
   if (sortParam === "newest") {
     query = query.order("created_at", { ascending: false })
   } else if (sortParam === "price-low") {
-    query = query.order("price", { ascending: true })
+    query = query.order("saintyve_price", { ascending: true })
   } else if (sortParam === "price-high") {
-    query = query.order("price", { ascending: false })
+    query = query.order("saintyve_price", { ascending: false })
   } else {
     query = query.order("created_at", { ascending: false })
   }
