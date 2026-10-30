@@ -94,6 +94,7 @@ interface Product {
   name: string
   description: string | null
   price: number
+  saintyve_price?: number | null
   retail_price: number | null
   discounted_price: number | null
   category: string
@@ -241,7 +242,7 @@ export default function EditProductForm({
     color: product.color || "",
     name: product.name,
     description: product.description || "",
-    price: product.price,
+    price: product.saintyve_price ?? product.price,
     retail_price: product.retail_price || null,
     discounted_price: product.discounted_price ?? null,
     category: product.category || "",
@@ -691,7 +692,7 @@ export default function EditProductForm({
           color: formData.color,
           name: formData.name,
           description: formData.description,
-          price: formData.price,
+          saintyve_price: formData.price,
         // Add retail_price to the update payload
         retail_price: formData.retail_price,
         discounted_price: formData.discounted_price ?? null,
@@ -1229,7 +1230,7 @@ export default function EditProductForm({
     const hasChanges =
       formData.name !== initialProduct.name ||
       formData.slug !== initialProduct.slug ||
-      formData.price !== initialProduct.price ||
+      formData.price !== (initialProduct.saintyve_price ?? initialProduct.price) ||
       formData.description !== initialProduct.description ||
       formData.product_details !== initialProduct.product_details ||
       formData.size_and_fit !== initialProduct.size_and_fit ||
